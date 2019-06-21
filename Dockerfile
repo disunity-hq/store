@@ -1,16 +1,17 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY Disunity.Store/*.csproj ./
-RUN dotnet restore
+# copy csproj and restore as distinct layers
+COPY Disunity.Store/*.csproj ./asp/
+RUN dotnet restore asp
 
-# Copy everything else and build
-COPY Disunity.Store/* ./
+# copy everything else and build app
+COPY Disunity.Store/. ./asp/
+WORKDIR /app/asp
 RUN dotnet publish -c Release -o out
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=build /app/asp/out ./
 ENTRYPOINT ["dotnet", "Disunity.Store.dll"]
