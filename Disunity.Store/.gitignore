@@ -1,3 +1,9 @@
 # CShapr build dir
 obj/
 bin/
+
+# useless autogened file
+ScaffoldingReadme.txt
+
+# Temp blocked out
+bootstrap-select/

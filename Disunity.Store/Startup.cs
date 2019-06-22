@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Disunity.Store.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Disunity.Store.Models;
 
 namespace Disunity.Store
 {
@@ -38,7 +39,7 @@ namespace Disunity.Store
       services.AddDbContext<ApplicationDbContext>(options =>
           options.UseNpgsql(
               Configuration.GetConnectionString("DefaultConnection")));
-      services.AddDefaultIdentity<IdentityUser>()
+      services.AddDefaultIdentity<UserIdentity>()
           .AddDefaultUI(UIFramework.Bootstrap4)
           .AddEntityFrameworkStores<ApplicationDbContext>();
 
