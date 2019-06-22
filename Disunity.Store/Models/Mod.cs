@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Disunity.Store.Models
 {
@@ -31,6 +32,24 @@ namespace Disunity.Store.Models
       IsActive = true;
       IsDeprecated = false;
       IsPinned = false;
+    }
+
+    public static void OnModelCreating(ModelBuilder builder) {
+      builder.Entity<Mod>().Property(m => m.IsActive).HasDefaultValue(true);
+      builder.Entity<Mod>().Property(m => m.IsDeprecated).HasDefaultValue(false);
+      builder.Entity<Mod>().Property(m => m.IsPinned).HasDefaultValue(false);
+      
+      builder.Entity<Mod>()
+        .HasOne(m => m.Owner)
+        .WithMany(o => o.Mods)
+        .OnDelete(DeleteBehavior.Restrict);
+
+      builder.Entity<Mod>()
+        .HasOne(m => m.Latest)
+        .WithOne(v => v.Mod);
+
+      builder.Entity<Mod>()
+        .HasMany(m => m.Versions);
     }
   }
 }

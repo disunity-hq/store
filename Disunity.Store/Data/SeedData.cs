@@ -14,12 +14,12 @@ namespace Disunity.Store.Data
             serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
       {
         // check if db has rows
-        if (context.Mod.Any())
+        if (context.Mods.Any())
         {
           return; // db has been seeded already, skip
         }
 
-        context.Mod.Add(new Mod { Name = "Foobar" });
+        context.Mods.Add(new Mod { Name = "Foobar" });
 
         // TODO put seed data here
         context.SaveChanges();

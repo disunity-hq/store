@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Disunity.Store.Models
 {
@@ -34,6 +35,11 @@ namespace Disunity.Store.Models
     public string IconURL { get; set; }
 
     public List<ModVersion> Dependencies { get; set; }
+
+    public static void OnModelCreating(ModelBuilder builder) {
+      builder.Entity<ModVersion>().Property(v => v.IsActive).HasDefaultValue(true);
+      builder.Entity<ModVersion>().Property(v => v.Downloads).HasDefaultValue(0);
+    }
 
   }
 

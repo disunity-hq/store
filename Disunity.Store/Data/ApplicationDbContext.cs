@@ -13,12 +13,11 @@ namespace Disunity.Store.Data
   public class ApplicationDbContext : IdentityDbContext<UserIdentity>
   {
     public DbSet<Organization> Orgs { get; set; }
-
     public DbSet<OrgMember> OrgMembers { get; set; }
 
-    public DbSet<Mod> Mod { get; set; }
-    public DbSet<ModVersion> ModVersion { get; set; }
-    public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvent { get; set; }
+    public DbSet<Mod> Mods { get; set; }
+    public DbSet<ModVersion> ModVersions { get; set; }
+    public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvents { get; set; }
 
     static ApplicationDbContext()
     {
@@ -39,35 +38,11 @@ namespace Disunity.Store.Data
 
       builder.ForNpgsqlHasEnum<OrgMemberRole>();
 
-      builder.Entity<OrgMember>()
-          .HasKey(m => new { m.UserId, m.OrgId });
+      OrgMember.OnModelCreating(builder);
 
-      builder.Entity<ModVersionDownloadEvent>()
-          .HasKey(e => new { e.SourceIP, e.ModVersionId });
-
-      builder.Entity<Mod>().Property(m => m.IsActive).HasDefaultValue(true);
-      builder.Entity<Mod>().Property(m => m.IsDeprecated).HasDefaultValue(false);
-      builder.Entity<Mod>().Property(m => m.IsPinned).HasDefaultValue(false);
-
-
-      builder.Entity<ModVersion>().Property(v => v.IsActive).HasDefaultValue(true);
-      builder.Entity<ModVersion>().Property(v => v.Downloads).HasDefaultValue(0);
-
-      builder.Entity<ModVersionDownloadEvent>().Property(e => e.TotalDownloads).HasDefaultValue(1);
-      builder.Entity<ModVersionDownloadEvent>().Property(e => e.CountedDownloads).HasDefaultValue(1);
-
-      builder.Entity<Mod>()
-          .HasOne(m => m.Owner)
-          .WithMany(o => o.Mods)
-          .OnDelete(DeleteBehavior.Restrict);
-
-      builder.Entity<Mod>()
-          .HasOne(m => m.Latest)
-          .WithOne(v => v.Mod);
-
-      builder.Entity<Mod>()
-          .HasMany(m => m.Versions);
-
+      Mod.OnModelCreating(builder);
+      ModVersion.OnModelCreating(builder);
+      ModVersionDownloadEvent.OnModelCreating(builder);
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
