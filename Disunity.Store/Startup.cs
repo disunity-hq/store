@@ -14,6 +14,7 @@ using Disunity.Store.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Disunity.Store.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store
 {
@@ -40,6 +41,7 @@ namespace Disunity.Store
           options.UseNpgsql(
               Configuration.GetConnectionString("DefaultConnection")));
       services.AddDefaultIdentity<UserIdentity>()
+          .AddRoles<IdentityRole>()
           .AddDefaultUI(UIFramework.Bootstrap4)
           .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -48,7 +50,7 @@ namespace Disunity.Store
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
     {
       if (env.IsDevelopment())
       {
@@ -69,6 +71,54 @@ namespace Disunity.Store
       app.UseAuthentication();
 
       app.UseMvc();
+
+      CreateRoles(serviceProvider).Wait();
+    }
+
+    private async Task CreateRoles(IServiceProvider serviceProvider)
+    {
+      //initializing custom roles
+      var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+      var UserManager = serviceProvider.GetRequiredService<UserManager<UserIdentity>>();
+
+      string[] roleNames = Enum.GetNames(typeof(UserRoles));
+      IdentityResult roleResult;
+
+      foreach (var roleName in roleNames)
+      {
+        var roleExist = await RoleManager.RoleExistsAsync(roleName);
+        if (!roleExist)
+        {
+          //create the roles and seed them to the database
+          roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+        }
+      }
+
+      var superuser = new UserIdentity
+      {
+        UserName = Configuration.GetValue("AdminUser:Name",
+                   Configuration.GetValue<string>("AdminUser:Email")),
+        Email = Configuration["AdminUser:Email"],
+      };
+
+      string pwd = Configuration["AdminUser:Password"];
+      if (superuser.Email == null || pwd == null)
+      {
+        var logger = serviceProvider.GetRequiredService<ILogger<Startup>>();
+        logger.LogWarning("Skipping creating super user as user was missing email or password");
+        return; // super user not full specified, don't create it
+      }
+
+      var _user = await UserManager.FindByEmailAsync(Configuration["AdminUser:Email"]);
+
+      if (_user == null)
+      {
+        var createSuperUser = await UserManager.CreateAsync(superuser, pwd);
+        if (createSuperUser.Succeeded)
+        {
+          await UserManager.AddToRoleAsync(superuser, UserRoles.Admin.ToString());
+        }
+      }
     }
   }
 }
