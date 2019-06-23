@@ -13,5 +13,12 @@ namespace Disunity.Store.Tests
             Assert.IsType<string>(message);
             Assert.Equal("Hello World!", message);
         }
+        
+        [Fact]
+        public void Greet_Arg_Works() {
+            var message = HelloWorld.Greet("Charlie");
+            Assert.IsType<string>(message);
+            Assert.Equal("Hello Charlie!", message);
+        }
     }
 }
