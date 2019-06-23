@@ -1,5 +1,6 @@
 
-
+all:
+	docker-compose run dotnet $(args)
 
 build:
 	docker-compose build
@@ -7,5 +8,5 @@ build:
 up: build
 	docker-compose up db cache web
 
-dotnet:
-	docker-compose run dotnet
+ef:
+	docker-compose run dotnet ef $(args)
