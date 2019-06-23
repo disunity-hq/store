@@ -8,36 +8,36 @@
 <h1>Create</h1>
 
 <h4>Mod</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Mod.OwnerId" class="control-label"></label>
-                <select asp-for="Mod.OwnerId" class ="form-control" asp-items="ViewBag.OwnerId"></select>
+                <select asp-for="Mod.OwnerId" class="form-control" asp-items="ViewBag.OwnerId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Mod.Name" class="control-label"></label>
-                <input asp-for="Mod.Name" class="form-control" />
+                <input asp-for="Mod.Name" class="form-control"/>
                 <span asp-validation-for="Mod.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Mod.LatestId" class="control-label"></label>
-                <select asp-for="Mod.LatestId" class ="form-control" asp-items="ViewBag.LatestId"></select>
+                <select asp-for="Mod.LatestId" class="form-control" asp-items="ViewBag.LatestId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Mod.CreatedAt" class="control-label"></label>
-                <input asp-for="Mod.CreatedAt" class="form-control" />
+                <input asp-for="Mod.CreatedAt" class="form-control"/>
                 <span asp-validation-for="Mod.CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Mod.UpdatedAt" class="control-label"></label>
-                <input asp-for="Mod.UpdatedAt" class="form-control" />
+                <input asp-for="Mod.UpdatedAt" class="form-control"/>
                 <span asp-validation-for="Mod.UpdatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -48,5 +48,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

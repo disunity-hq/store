@@ -1,11 +1,11 @@
 ﻿using System;
-using Disunity.Store.Models;
+using Disunity.Store.Areas.Orgs.Models;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Disunity.Store.Migrations
+namespace Disunity.Store.Shared.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace Disunity.Store.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -30,21 +30,21 @@ namespace Disunity.Store.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    EmailConfirmed = table.Column<bool>(),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    PhoneNumberConfirmed = table.Column<bool>(),
+                    TwoFactorEnabled = table.Column<bool>(),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    LockoutEnabled = table.Column<bool>(),
+                    AccessFailedCount = table.Column<int>()
                 },
                 constraints: table =>
                 {
@@ -55,22 +55,22 @@ namespace Disunity.Store.Migrations
                 name: "Orgs",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orgs", x => x.ID);
+                    table.PrimaryKey("PK_Orgs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    RoleId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -89,9 +89,9 @@ namespace Disunity.Store.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -110,10 +110,10 @@ namespace Disunity.Store.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128),
+                    ProviderKey = table.Column<string>(maxLength: 128),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>()
                 },
                 constraints: table =>
                 {
@@ -130,8 +130,8 @@ namespace Disunity.Store.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(),
+                    RoleId = table.Column<string>()
                 },
                 constraints: table =>
                 {
@@ -154,9 +154,9 @@ namespace Disunity.Store.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    UserId = table.Column<string>(),
+                    LoginProvider = table.Column<string>(maxLength: 128),
+                    Name = table.Column<string>(maxLength: 128),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -174,9 +174,9 @@ namespace Disunity.Store.Migrations
                 name: "OrgMembers",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    OrgId = table.Column<int>(nullable: false),
-                    Role = table.Column<OrgMemberRole>(nullable: false)
+                    UserId = table.Column<string>(),
+                    OrgId = table.Column<int>(),
+                    Role = table.Column<OrgMemberRole>()
                 },
                 constraints: table =>
                 {
@@ -185,7 +185,7 @@ namespace Disunity.Store.Migrations
                         name: "FK_OrgMembers_Orgs_OrgId",
                         column: x => x.OrgId,
                         principalTable: "Orgs",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrgMembers_AspNetUsers_UserId",
@@ -199,29 +199,29 @@ namespace Disunity.Store.Migrations
                 name: "ModVersions",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    ModId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    CreatedAt = table.Column<DateTime>(),
+                    UpdatedAt = table.Column<DateTime>(),
+                    ModId = table.Column<int>(),
+                    Name = table.Column<string>(maxLength: 128),
                     IsActive = table.Column<bool>(nullable: false, defaultValue: true),
                     Downloads = table.Column<int>(nullable: false, defaultValue: 0),
-                    VersionNumber = table.Column<string>(maxLength: 16, nullable: false),
-                    WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),
-                    Description = table.Column<string>(maxLength: 256, nullable: false),
-                    FileURL = table.Column<string>(maxLength: 1024, nullable: false),
-                    IconURL = table.Column<string>(maxLength: 1024, nullable: false),
-                    ModVersionID = table.Column<int>(nullable: true)
+                    VersionNumber = table.Column<string>(maxLength: 16),
+                    WebsiteUrl = table.Column<string>(maxLength: 1024),
+                    Description = table.Column<string>(maxLength: 256),
+                    FileUrl = table.Column<string>(maxLength: 1024),
+                    IconUrl = table.Column<string>(maxLength: 1024),
+                    ModVersionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ModVersions", x => x.ID);
+                    table.PrimaryKey("PK_ModVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ModVersions_ModVersions_ModVersionID",
-                        column: x => x.ModVersionID,
+                        name: "FK_ModVersions_ModVersions_ModVersionId",
+                        column: x => x.ModVersionId,
                         principalTable: "ModVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -229,12 +229,12 @@ namespace Disunity.Store.Migrations
                 name: "Mods",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(),
+                    UpdatedAt = table.Column<DateTime>(),
                     OwnerId = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128),
                     IsActive = table.Column<bool>(nullable: false, defaultValue: true),
                     IsDeprecated = table.Column<bool>(nullable: false, defaultValue: false),
                     IsPinned = table.Column<bool>(nullable: false, defaultValue: false),
@@ -242,18 +242,18 @@ namespace Disunity.Store.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mods", x => x.ID);
+                    table.PrimaryKey("PK_Mods", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Mods_ModVersions_LatestId",
                         column: x => x.LatestId,
                         principalTable: "ModVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Mods_Orgs_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Orgs",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -261,21 +261,21 @@ namespace Disunity.Store.Migrations
                 name: "ModVersionDownloadEvents",
                 columns: table => new
                 {
-                    ModVersionId = table.Column<int>(nullable: false),
-                    SourceIP = table.Column<string>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    ModVersionId = table.Column<int>(),
+                    SourceIp = table.Column<string>(),
+                    CreatedAt = table.Column<DateTime>(),
+                    UpdatedAt = table.Column<DateTime>(),
                     TotalDownloads = table.Column<int>(nullable: false, defaultValue: 1),
                     CountedDownloads = table.Column<int>(nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ModVersionDownloadEvents", x => new { x.SourceIP, x.ModVersionId });
+                    table.PrimaryKey("PK_ModVersionDownloadEvents", x => new { x.SourceIp, x.ModVersionId });
                     table.ForeignKey(
                         name: "FK_ModVersionDownloadEvents_ModVersions_ModVersionId",
                         column: x => x.ModVersionId,
                         principalTable: "ModVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -338,9 +338,9 @@ namespace Disunity.Store.Migrations
                 column: "ModId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ModVersions_ModVersionID",
+                name: "IX_ModVersions_ModVersionId",
                 table: "ModVersions",
-                column: "ModVersionID");
+                column: "ModVersionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrgMembers_OrgId",
@@ -352,7 +352,7 @@ namespace Disunity.Store.Migrations
                 table: "ModVersions",
                 column: "ModId",
                 principalTable: "Mods",
-                principalColumn: "ID",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 

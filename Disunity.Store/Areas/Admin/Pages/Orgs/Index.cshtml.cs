@@ -1,29 +1,26 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Disunity.Store.Areas.Orgs.Models;
+using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Disunity.Store.Areas.Orgs.Models;
-using Disunity.Store.Data;
 
-namespace Disunity.Store.Areas.Admin.Pages.Orgs
-{
-    public class IndexModel : PageModel
-    {
-        private readonly Disunity.Store.Data.ApplicationDbContext _context;
+namespace Disunity.Store.Areas.Admin.Pages.Orgs {
 
-        public IndexModel(Disunity.Store.Data.ApplicationDbContext context)
-        {
+    public class IndexModel : PageModel {
+
+        private readonly ApplicationDbContext _context;
+
+        public IndexModel(ApplicationDbContext context) {
             _context = context;
         }
 
-        public IList<Org> Org { get;set; }
+        public IList<Org> Org { get; set; }
 
-        public async Task OnGetAsync()
-        {
+        public async Task OnGetAsync() {
             Org = await _context.Orgs.ToListAsync();
         }
+
     }
+
 }

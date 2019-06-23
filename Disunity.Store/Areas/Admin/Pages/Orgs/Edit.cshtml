@@ -8,19 +8,19 @@
 <h1>Edit</h1>
 
 <h4>Org</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Org.ID" />
+            <input type="hidden" asp-for="Org.Id"/>
             <div class="form-group">
                 <label asp-for="Org.Name" class="control-label"></label>
-                <input asp-for="Org.Name" class="form-control" />
+                <input asp-for="Org.Name" class="form-control"/>
                 <span asp-validation-for="Org.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -31,5 +31,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -1,5 +1,5 @@
 using Disunity.Store.Areas.Identity.Models;
-using Disunity.Store.Data;
+using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Disunity.Store {
+namespace Disunity.Store.Shared.Startup {
+
     public static class ServicesStartup {
+
         private static void ConfigureCookiePolicy(IServiceCollection services) {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
+            services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -22,14 +23,16 @@ namespace Disunity.Store {
 
         private static void ConfigureDbContext(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                                                            options.UseNpgsql(
+                                                                configuration
+                                                                    .GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<UserIdentity>()
-                .AddRoles<IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddRoles<IdentityRole>()
+                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
-        public static void ConfigureMVC(IServiceCollection services) {
+        public static void ConfigureMvc(IServiceCollection services) {
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -45,9 +48,10 @@ namespace Disunity.Store {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration) {
             ConfigureCookiePolicy(services);
             ConfigureDbContext(services, configuration);
-            ConfigureMVC(services);
+            ConfigureMvc(services);
             ConfigureAuthorization(services);
         }
 
     }
+
 }

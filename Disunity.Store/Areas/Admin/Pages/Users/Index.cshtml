@@ -12,54 +12,54 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].NormalizedUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].NormalizedEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].EmailConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].SecurityStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].ConcurrencyStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].PhoneNumberConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].TwoFactorEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].LockoutEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].LockoutEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserIdentity[0].AccessFailedCount)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].NormalizedUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].NormalizedEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].EmailConfirmed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].PasswordHash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].SecurityStamp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].ConcurrencyStamp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].PhoneNumberConfirmed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].TwoFactorEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].LockoutEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].LockoutEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIdentity[0].AccessFailedCount)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.UserIdentity) {
+    @foreach (var item in Model.UserIdentity) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
@@ -109,6 +109,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -1,42 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Disunity.Store.Areas.Mods.Models;
+using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Disunity.Store.Areas.Mods.Models;
-using Disunity.Store.Data;
 
-namespace Disunity.Store.Areas.Admin.Pages.Mods
-{
-    public class DetailsModel : PageModel
-    {
-        private readonly Disunity.Store.Data.ApplicationDbContext _context;
+namespace Disunity.Store.Areas.Admin.Pages.Mods {
 
-        public DetailsModel(Disunity.Store.Data.ApplicationDbContext context)
-        {
+    public class DetailsModel : PageModel {
+
+        private readonly ApplicationDbContext _context;
+
+        public DetailsModel(ApplicationDbContext context) {
             _context = context;
         }
 
         public Mod Mod { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> OnGetAsync(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             Mod = await _context.Mods
-                .Include(m => m.Latest)
-                .Include(m => m.Owner).FirstOrDefaultAsync(m => m.ID == id);
+                                .Include(m => m.Latest)
+                                .Include(m => m.Owner).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Mod == null)
-            {
+            if (Mod == null) {
                 return NotFound();
             }
+
             return Page();
         }
+
     }
+
 }

@@ -12,42 +12,42 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].Downloads)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].VersionNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].WebsiteUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].FileURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].IconURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModVersion[0].UpdatedAt)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].Downloads)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].VersionNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].WebsiteUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].FileUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].IconUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModVersion[0].UpdatedAt)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ModVersion) {
+    @foreach (var item in Model.ModVersion) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -68,10 +68,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileURL)
+                @Html.DisplayFor(modelItem => item.FileUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IconURL)
+                @Html.DisplayFor(modelItem => item.IconUrl)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -80,11 +80,11 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
