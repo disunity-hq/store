@@ -33,6 +33,16 @@ services:
     volumes:
       - web-data:/app/var
 
+  dotnet:
+    image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    entrypoint: dotnet
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: ${DATABASE_URL}
+    volumes:
+      - ./:/app
+
+
 volumes:
   db-data:
   web-data:
