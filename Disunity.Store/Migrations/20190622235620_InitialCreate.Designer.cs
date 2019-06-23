@@ -156,7 +156,7 @@ namespace Disunity.Store.Migrations
                     b.ToTable("OrgMembers");
                 });
 
-            modelBuilder.Entity("Disunity.Store.Models.Organization", b =>
+            modelBuilder.Entity("Disunity.Store.Models.Org", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -335,7 +335,7 @@ namespace Disunity.Store.Migrations
                         .WithOne("Mod")
                         .HasForeignKey("Disunity.Store.Models.Mod", "LatestId");
 
-                    b.HasOne("Disunity.Store.Models.Organization", "Owner")
+                    b.HasOne("Disunity.Store.Models.Org", "Owner")
                         .WithMany("Mods")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -363,7 +363,7 @@ namespace Disunity.Store.Migrations
 
             modelBuilder.Entity("Disunity.Store.Models.OrgMember", b =>
                 {
-                    b.HasOne("Disunity.Store.Models.Organization", "Org")
+                    b.HasOne("Disunity.Store.Models.Org", "Org")
                         .WithMany("Members")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Cascade);

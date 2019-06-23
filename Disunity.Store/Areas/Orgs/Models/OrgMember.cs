@@ -21,7 +21,7 @@ namespace Disunity.Store.Models
 
     [Required]
     public int OrgId { get; set; }
-    public Organization Org { get; set; }
+    public Org Org { get; set; }
 
     [Required]
     public OrgMemberRole Role { get; set; }

@@ -13,7 +13,7 @@ namespace Disunity.Store.Areas.Mods.Models
     public int ID { get; set; }
 
     public int? OwnerId { get; set; }
-    public Organization Owner { get; set; }
+    public Org Owner { get; set; }
 
     [Required]
     [MaxLength(128)]

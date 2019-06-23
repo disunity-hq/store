@@ -47,7 +47,16 @@ namespace Disunity.Store
           .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+      services.AddMvc()
+        .AddRazorPagesOptions(options =>
+        {
+          options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
+        }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+      services.AddAuthorization(options =>
+      {
+        options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

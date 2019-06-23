@@ -16,7 +16,7 @@ namespace Disunity.Store.Data
 {
   public class ApplicationDbContext : IdentityDbContext<UserIdentity>
   {
-    public DbSet<Organization> Orgs { get; set; }
+    public DbSet<Org> Orgs { get; set; }
     public DbSet<OrgMember> OrgMembers { get; set; }
 
     public DbSet<Mod> Mods { get; set; }

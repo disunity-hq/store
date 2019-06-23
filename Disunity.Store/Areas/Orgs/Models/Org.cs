@@ -4,7 +4,7 @@ using Disunity.Store.Models;
 
 namespace Disunity.Store.Areas.Orgs.Models
 {
-  public class Organization
+  public class Org
   {
 
     public int ID { get; set; }

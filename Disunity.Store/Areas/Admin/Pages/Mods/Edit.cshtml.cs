@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Disunity.Store.Areas.Mods.Models;
+using Disunity.Store.Data;
+
+namespace Disunity.Store.Areas.Admin.Pages.Mods
+{
+    public class EditModel : PageModel
+    {
+        private readonly Disunity.Store.Data.ApplicationDbContext _context;
+
+        public EditModel(Disunity.Store.Data.ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public Mod Mod { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Mod = await _context.Mods
+                .Include(m => m.Latest)
+                .Include(m => m.Owner).FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Mod == null)
+            {
+                return NotFound();
+            }
+           ViewData["LatestId"] = new SelectList(_context.ModVersions, "ID", "Description");
+           ViewData["OwnerId"] = new SelectList(_context.Orgs, "ID", "ID");
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            _context.Attach(Mod).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ModExists(Mod.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("./Index");
+        }
+
+        private bool ModExists(int id)
+        {
+            return _context.Mods.Any(e => e.ID == id);
+        }
+    }
+}
