@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Disunity.Store.Models;
+using Disunity.Store.Util;
 using Microsoft.EntityFrameworkCore;
 
-namespace Disunity.Store.Models
+namespace Disunity.Store.Areas.Mods.Models
 {
   public class ModVersionDownloadEvent : TrackableModel
   {

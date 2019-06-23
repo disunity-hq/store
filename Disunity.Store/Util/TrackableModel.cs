@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Disunity.Store.Models
+namespace Disunity.Store.Util
 {
   public class TrackableModel : ITrackableModel
   {

@@ -1,4 +1,4 @@
-namespace Disunity.Store.Models
+namespace Disunity.Store.Areas.Identity.Models
 {
   public enum UserRoles
   {

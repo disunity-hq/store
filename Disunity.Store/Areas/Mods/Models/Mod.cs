@@ -1,10 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Disunity.Store.Areas.Orgs.Models;
+using Disunity.Store.Models;
+using Disunity.Store.Util;
 using Microsoft.EntityFrameworkCore;
 
-namespace Disunity.Store.Models
+namespace Disunity.Store.Areas.Mods.Models
 {
   public class Mod : TrackableModel
   {

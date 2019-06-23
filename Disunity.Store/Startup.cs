@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Disunity.Store.Models;
 using Microsoft.Extensions.Logging;
+using Disunity.Store.Areas.Identity.Models;
 
 namespace Disunity.Store
 {

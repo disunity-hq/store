@@ -1,6 +1,6 @@
 using System;
 
-namespace Disunity.Store.Models
+namespace Disunity.Store.Util
 {
   public interface ITrackableModel
   {

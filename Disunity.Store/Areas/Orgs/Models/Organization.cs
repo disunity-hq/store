@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Disunity.Store.Areas.Mods.Models;
+using Disunity.Store.Models;
 
-namespace Disunity.Store.Models
+namespace Disunity.Store.Areas.Orgs.Models
 {
   public class Organization
   {
