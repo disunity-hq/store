@@ -10,3 +10,6 @@ up: build
 
 ef:
 	docker-compose run dotnet ef $(args)
+
+test:
+	docker-compose run -w /app/Disunity.Store.Tests dotnet test
