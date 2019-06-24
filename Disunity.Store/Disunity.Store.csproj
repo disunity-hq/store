@@ -25,11 +25,11 @@
   <ItemGroup>
     <Folder Include="Areas\Admin" />
   </ItemGroup>
-  
+
   <Target Name="NpmInstall" BeforeTargets="Restore">
     <Exec Command="npm install" />
   </Target>
-  
+
   <Target Name="Webpack" BeforeTargets="Build">
     <Exec Command="npm run build:$(ConfigurationName)" />
   </Target>
