@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Disunity.Store.Areas.Mods.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,8 +19,6 @@ namespace Disunity.Store.Shared.Data {
                 context.SaveChanges();
             }
         }
-        
-        
 
     }
 

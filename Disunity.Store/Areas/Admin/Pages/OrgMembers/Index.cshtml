@@ -1,5 +1,5 @@
 @page
-@model Disunity.Store.Areas_Admin_Pages_OrgMembers.IndexModel
+@model Disunity.Store.Areas.Admin.Pages.OrgMembers.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,21 +12,21 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrgMember[0].User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrgMember[0].Org)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrgMember[0].Role)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].User)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].Org)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].Role)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.OrgMember) {
+    @foreach (var item in Model.OrgMember) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.User.Id)
@@ -38,11 +38,11 @@
                 @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-page="./Edit" asp-route-orgid="@item.OrgId" asp-route-userid="@item.UserId">Edit</a> |
+                <a asp-page="./Details" asp-route-orgid="@item.OrgId" asp-route-userid="@item.UserId">Details</a> |
+                <a asp-page="./Delete" asp-route-orgid="@item.OrgId" asp-route-userid="@item.UserId">Delete</a> |
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

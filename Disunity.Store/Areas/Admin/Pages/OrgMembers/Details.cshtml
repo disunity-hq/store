@@ -1,5 +1,5 @@
 @page
-@model Disunity.Store.Areas_Admin_Pages_OrgMembers.DetailsModel
+@model Disunity.Store.Areas.Admin.Pages.OrgMembers.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
@@ -9,7 +9,7 @@
 
 <div>
     <h4>OrgMember</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrgMember.User)
@@ -32,6 +32,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-page="./Edit" asp-route-orgid="@Model.OrgMember.OrgId" asp-route-userid="@Model.OrgMember.UserId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
