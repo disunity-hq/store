@@ -19,7 +19,7 @@ namespace Disunity.Store.Areas.Admin.Pages.OrgMembers {
 
         [BindProperty] public OrgMember OrgMember { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? orgId, string userId) {
+        public async Task<IActionResult> OnGetAsync(string orgId, string userId) {
             if (orgId == null || userId == null) {
                 return NotFound();
             }
@@ -27,7 +27,7 @@ namespace Disunity.Store.Areas.Admin.Pages.OrgMembers {
             OrgMember = await _context.OrgMembers
                                       .Include(o => o.Org)
                                       .Include(o => o.User)
-                                      .FirstOrDefaultAsync(m => m.UserId == userId && m.OrgId == orgId);
+                                      .FirstOrDefaultAsync(m => m.User.UserName == userId && m.Org.Name == orgId);
 
             if (OrgMember == null) {
                 return NotFound();

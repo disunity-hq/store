@@ -6,46 +6,60 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Disunity.Store.Areas.Admin.Pages.Orgs {
-
-    public class EditModel : PageModel {
-
+namespace Disunity.Store.Areas.Admin.Pages.Orgs
+{
+    public class EditModel : PageModel
+    {
         private readonly ApplicationDbContext _context;
 
-        public EditModel(ApplicationDbContext context) {
+        public EditModel(ApplicationDbContext context)
+        {
             _context = context;
         }
 
         [BindProperty] public Org Org { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id) {
-            if (id == null) {
+        [BindProperty(SupportsGet = true, Name = "org")]
+        public string OrgName { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            if (OrgName == null)
+            {
                 return NotFound();
             }
 
-            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Id == id);
+            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Name == OrgName);
 
-            if (Org == null) {
+            if (Org == null)
+            {
                 return NotFound();
             }
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync() {
-            if (!ModelState.IsValid) {
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
                 return Page();
             }
 
             _context.Attach(Org).State = EntityState.Modified;
 
-            try {
+            try
+            {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException) {
-                if (!OrgExists(Org.Id)) {
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrgExists(Org.Id))
+                {
                     return NotFound();
-                } else {
+                }
+                else
+                {
                     throw;
                 }
             }
@@ -53,10 +67,9 @@ namespace Disunity.Store.Areas.Admin.Pages.Orgs {
             return RedirectToPage("./Index");
         }
 
-        private bool OrgExists(int id) {
+        private bool OrgExists(int id)
+        {
             return _context.Orgs.Any(e => e.Id == id);
         }
-
     }
-
 }

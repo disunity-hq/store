@@ -6,7 +6,7 @@
     "build:Debug": "webpack --config webpack.config.dev.js",
     "build:Release": "webpack --config webpack.config.prod.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "@types/jquery": "^3.3.29",
     "@types/jquery-validation-unobtrusive": "^3.2.32",
     "autoprefixer": "^9.6.0",

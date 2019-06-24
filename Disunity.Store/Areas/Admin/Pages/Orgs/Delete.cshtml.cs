@@ -5,47 +5,55 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Disunity.Store.Areas.Admin.Pages.Orgs {
-
-    public class DeleteModel : PageModel {
-
+namespace Disunity.Store.Areas.Admin.Pages.Orgs
+{
+    public class DeleteModel : PageModel
+    {
         private readonly ApplicationDbContext _context;
 
-        public DeleteModel(ApplicationDbContext context) {
+        public DeleteModel(ApplicationDbContext context)
+        {
             _context = context;
         }
 
         [BindProperty] public Org Org { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id) {
-            if (id == null) {
+        [BindProperty(SupportsGet = true, Name = "org")]
+        public string OrgName { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            if (OrgName == null)
+            {
                 return NotFound();
             }
 
-            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Id == id);
+            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Name == OrgName);
 
-            if (Org == null) {
+            if (Org == null)
+            {
                 return NotFound();
             }
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id) {
-            if (id == null) {
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (OrgName == null)
+            {
                 return NotFound();
             }
 
-            Org = await _context.Orgs.FindAsync(id);
+            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Name == OrgName);
 
-            if (Org != null) {
+            if (Org != null)
+            {
                 _context.Orgs.Remove(Org);
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
         }
-
     }
-
 }
