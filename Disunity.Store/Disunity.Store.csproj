@@ -6,13 +6,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-
   <ItemGroup>
-    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="bootstrap-select" Version="1.13.10" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -20,10 +14,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin" />
+    <PackageReference Include="bootstrap-select" Version="1.13.10" />
   </ItemGroup>
 
   <Target Name="NpmInstall" BeforeTargets="Restore">
@@ -33,155 +24,6 @@
   <Target Name="Webpack" BeforeTargets="Build">
     <Exec Command="npm run build:$(ConfigurationName)" />
   </Target>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Create.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Delete.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Details.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Edit.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Index.cshtml" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.min.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-am_ET.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-am_ET.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-am_ET.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ar_AR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ar_AR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ar_AR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-bg_BG.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-bg_BG.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-bg_BG.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-cs_CZ.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-cs_CZ.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-cs_CZ.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-da_DK.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-da_DK.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-da_DK.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-de_DE.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-de_DE.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-de_DE.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-en_US.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-en_US.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-en_US.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_CL.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_CL.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_CL.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_ES.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_ES.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_ES.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-et_EE.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-et_EE.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-et_EE.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-eu.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-eu.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-eu.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fa_IR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fa_IR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fa_IR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fi_FI.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fi_FI.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fi_FI.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fr_FR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fr_FR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fr_FR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hr_HR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hr_HR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hr_HR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hu_HU.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hu_HU.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hu_HU.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-id_ID.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-id_ID.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-id_ID.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-it_IT.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-it_IT.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-it_IT.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ja_JP.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ja_JP.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ja_JP.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-kh_KM.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-kh_KM.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-kh_KM.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ko_KR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ko_KR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ko_KR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lt_LT.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lt_LT.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lt_LT.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lv_LV.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lv_LV.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lv_LV.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nb_NO.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nb_NO.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nb_NO.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nl_NL.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nl_NL.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nl_NL.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pl_PL.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pl_PL.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pl_PL.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_BR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_BR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_BR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_PT.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_PT.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_PT.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ro_RO.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ro_RO.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ro_RO.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ru_RU.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ru_RU.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ru_RU.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sk_SK.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sk_SK.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sk_SK.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sl_SI.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sl_SI.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sl_SI.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sv_SE.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sv_SE.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sv_SE.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-tr_TR.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-tr_TR.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-tr_TR.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ua_UA.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ua_UA.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ua_UA.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-vi_VN.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-vi_VN.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-vi_VN.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_CN.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_CN.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_CN.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_TW.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_TW.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_TW.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\LICENSE" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\1.bundle.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\bundle.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\bundle.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\main.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\main.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\dist\vendor.bundle.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
-  </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="src\main.ts" />
