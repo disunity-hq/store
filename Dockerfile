@@ -11,6 +11,7 @@ COPY Disunity.Store/StaticFiles/. ./
 RUN npm run build:Debug
 ENTRYPOINT npm run build:Watch
 
+
 ##
 ## STAGE: build
 ##
