@@ -1,3 +1,4 @@
-@import "styles";
-@import 'custom';
+@import "./styles.scss";
+@import './custom.scss';
+//$body-bg: green;
 @import '~bootstrap/scss/bootstrap';
