@@ -5,5 +5,5 @@ bin/
 # useless autogened file
 ScaffoldingReadme.txt
 
-# Temp blocked out
-bootstrap-select/
+# npm install files
+node_modules/

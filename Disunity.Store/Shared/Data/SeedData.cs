@@ -16,12 +16,12 @@ namespace Disunity.Store.Shared.Data {
                     return; // db has been seeded already, skip
                 }
 
-                context.Mods.Add(new Mod {Name = "Foobar"});
-
                 // TODO put seed data here
                 context.SaveChanges();
             }
         }
+        
+        
 
     }
 
