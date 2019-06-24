@@ -5,10 +5,9 @@ FROM node:alpine as frontend
 WORKDIR /app
 
 COPY Disunity.Store/package.json ./
+RUN npm install
 COPY Disunity.Store/webpack*.js ./
 COPY Disunity.Store/src/. ./src
-RUN ls -la
-RUN npm install
 RUN npm run build:Debug
 
 ##
