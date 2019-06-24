@@ -39,6 +39,10 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${DATABASE_URL}
+      SYNCFUSION__LICENSE: ${SYNCFUSION__LICENSE}
+      ADMINUSER__NAME: ${ADMINUSER__NAME}
+      ADMINUSER__EMAIL: ${ADMINUSER__EMAIL}
+      ADMINUSER__PASSWORD: ${ADMINUSER__PASSWORD}
     volumes:
       - ./:/app
 
