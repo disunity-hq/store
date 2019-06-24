@@ -18,4 +18,4 @@ initdb:
 	docker-compose run -w /app/Disunity.Store dotnet ef migrations add Initial -o Shared/Migrations
 
 test:
-	docker-compose run -w /app/Disunity.Store.Tests dotnet test
+	docker-compose run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Store.Tests/start.sh dotnet

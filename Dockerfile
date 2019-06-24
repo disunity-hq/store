@@ -1,3 +1,12 @@
+FROM node:alpine as frontend
+WORKDIR /app
+
+COPY Disunity.Store/. ./
+RUN ls -la
+RUN npm install
+RUN npm run build:Debug
+RUN ls -la
+
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /app
 
@@ -9,6 +18,10 @@ RUN apt-get install -y nodejs
 COPY Disunity.Store/*.csproj ./asp/
 COPY Disunity.Store/package.json ./asp/
 RUN dotnet restore asp
+
+# copy frontend
+COPY --from=frontend /app/wwwroot/dist/. ./asp/wwwroot/dist/
+RUN ls -la asp/wwwroot/
 
 # copy everything else and build app
 COPY Disunity.Store/. ./asp/
