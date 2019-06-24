@@ -1,14 +1,13 @@
-const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = {
   entry: {
-    main:'./src/main.ts',
-    validation:'./src/validation.ts'
+    main: `/Source/ts/main.ts`,
+    validation:`/Source/ts/validation.ts`,
   },
   output: {
-    path: path.join(__dirname, 'wwwroot/dist')
+    path: "/Build"
   },
   module: {
     rules: [

@@ -4,6 +4,7 @@
   "scripts": {
     "build": "npm run build:Debug",
     "build:Debug": "webpack --config webpack.config.dev.js",
+    "build:Watch": "webpack --config webpack.config.dev.js --watch",
     "build:Release": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {

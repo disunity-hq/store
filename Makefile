@@ -6,7 +6,7 @@ build:
 	docker-compose build
 
 up: build
-	docker-compose up db cache web
+	docker-compose up db cache frontend web
 
 ef:
 	docker-compose run -w /app/Disunity.Store dotnet ef $(args)

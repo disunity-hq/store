@@ -1,5 +1,6 @@
 import * as jquery from 'jquery';
-import './css/main.scss';
+import '../css/main.scss';
 
 (window as any).jQuery = jquery;
-console.log(jquery);
+console.log("WTF");
+
