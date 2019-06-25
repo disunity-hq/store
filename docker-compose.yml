@@ -20,6 +20,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${DATABASE_URL}
+      AdminUser__Email: ${ADMINUSER_EMAIL}
+      AdminUser__Password: ${ADMINUSER_PASSWORD}
     ports:
       - 127.0.0.1:8000:80
     depends_on:
@@ -53,9 +55,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${DATABASE_URL}
       SYNCFUSION__LICENSE: ${SYNCFUSION__LICENSE}
-      ADMINUSER__NAME: ${ADMINUSER__NAME}
-      ADMINUSER__EMAIL: ${ADMINUSER__EMAIL}
-      ADMINUSER__PASSWORD: ${ADMINUSER__PASSWORD}
+      AdminUser__Email: ${ADMINUSER_EMAIL}
+      AdminUser__Password: ${ADMINUSER_PASSWORD}
     volumes:
       - ./:/app
 
@@ -66,3 +67,4 @@ volumes:
   static-data:
   web-data:
   built-static:
+
