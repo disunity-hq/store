@@ -10,8 +10,8 @@ COPY Frontend/package-lock.json ./
 RUN npm ci
 
 COPY Frontend/. ./
-RUN npm run build:Debug
-ENTRYPOINT npm run build:Watch
+RUN npm run build:Debug -- --output-path /Build
+ENTRYPOINT npm run build:Watch -- --output-path /Build
 
 
 ##

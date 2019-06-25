@@ -1,13 +1,14 @@
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: `/Source/ts/main.ts`,
-        validation: `/Source/ts/validation.ts`,
+        main: path.join(__dirname, 'ts/main.ts'),
+        validation: path.join(__dirname, 'ts/validation.ts')
     },
     output: {
-        path: "/Build"
+        path: path.join(__dirname, 'dist')
     },
     module: {
         rules: [
@@ -17,7 +18,7 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.scss$/,
+                test: /\.(css|scss|sass)$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
@@ -37,12 +38,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
-    plugins: [
-        new CopyPlugin([
-            'favicon.ico',
-            'assets'
-        ])
-    ],
+    plugins: [new CopyPlugin(['favicon.ico', 'assets'])],
     optimization: {
         splitChunks: {
             chunks: 'all',
