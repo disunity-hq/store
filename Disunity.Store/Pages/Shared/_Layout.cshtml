@@ -18,7 +18,10 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/logo_512x512.png" class="logo" alt="Logo"/>Disunity.io</a>
+            <a asp-area="" asp-page="/Index">
+                <img src="~/logo_512x512.png" class="logo" alt="Logo"/>
+            </a>
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Disunity.io</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,7 +35,8 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
-                    @if (User.IsInRole("Admin")) {
+                    @if (User.IsInRole("Admin"))
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
                         </li>
