@@ -8,8 +8,8 @@ services:
       dockerfile: ./Dockerfile
       target: frontend
     volumes:
-      - ./Disunity.Store/StaticFiles/ts:/Source/ts
-      - ./Disunity.Store/StaticFiles/css:/Source/css
+      - ./Frontend/ts:/Source/ts
+      - ./Frontend/css:/Source/css
       - static-data:/Build
 
   web:

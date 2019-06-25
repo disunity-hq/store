@@ -6,6 +6,16 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+
+  img.logo {
+    border-radius: 45%;
+    border-width: 2px;
+    border-color: white;
+    border-style: solid;
+    height: 48px;
+    width: 48px;
+    margin-right: 10px;
+  }
 }
 
 /* Sticky footer styles
@@ -13,6 +23,7 @@ a.navbar-brand {
 html {
   font-size: 20px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -22,6 +33,7 @@ html {
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
 }
@@ -46,6 +58,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
