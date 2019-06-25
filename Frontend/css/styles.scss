@@ -59,7 +59,8 @@ body {
   margin-bottom: 60px;
 }
 
-.footer {
+footer {
+  background-color: $body-bg;
   position: absolute;
   bottom: 0;
   width: 100%;
