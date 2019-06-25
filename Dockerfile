@@ -4,10 +4,12 @@
 FROM node:alpine as frontend
 WORKDIR /Source
 
-COPY Disunity.Store/StaticFiles/package.json ./
-RUN npm install
+# npm clean install (installs exact versions from package-lock.json)
+COPY Frontend/package.json ./
+COPY Frontend/package-lock.json ./
+RUN npm ci
 
-COPY Disunity.Store/StaticFiles/. ./
+COPY Frontend/. ./
 RUN npm run build:Debug
 ENTRYPOINT npm run build:Watch
 
