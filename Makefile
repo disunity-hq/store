@@ -19,3 +19,6 @@ initdb:
 
 test:
 	docker-compose run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Store.Tests/start.sh dotnet
+
+watcher:
+	docker-volume-watcher -v disunitystore_* ${CURDIR}/Disunity.Store/*
