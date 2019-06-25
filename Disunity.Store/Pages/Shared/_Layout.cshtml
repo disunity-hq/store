@@ -20,37 +20,7 @@
 </head>
 <body>
 <div class="bg-image"></div>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
-        <div class="container">
-            <a asp-area="" asp-page="/Index">
-                <img src="~/logo_512x512.png" class="logo" alt="Logo"/>
-            </a>
-            <a class="navbar-brand" asp-area="" asp-page="/Index">Disunity.io</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <partial name="_LoginPartial"/>
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<partial name="_HeaderPartial"/>
 <div class="container">
     <partial name="_CookieConsentPartial"/>
     <main role="main" class="pb-3">
@@ -58,9 +28,7 @@
     </main>
 </div>
 
-<footer class="border-top footer muted">
-    <div class="container"></div>
-</footer>
+<partial name="_FooterPartial"/>
 
 <environment include="Development">
     <script src="~/main.bundle.js" asp-append-version="true"></script>
