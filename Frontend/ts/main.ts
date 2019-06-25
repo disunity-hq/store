@@ -1,3 +1,4 @@
+import 'bootstrap';
 import * as jquery from 'jquery';
 import '../css/main.scss';
 
