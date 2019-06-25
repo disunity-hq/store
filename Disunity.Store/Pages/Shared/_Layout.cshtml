@@ -14,6 +14,7 @@
     </environment>
 </head>
 <body>
+<div class="bg-image"></div>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
         <div class="container">
@@ -31,8 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
-                    @if (User.IsInRole("Admin"))
-                    {
+                    @if (User.IsInRole("Admin")) {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
                         </li>
