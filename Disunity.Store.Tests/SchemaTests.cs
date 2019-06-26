@@ -1,7 +1,14 @@
+using System.Collections.Generic;
+using System.IO;
 using Xunit;
 
 using Disunity.Store.Shared.Util;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using Xunit.Abstractions;
+
+using Disunity.Store.Shared.Archive;
+
 
 namespace Disunity.Store.Tests {
 
@@ -17,7 +24,14 @@ namespace Disunity.Store.Tests {
         
         [Fact]
         public void SchemaGenerated() {
-            log.WriteLine(Schema.schema);
+            var schema = Schema.LoadSchema();
+            var manifest_json = File.ReadAllText("data/broken_manifest.json");
+            var manifest = JObject.Parse(manifest_json);
+            Assert.False(manifest.IsValid(schema, out IList<ValidationError> errors));
+            foreach (var error in errors) {
+                Assert.Equal("ModID", error.Path);
+                Assert.Equal("String 'example mod' does not match regex pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'.", error.Message);
+            }
         }
 
     }

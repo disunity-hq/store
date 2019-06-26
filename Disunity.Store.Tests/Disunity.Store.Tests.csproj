@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Disunity.Store\Disunity.Store.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="data\manifest.json" CopyToOutputDirectory="Always" />
+    <None Update="data\broken_manifest.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,33 @@
+{
+  "OrgID": "ldlework",
+  "ModID": "example mod",
+  "Version": "0.0.1",
+
+  "Name": "Example Mod",
+  "Url": "http://github.com/disunity-hq/core",
+  "Description": "An example Disunity mod.",
+  "ContentTypes": 14,
+
+  "Targets": {
+    "risk-of-rain-2": {
+      "MinVersion": "3830295",
+      "MaxVersion": "3830297"
+    }
+  },
+  "Dependencies": {
+    "foo/bepinexpack": {
+      "MinVersion": "2.0.0"
+    }
+  },
+
+  "PreloadAssemblies": [
+    "preloadExamplePreloader.dll"
+  ],
+  "RuntimeAssemblies": [
+    "runtimeExampleRuntime.dll"
+  ],
+  "RuntimeClass": "ExampleRuntime",
+  "RuntimeAssembly": "ExampleRuntime",
+  "PreloadClass": "ExamplePreloader",
+  "PreloadAssembly": "ExamplePreloader"
+}

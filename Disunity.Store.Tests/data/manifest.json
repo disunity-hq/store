@@ -1,0 +1,33 @@
+{
+  "OrgID": "fakeuser",
+  "ModID": "fake-mod",
+  "Version": "0.0.1",
+
+  "Name": "Fake Mod",
+  "Url": "http://github.com/disunity-hq/fake-mod",
+  "Description": "An imaginary Disunity mod",
+  "ContentTypes": 14,
+
+  "Targets": {
+    "risk-of-rain-2": {
+      "MinVersion": "3830295",
+      "MaxVersion": "3830297"
+    }
+  },
+  "Dependencies": {
+    "foo/bar": {
+      "MinVersion": "2.0.0"
+    }
+  },
+
+  "PreloadAssemblies": [
+    "FakePreload.dll"
+  ],
+  "RuntimeAssemblies": [
+    "FakeRuntime.dll"
+  ],
+  "RuntimeClass": "FakeRuntime",
+  "RuntimeAssembly": "FakeRuntime",
+  "PreloadClass": "FakePreload",
+  "PreloadAssembly": "FakePreload"
+}
