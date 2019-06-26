@@ -43,34 +43,71 @@ namespace Disunity.Store.Shared.Data {
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess) {
             OnBeforeSave();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+            var changes =  base.SaveChanges(acceptAllChangesOnSuccess);
+            OnAfterSave();
+            return changes;
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
                                                    CancellationToken cancellationToken = default(CancellationToken)) {
             OnBeforeSave();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            OnAfterSave();
+            return changes;
         }
 
         private void OnBeforeSave() {
             var entries = ChangeTracker.Entries();
             foreach (var entry in entries) {
-                if (entry.Entity is ITrackableModel trackable) {
-                    var now = DateTime.UtcNow;
-                    switch (entry.State) {
+                if (entry.Entity is IAutoModel<ApplicationDbContext> autoModel)
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Deleted:
+                            autoModel.OnBeforeDelete(this);
+                            break;
                         case EntityState.Modified:
-                            trackable.UpdatedAt = now;
+                            autoModel.OnBeforeUpdate(this);
                             break;
-
                         case EntityState.Added:
-                            trackable.CreatedAt = now;
-                            trackable.UpdatedAt = now;
+                            autoModel.OnBeforeCreate(this);
                             break;
+                    }
+
+                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                    {
+                        autoModel.OnBeforeSave(this);
                     }
                 }
             }
         }
 
+        private void OnAfterSave()
+        {
+            var entries = ChangeTracker.Entries();
+            foreach (var entry in entries) {
+                if (entry.Entity is IAutoModel<ApplicationDbContext> autoModel)
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Deleted:
+                            autoModel.OnAfterDelete(this);
+                            break;
+                        case EntityState.Modified:
+                            autoModel.OnAfterUpdate(this);
+                            break;
+                        case EntityState.Added:
+                            autoModel.OnAfterCreate(this);
+                            break;
+                    }
+
+                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                    {
+                        autoModel.OnAfterSave(this);
+                    }
+                }
+            }
+        }
     }
 
 }
