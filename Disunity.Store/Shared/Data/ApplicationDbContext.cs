@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Disunity.Store.Areas.Identity.Models;
@@ -6,18 +7,29 @@ using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Areas.Orgs.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
-namespace Disunity.Store.Shared.Data {
+namespace Disunity.Store.Shared.Data
+{
+    public class ApplicationDbContext : IdentityDbContext<UserIdentity>
+    {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<ApplicationDbContext> _logger;
 
-    public class ApplicationDbContext : IdentityDbContext<UserIdentity> {
-
-        static ApplicationDbContext() {
+        static ApplicationDbContext()
+        {
             NpgsqlConnection.GlobalTypeMapper.MapEnum<OrgMemberRole>();
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IServiceProvider serviceProvider)
+            : base(options)
+        {
+            _serviceProvider = serviceProvider;
+            _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+        }
 
         public DbSet<Org> Orgs { get; set; }
         public DbSet<OrgMember> OrgMembers { get; set; }
@@ -26,7 +38,22 @@ namespace Disunity.Store.Shared.Data {
         public DbSet<ModVersion> ModVersions { get; set; }
         public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvents { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
+        private class SavedChanges
+        {
+            public IList<object> Added { get; set; }
+            public IList<object> Modified { get; set; }
+            public IList<object> Deleted { get; set; }
+
+            public SavedChanges()
+            {
+                Added = new List<object>();
+                Modified = new List<object>();
+                Deleted = new List<object>();
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
@@ -41,73 +68,71 @@ namespace Disunity.Store.Shared.Data {
             ModVersionDownloadEvent.OnModelCreating(builder);
         }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess) {
-            OnBeforeSave();
-            var changes =  base.SaveChanges(acceptAllChangesOnSuccess);
-            OnAfterSave();
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            var savedChanges = OnBeforeSave();
+            var changes = base.SaveChanges(acceptAllChangesOnSuccess);
+            OnAfterSave(savedChanges);
             return changes;
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-                                                   CancellationToken cancellationToken = default(CancellationToken)) {
-            OnBeforeSave();
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var savedChanges = OnBeforeSave();
             var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            OnAfterSave();
+            OnAfterSave(savedChanges);
             return changes;
         }
 
-        private void OnBeforeSave() {
+        private SavedChanges OnBeforeSave()
+        {
+            var changes = new SavedChanges();
             var entries = ChangeTracker.Entries();
-            foreach (var entry in entries) {
-                if (entry.Entity is IAutoModel<ApplicationDbContext> autoModel)
-                {
-                    switch (entry.State)
-                    {
-                        case EntityState.Deleted:
-                            autoModel.OnBeforeDelete(this);
-                            break;
-                        case EntityState.Modified:
-                            autoModel.OnBeforeUpdate(this);
-                            break;
-                        case EntityState.Added:
-                            autoModel.OnBeforeCreate(this);
-                            break;
-                    }
 
-                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
-                    {
-                        autoModel.OnBeforeSave(this);
-                    }
+            foreach (var entry in entries)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Deleted:
+                        if (entry.Entity is IBeforeDelete beforeDelete) beforeDelete.OnBeforeDelete(_serviceProvider);
+                        changes.Deleted.Add(entry.Entity);
+                        break;
+                    case EntityState.Modified:
+                        if (entry.Entity is IBeforeUpdate beforeUpdate) beforeUpdate.OnBeforeUpdate(_serviceProvider);
+                        changes.Modified.Add(entry.Entity);
+                        break;
+                    case EntityState.Added:
+                        if (entry.Entity is IBeforeCreate beforeCreate) beforeCreate.OnBeforeCreate(_serviceProvider);
+                        changes.Added.Add(entry.Entity);
+                        break;
+                }
+
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                {
+                    if (entry.Entity is IBeforeSave beforeSave) beforeSave.OnBeforeSave(_serviceProvider);
                 }
             }
+
+            return changes;
         }
 
-        private void OnAfterSave()
+        private void OnAfterSave(SavedChanges changes)
         {
-            var entries = ChangeTracker.Entries();
-            foreach (var entry in entries) {
-                if (entry.Entity is IAutoModel<ApplicationDbContext> autoModel)
-                {
-                    switch (entry.State)
-                    {
-                        case EntityState.Deleted:
-                            autoModel.OnAfterDelete(this);
-                            break;
-                        case EntityState.Modified:
-                            autoModel.OnAfterUpdate(this);
-                            break;
-                        case EntityState.Added:
-                            autoModel.OnAfterCreate(this);
-                            break;
-                    }
+            foreach (var entity in changes.Added)
+            {
+                if (entity is IAfterCreate afterCreate) afterCreate.OnAfterCreate(_serviceProvider);
+            }
 
-                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
-                    {
-                        autoModel.OnAfterSave(this);
-                    }
-                }
+            foreach (var entity in changes.Modified)
+            {
+                if (entity is IAfterUpdate afterUpdate) afterUpdate.OnAfterUpdate(_serviceProvider);
+            }
+
+            foreach (var entity in changes.Deleted)
+            {
+                if (entity is IAfterDelete afterDelete) afterDelete.OnAfterDelete(_serviceProvider);
             }
         }
     }
-
 }

@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Disunity.Store.Shared.Data
 {
-    public class TrackableModel : AutoModel, ITrackableModel
+    public class TrackableModel : ITrackableModel, IBeforeCreate, IBeforeSave
     {
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Updated At")]
         public DateTime UpdatedAt { get; set; }
 
-        public override void OnBeforeCreate(ApplicationDbContext dbContext)
+        public virtual void OnBeforeCreate(IServiceProvider serviceProvider)
         {
             CreatedAt = DateTime.Now;
         }
 
-        public override void OnBeforeSave(ApplicationDbContext dbContext)
+        public virtual void OnBeforeSave(IServiceProvider serviceProvider)
         {
             UpdatedAt = DateTime.Now;
         }
