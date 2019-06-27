@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -76,7 +77,7 @@ namespace Disunity.Store.Shared.Archive {
             return JsonConvert.DeserializeObject<Manifest>(json);
         }
 
-        protected static IList<ValidationError> ValidateJson(string json) {
+        public static IList<ValidationError> ValidateJson(string json) {
             var schema = Schema.LoadSchema();
             var obj = JObject.Parse(json);
             obj.IsValid(schema, out IList<ValidationError> errors);

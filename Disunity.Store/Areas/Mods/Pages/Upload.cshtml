@@ -1,0 +1,15 @@
+@page
+@model Disunity.Store.Areas.Mods.Pages.Upload
+@addTagHelper *, Syncfusion.EJ2
+
+@{
+    var asyncSettings = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = "/mods/Upload" };
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div>
+    <ejs-uploader id="uploadFiles" asyncSettings="@asyncSettings" autoUpload="false"></ejs-uploader>
+    <form method="POST">
+        <input type="submit"/>
+    </form>
+</div>
