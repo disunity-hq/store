@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Shared.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Disunity.Store.Areas.Mods.Models {
-
-    public class Mod : TrackableModel {
-
-        public Mod() {
+namespace Disunity.Store.Areas.Mods.Models
+{
+    public class Mod : TrackableModel
+    {
+        public Mod()
+        {
             IsActive = true;
             IsDeprecated = false;
             IsPinned = false;
@@ -31,24 +33,26 @@ namespace Disunity.Store.Areas.Mods.Models {
 
         [InverseProperty("Mod")] public List<ModVersion> Versions { get; set; }
 
-        public static void OnModelCreating(ModelBuilder builder) {
-            builder.Entity<Mod>().Property(m => m.IsActive).HasDefaultValue(true);
-            builder.Entity<Mod>().Property(m => m.IsDeprecated).HasDefaultValue(false);
-            builder.Entity<Mod>().Property(m => m.IsPinned).HasDefaultValue(false);
+        public class ModConfiguration : IEntityTypeConfiguration<Mod>
+        {
+            public void Configure(EntityTypeBuilder<Mod> builder)
+            {
+                builder.Property(m => m.IsActive).HasDefaultValue(true);
+                builder.Property(m => m.IsDeprecated).HasDefaultValue(false);
+                builder.Property(m => m.IsPinned).HasDefaultValue(false);
 
-            builder.Entity<Mod>()
-                   .HasOne(m => m.Owner)
-                   .WithMany(o => o.Mods)
-                   .OnDelete(DeleteBehavior.Restrict);
+                builder
+                    .HasOne(m => m.Owner)
+                    .WithMany(o => o.Mods)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Mod>()
-                   .HasOne(m => m.Latest)
-                   .WithOne(v => v.Mod);
+                builder
+                    .HasOne(m => m.Latest)
+                    .WithOne(v => v.Mod);
 
-            builder.Entity<Mod>()
-                   .HasMany(m => m.Versions);
+                builder
+                    .HasMany(m => m.Versions);
+            }
         }
-
     }
-
 }

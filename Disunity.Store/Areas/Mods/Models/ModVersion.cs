@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Disunity.Store.Shared.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Disunity.Store.Areas.Mods.Models {
-
-    public class ModVersion : TrackableModel {
-
+namespace Disunity.Store.Areas.Mods.Models
+{
+    public class ModVersion : TrackableModel
+    {
         public int Id { get; set; }
 
         public int ModId { get; set; }
@@ -35,11 +36,13 @@ namespace Disunity.Store.Areas.Mods.Models {
 
         public List<ModVersion> Dependencies { get; set; }
 
-        public static void OnModelCreating(ModelBuilder builder) {
-            builder.Entity<ModVersion>().Property(v => v.IsActive).HasDefaultValue(true);
-            builder.Entity<ModVersion>().Property(v => v.Downloads).HasDefaultValue(0);
+        public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion>
+        {
+            public void Configure(EntityTypeBuilder<ModVersion> builder)
+            {
+                builder.Property(v => v.IsActive).HasDefaultValue(true);
+                builder.Property(v => v.Downloads).HasDefaultValue(0);
+            }
         }
-
     }
-
 }

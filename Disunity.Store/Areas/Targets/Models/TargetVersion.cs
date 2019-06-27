@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Areas.Targets.Models
 {
@@ -24,5 +26,12 @@ namespace Disunity.Store.Areas.Targets.Models
         [MaxLength(1024)]
         [DataType((DataType.ImageUrl))]
         public string IconUrl { get; set; }
+
+        public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion>
+        {
+            public void Configure(EntityTypeBuilder<TargetVersion> builder)
+            {
+            }
+        }
     }
 }

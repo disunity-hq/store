@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Areas.Orgs.Models;
+using Disunity.Store.Areas.Targets.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,8 @@ namespace Disunity.Store.Shared.Data
         public DbSet<ModVersion> ModVersions { get; set; }
         public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvents { get; set; }
 
-
+        public DbSet<Target> Targets { get; set; }
+        public DbSet<TargetVersion> TargetVersions { get; set; }
 
         private class SavedChanges
         {
@@ -63,22 +65,8 @@ namespace Disunity.Store.Shared.Data
 
             builder.ForNpgsqlHasEnum<OrgMemberRole>();
 
-            // Search all props for a dbsets
-            var props = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var prop in props)
-            {
-                var propType = prop.PropertyType;
-                // Check if propTypes is a DbSet
-                if (!propType.IsGenericType || propType.GetGenericTypeDefinition() != typeof(DbSet<>)) continue;
-                var modelType = propType.GetGenericArguments()[0];
-                // Get reference to OnModelCreating static method
-                var modelCreating =
-                    modelType.GetMethod("OnModelCreating", BindingFlags.Public | BindingFlags.Static);
-                if (modelCreating == null) continue;
-                
-                // Invoke with null context
-                modelCreating.Invoke(null, new object[] {builder});
-            }
+            // Configure all models
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

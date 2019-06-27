@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Areas.Targets.Models
 {
@@ -13,14 +14,15 @@ namespace Disunity.Store.Areas.Targets.Models
 
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }
 
-        public static void OnModelCreating(ModelBuilder builder)
+        public class TargetConfiguration : IEntityTypeConfiguration<Target>
         {
-            builder.Entity<Target>()
-                .HasOne(t => t.Latest)
-                .WithOne(v => v.Target);
+            public void Configure(EntityTypeBuilder<Target> builder)
+            {
+                builder.HasOne(t => t.Latest)
+                    .WithOne(v => v.Target);
 
-            builder.Entity<Target>()
-                .HasMany(t => t.Versions);
+                builder.HasMany(t => t.Versions);
+            }
         }
     }
 }
