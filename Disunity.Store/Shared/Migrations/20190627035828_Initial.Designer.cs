@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Shared.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190626235732_Targets")]
-    partial class Targets
+    [Migration("20190627035828_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,15 +80,15 @@ namespace Disunity.Store.Shared.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("IsDeprecated")
+                    b.Property<bool?>("IsDeprecated")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
-                    b.Property<bool>("IsPinned")
+                    b.Property<bool?>("IsPinned")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
@@ -104,8 +104,9 @@ namespace Disunity.Store.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LatestId")
-                        .IsUnique();
+                    b.HasAlternateKey("Name");
+
+                    b.HasIndex("LatestId");
 
                     b.HasIndex("OwnerId");
 
@@ -123,7 +124,7 @@ namespace Disunity.Store.Shared.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<int>("Downloads")
+                    b.Property<int?>("Downloads")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
@@ -135,7 +136,7 @@ namespace Disunity.Store.Shared.Migrations
                         .IsRequired()
                         .HasMaxLength(1024);
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
@@ -159,6 +160,10 @@ namespace Disunity.Store.Shared.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Name");
+
+                    b.HasAlternateKey("VersionNumber");
+
                     b.HasIndex("ModId");
 
                     b.HasIndex("ModVersionId");
@@ -172,13 +177,13 @@ namespace Disunity.Store.Shared.Migrations
 
                     b.Property<int>("ModVersionId");
 
-                    b.Property<int>("CountedDownloads")
+                    b.Property<int?>("CountedDownloads")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int>("TotalDownloads")
+                    b.Property<int?>("TotalDownloads")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
@@ -196,9 +201,12 @@ namespace Disunity.Store.Shared.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Orgs");
                 });
@@ -225,7 +233,13 @@ namespace Disunity.Store.Shared.Migrations
 
                     b.Property<int?>("LatestId");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
                     b.HasKey("ID");
+
+                    b.HasAlternateKey("Name");
 
                     b.HasIndex("LatestId")
                         .IsUnique();
@@ -261,6 +275,10 @@ namespace Disunity.Store.Shared.Migrations
                         .HasMaxLength(1024);
 
                     b.HasKey("ID");
+
+                    b.HasAlternateKey("Name");
+
+                    b.HasAlternateKey("VersionNumber");
 
                     b.HasIndex("TargetId");
 
@@ -381,8 +399,8 @@ namespace Disunity.Store.Shared.Migrations
             modelBuilder.Entity("Disunity.Store.Areas.Mods.Models.Mod", b =>
                 {
                     b.HasOne("Disunity.Store.Areas.Mods.Models.ModVersion", "Latest")
-                        .WithOne("Mod")
-                        .HasForeignKey("Disunity.Store.Areas.Mods.Models.Mod", "LatestId");
+                        .WithMany()
+                        .HasForeignKey("LatestId");
 
                     b.HasOne("Disunity.Store.Areas.Orgs.Models.Org", "Owner")
                         .WithMany("Mods")
@@ -392,7 +410,7 @@ namespace Disunity.Store.Shared.Migrations
 
             modelBuilder.Entity("Disunity.Store.Areas.Mods.Models.ModVersion", b =>
                 {
-                    b.HasOne("Disunity.Store.Areas.Mods.Models.Mod")
+                    b.HasOne("Disunity.Store.Areas.Mods.Models.Mod", "Mod")
                         .WithMany("Versions")
                         .HasForeignKey("ModId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -418,7 +436,7 @@ namespace Disunity.Store.Shared.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Disunity.Store.Areas.Identity.Models.UserIdentity", "User")
-                        .WithMany()
+                        .WithMany("Orgs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

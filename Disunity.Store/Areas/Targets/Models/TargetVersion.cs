@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Disunity.Store.Areas.Targets.Models
-{
-    public class TargetVersion
-    {
+namespace Disunity.Store.Areas.Targets.Models {
+
+    public class TargetVersion {
+
         public int ID { get; set; }
 
         public int TargetId { get; set; }
@@ -27,11 +27,15 @@ namespace Disunity.Store.Areas.Targets.Models
         [DataType((DataType.ImageUrl))]
         public string IconUrl { get; set; }
 
-        public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion>
-        {
-            public void Configure(EntityTypeBuilder<TargetVersion> builder)
-            {
+        public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion> {
+
+            public void Configure(EntityTypeBuilder<TargetVersion> builder) {
+                builder.HasAlternateKey(v => v.Name);
+                builder.HasAlternateKey(v => v.VersionNumber);
             }
+
         }
+
     }
+
 }

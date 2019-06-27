@@ -4,10 +4,10 @@ using Disunity.Store.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Disunity.Store.Areas.Mods.Models
-{
-    public class ModVersion : TrackableModel
-    {
+namespace Disunity.Store.Areas.Mods.Models {
+
+    public class ModVersion : TrackableModel {
+
         public int Id { get; set; }
 
         public int ModId { get; set; }
@@ -15,8 +15,8 @@ namespace Disunity.Store.Areas.Mods.Models
 
         [Required] [MaxLength(128)] public string Name { get; set; }
 
-        public bool IsActive { get; set; }
-        public int Downloads { get; set; }
+        public bool? IsActive { get; set; }
+        public int? Downloads { get; set; }
 
         [Required] [MaxLength(16)] public string VersionNumber { get; set; }
 
@@ -36,13 +36,18 @@ namespace Disunity.Store.Areas.Mods.Models
 
         public List<ModVersion> Dependencies { get; set; }
 
-        public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion>
-        {
-            public void Configure(EntityTypeBuilder<ModVersion> builder)
-            {
+        public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
+
+            public void Configure(EntityTypeBuilder<ModVersion> builder) {
                 builder.Property(v => v.IsActive).HasDefaultValue(true);
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
+
+                builder.HasAlternateKey(v => v.VersionNumber);
+                builder.HasAlternateKey(v => v.Name);
             }
+
         }
+
     }
+
 }

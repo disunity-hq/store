@@ -6,12 +6,11 @@ using Disunity.Store.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Disunity.Store.Areas.Mods.Models
-{
-    public class Mod : TrackableModel
-    {
-        public Mod()
-        {
+namespace Disunity.Store.Areas.Mods.Models {
+
+    public class Mod : TrackableModel {
+
+        public Mod() {
             IsActive = true;
             IsDeprecated = false;
             IsPinned = false;
@@ -24,22 +23,23 @@ namespace Disunity.Store.Areas.Mods.Models
 
         [Required] [MaxLength(128)] public string Name { get; set; }
 
-        public bool IsActive { get; set; }
-        public bool IsDeprecated { get; set; }
-        public bool IsPinned { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsDeprecated { get; set; }
+        public bool? IsPinned { get; set; }
 
         public int? LatestId { get; set; }
         public ModVersion Latest { get; set; }
 
         [InverseProperty("Mod")] public List<ModVersion> Versions { get; set; }
 
-        public class ModConfiguration : IEntityTypeConfiguration<Mod>
-        {
-            public void Configure(EntityTypeBuilder<Mod> builder)
-            {
+        public class ModConfiguration : IEntityTypeConfiguration<Mod> {
+
+            public void Configure(EntityTypeBuilder<Mod> builder) {
                 builder.Property(m => m.IsActive).HasDefaultValue(true);
                 builder.Property(m => m.IsDeprecated).HasDefaultValue(false);
                 builder.Property(m => m.IsPinned).HasDefaultValue(false);
+
+                builder.HasAlternateKey(m => m.Name);
 
                 builder
                     .HasOne(m => m.Owner)
@@ -47,12 +47,15 @@ namespace Disunity.Store.Areas.Mods.Models
                     .OnDelete(DeleteBehavior.Restrict);
 
                 builder
-                    .HasOne(m => m.Latest)
-                    .WithOne(v => v.Mod);
+                    .HasOne(m => m.Latest);
 
                 builder
-                    .HasMany(m => m.Versions);
+                    .HasMany(m => m.Versions)
+                    .WithOne(v => v.Mod);
             }
+
         }
+
     }
+
 }
