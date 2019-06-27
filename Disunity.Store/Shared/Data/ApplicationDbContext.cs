@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Disunity.Store.Areas.Identity.Models;
@@ -7,7 +8,6 @@ using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Areas.Orgs.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -38,6 +38,8 @@ namespace Disunity.Store.Shared.Data
         public DbSet<ModVersion> ModVersions { get; set; }
         public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvents { get; set; }
 
+
+
         private class SavedChanges
         {
             public IList<object> Added { get; set; }
@@ -61,11 +63,22 @@ namespace Disunity.Store.Shared.Data
 
             builder.ForNpgsqlHasEnum<OrgMemberRole>();
 
-            OrgMember.OnModelCreating(builder);
-
-            Mod.OnModelCreating(builder);
-            ModVersion.OnModelCreating(builder);
-            ModVersionDownloadEvent.OnModelCreating(builder);
+            // Search all props for a dbsets
+            var props = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var prop in props)
+            {
+                var propType = prop.PropertyType;
+                // Check if propTypes is a DbSet
+                if (!propType.IsGenericType || propType.GetGenericTypeDefinition() != typeof(DbSet<>)) continue;
+                var modelType = propType.GetGenericArguments()[0];
+                // Get reference to OnModelCreating static method
+                var modelCreating =
+                    modelType.GetMethod("OnModelCreating", BindingFlags.Public | BindingFlags.Static);
+                if (modelCreating == null) continue;
+                
+                // Invoke with null context
+                modelCreating.Invoke(null, new object[] {builder});
+            }
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
