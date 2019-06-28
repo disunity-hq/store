@@ -8,6 +8,7 @@
     "build:Release": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
+    "@syncfusion/ej2": "^17.1.51",
     "@types/jquery": "^3.3.29",
     "@types/jquery-validation-unobtrusive": "^3.2.32",
     "autoprefixer": "^9.6.0",

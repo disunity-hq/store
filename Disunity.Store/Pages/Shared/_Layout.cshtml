@@ -15,8 +15,6 @@
     <!-- Syncfusion Essential JS 2 Styles -->
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css"/>
 
-    <!-- Syncfusion Essential JS 2 Scripts -->
-    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 </head>
 <body>
 <div class="bg-image"></div>
@@ -35,9 +33,12 @@
     <script src="~/vendor.bundle.js" asp-append-version="true"></script>
 </environment>
 <environment exclude="Development">
-    <script src="~/bundle.min.js" asp-append-version="true"></script>
+    <script src="~/main.bundle.min.js" asp-append-version="true"></script>
     <script src="~/vendor.bundle.min.js" asp-append-version="true"></script>
 </environment>
+
+<!-- Syncfusion Essential JS 2 Scripts -->
+<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 
 <ejs-scripts></ejs-scripts>
 

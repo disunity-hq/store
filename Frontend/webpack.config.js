@@ -3,12 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: {
-        main: path.join(__dirname, 'ts/main.ts'),
-        validation: path.join(__dirname, 'ts/validation.ts')
-    },
+    entry: path.join(__dirname, 'ts/main.ts'),
     output: {
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        libraryTarget: 'window',
     },
     module: {
         rules: [
@@ -39,10 +37,4 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     plugins: [new CopyPlugin(['favicon.ico', {from:'assets', to:'assets'}])],
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-            name: 'vendor'
-        }
-    }
 };

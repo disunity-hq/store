@@ -13,7 +13,7 @@ namespace Disunity.Store.Shared.Archive {
         public Manifest Manifest { get; protected set; }
         public string Readme { get; protected set; }
 
-        public Archive(System.IO.Stream stream) {
+        public Archive(Stream stream) {
             var archive = new ZipArchive(stream, ZipArchiveMode.Read);
         }
 
