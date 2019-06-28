@@ -8,26 +8,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace Disunity.Store.Shared.Startup
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace Disunity.Store.Shared.Startup {
+
+    public class Program {
+
+        public static void Main(string[] args) {
             var host = CreateWebHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
+            using (var scope = host.Services.CreateScope()) {
                 var services = scope.ServiceProvider;
 
-                try
-                {
+                try {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate(); // probably don't do this in production
                     SeedData.Initialize(services);
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
@@ -36,11 +32,13 @@ namespace Disunity.Store.Shared.Startup
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
-                .UseStartup<Startup>();
+                          .UseWebRoot("../Frontend/dist")
+                          .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
+                          .UseStartup<Startup>();
         }
+
     }
+
 }

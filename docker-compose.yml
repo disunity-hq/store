@@ -30,7 +30,7 @@ services:
       - cache
     volumes:
       - web-data:/app/var
-      - static-data:/app/wwwroot
+      - static-data:/Frontend/dist
       - ./Disunity.Store/Pages:/app/Pages
       - ./Disunity.Store/Areas:/app/Areas
 
