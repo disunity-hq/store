@@ -23,13 +23,16 @@ services:
       AdminUser__Email: ${ADMINUSER_EMAIL}
       AdminUser__Password: ${ADMINUSER_PASSWORD}
       SyncFusion__License: ${SYNCFUSION_LICENSE}
+      Auth__Github__ClientId: ${AUTH_GITHUB_CLIENT_ID}
+      Auth__Github__ClientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+      Auth__Discord__ClientId: ${AUTH_DISCORD_CLIENT_ID}
+      Auth__Discord__ClientSecret: ${AUTH_DISCORD_CLIENT_SECRET}
     ports:
       - 127.0.0.1:8000:80
     depends_on:
       - db
       - cache
     volumes:
-      - web-data:/app/var
       - static-data:/Frontend/dist
       - ./Disunity.Store/Pages:/app/Pages
       - ./Disunity.Store/Areas:/app/Areas
@@ -63,6 +66,4 @@ services:
 volumes:
   db-data:
   static-data:
-  web-data:
   built-static:
-

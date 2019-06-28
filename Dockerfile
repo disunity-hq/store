@@ -25,7 +25,7 @@ COPY Disunity.Store/*.csproj ./asp/
 RUN dotnet restore asp
 
 # copy frontend
-COPY --from=frontend /Build/. ./asp/wwwroot
+COPY --from=frontend /Build/. ../Frontend/dist
 
 # copy everything else and build app
 COPY Disunity.Store/. ./asp/

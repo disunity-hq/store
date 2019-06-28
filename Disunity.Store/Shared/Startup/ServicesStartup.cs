@@ -57,6 +57,29 @@ namespace Disunity.Store.Shared.Startup {
             services.AddRouting(options => { options.LowercaseUrls = true; });
         }
 
+        public static void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration) {
+            var authenticationBuilder = services.AddAuthentication();
+            var githubClientId = configuration.GetValue<string>("Auth:Github:ClientId");
+            var githubClientSecret = configuration.GetValue<string>("Auth:Github:ClientSecret");
+            var discordClientId = configuration.GetValue<string>("Auth:Discord:ClientId");
+            var discordClientSecret = configuration.GetValue<string>("Auth:Discord:ClientSecret");
+            
+
+            if (!string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret)) {
+                authenticationBuilder.AddGitHub(options => {
+                    options.ClientId = githubClientId;
+                    options.ClientSecret = githubClientSecret;
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(discordClientId) && !string.IsNullOrWhiteSpace(discordClientSecret)) {
+                authenticationBuilder.AddDiscord(options => {
+                    options.ClientId = discordClientId;
+                    options.ClientSecret = discordClientSecret;
+                });
+            }
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, ILogger log) {
             ConfigureBindings(services);
@@ -64,6 +87,7 @@ namespace Disunity.Store.Shared.Startup {
             ConfigureDbContext(services, configuration);
             ConfigureMvc(services);
             ConfigureAuthorization(services);
+            ConfigureAuthentication(services, configuration);
             ConfigureAntiforgery(services);
             ConfigureRouting(services);
         }
