@@ -53,6 +53,10 @@ namespace Disunity.Store.Shared.Startup {
             services.AddAntiforgery(options => { options.HeaderName = "xsrf-token"; });
         }
 
+        public static void ConfigureRouting(IServiceCollection services) {
+            services.AddRouting(options => { options.LowercaseUrls = true; });
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, ILogger log) {
             ConfigureBindings(services);
@@ -61,6 +65,7 @@ namespace Disunity.Store.Shared.Startup {
             ConfigureMvc(services);
             ConfigureAuthorization(services);
             ConfigureAntiforgery(services);
+            ConfigureRouting(services);
         }
 
     }
