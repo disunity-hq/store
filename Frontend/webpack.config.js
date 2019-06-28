@@ -38,7 +38,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
-    plugins: [new CopyPlugin(['favicon.ico', 'assets'])],
+    plugins: [new CopyPlugin(['favicon.ico', {from:'assets', to:'assets'}])],
     optimization: {
         splitChunks: {
             chunks: 'all',

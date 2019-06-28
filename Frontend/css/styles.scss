@@ -71,7 +71,7 @@ footer {
 
 .bg-image::after {
   content: '';
-  background: url(http://localhost:8000/logo_512x512.png);
+  background: url(/assets/logo_512x512.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50%;
