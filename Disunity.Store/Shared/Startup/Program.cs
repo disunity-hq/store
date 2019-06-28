@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Disunity.Store.Shared.Startup {
 
     public class Program {
@@ -36,6 +35,7 @@ namespace Disunity.Store.Shared.Startup {
             return WebHost.CreateDefaultBuilder(args)
                           .UseWebRoot("../Frontend/dist")
                           .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
+                          .ConfigureLogging(f => f.AddConsole().AddDebug())
                           .UseStartup<Startup>();
         }
 
