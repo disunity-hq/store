@@ -7,6 +7,8 @@ using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Areas.Targets.Models;
+using Disunity.Store.Shared.Data.Hooks;
+using Disunity.Store.Shared.Util;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,7 @@ namespace Disunity.Store.Shared.Data
         {
             _serviceProvider = serviceProvider;
             _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+            DbHookManager<OnBeforeCreateAttribute>.LoadAllHooks(_logger);
         }
 
         public DbSet<Org> Orgs { get; set; }
@@ -96,14 +99,17 @@ namespace Disunity.Store.Shared.Data
                 switch (entry.State)
                 {
                     case EntityState.Deleted:
+                        DbHookManager<OnBeforeDeleteAttribute>.ExecuteForEntity(entry, _serviceProvider);
                         if (entry.Entity is IBeforeDelete beforeDelete) beforeDelete.OnBeforeDelete(_serviceProvider);
                         changes.Deleted.Add(entry.Entity);
                         break;
                     case EntityState.Modified:
+                        DbHookManager<OnBeforeUpdateAttribute>.ExecuteForEntity(entry, _serviceProvider);
                         if (entry.Entity is IBeforeUpdate beforeUpdate) beforeUpdate.OnBeforeUpdate(_serviceProvider);
                         changes.Modified.Add(entry.Entity);
                         break;
                     case EntityState.Added:
+                        DbHookManager<OnBeforeCreateAttribute>.ExecuteForEntity(entry, _serviceProvider);
                         if (entry.Entity is IBeforeCreate beforeCreate) beforeCreate.OnBeforeCreate(_serviceProvider);
                         changes.Added.Add(entry.Entity);
                         break;
@@ -111,6 +117,7 @@ namespace Disunity.Store.Shared.Data
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
+                    DbHookManager<OnBeforeSaveAttribute>.ExecuteForEntity(entry, _serviceProvider);
                     if (entry.Entity is IBeforeSave beforeSave) beforeSave.OnBeforeSave(_serviceProvider);
                 }
             }

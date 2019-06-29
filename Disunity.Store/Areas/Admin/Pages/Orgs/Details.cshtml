@@ -10,14 +10,7 @@
 <div>
     <h4>Org</h4>
     <hr/>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Org.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Org.Name)
-        </dd>
-    </dl>
+    @Html.DisplayFor(m => m.Org)
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Org.Id">Edit</a> |

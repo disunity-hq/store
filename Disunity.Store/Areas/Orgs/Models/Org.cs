@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using Disunity.Store.Areas.Mods.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Disunity.Store.Shared.Data;
 
 namespace Disunity.Store.Areas.Orgs.Models {
 
-    public class Org {
+    public class Org : TrackableModel {
 
         public int Id { get; set; }
         public string Name { get; set; }

@@ -77,4 +77,6 @@ namespace Disunity.Store.Shared.Data
         /// <param name="serviceProvider">Service provider for accessing necessary dependencies during the hook</param>
         void OnAfterDelete(IServiceProvider serviceProvider);
     }
+   
+    
 }
