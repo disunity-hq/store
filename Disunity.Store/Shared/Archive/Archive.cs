@@ -1,8 +1,12 @@
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using Disunity.Store.Shared.Startup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Archive {
 
@@ -13,18 +17,27 @@ namespace Disunity.Store.Shared.Archive {
         public Manifest Manifest { get; protected set; }
         public string Readme { get; protected set; }
 
-        public Archive(Stream stream) {
-            var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+        private ILogger<Archive> log;
+
+        public Archive(ILogger<Archive> log, Stream stream) {
+            this.log = log;
+            archive = new ZipArchive(stream, ZipArchiveMode.Read);
+        }
+
+        [Factory]
+        public static Func<Stream, Archive> ArchiveFactory(IServiceProvider services) {
+            var logger = services.GetRequiredService<ILogger<Archive>>();
+            return stream => new Archive(logger, stream);
         }
 
         public ZipArchiveEntry GetEntry(string filename) {
-            return archive.GetEntry(filename);
+            var entry = archive.GetEntry(filename);
+            return entry;
         }
 
         public Manifest GetManifest(IFormFile formFile,
-                                    ModelStateDictionary modelState, 
+                                    ModelStateDictionary modelState,
                                     string filename = "manifest.json") {
-
             var entry = GetEntry(filename);
             using (var file = entry.Open()) {
                 var reader = new StreamReader(file);
@@ -44,7 +57,7 @@ namespace Disunity.Store.Shared.Archive {
         }
 
         public string GetReadme(IFormFile formFile,
-                                ModelStateDictionary modelState, 
+                                ModelStateDictionary modelState,
                                 string filename = "README.md") {
             var entry = GetEntry(filename);
             var encoding = new UTF8Encoding(false, true);
@@ -60,8 +73,13 @@ namespace Disunity.Store.Shared.Archive {
             }
         }
 
-        public void Validate(IFormFile formFile, 
+        public void Validate(IFormFile formFile,
                              ModelStateDictionary modelState) {
+            if (archive == null) {
+                modelState.AddModelError(formFile.Name, "Archive was null");
+                return;
+            }
+
             Manifest = GetManifest(formFile, modelState);
             Readme = GetReadme(formFile, modelState);
         }

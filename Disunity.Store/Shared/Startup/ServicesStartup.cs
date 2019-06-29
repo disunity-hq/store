@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Builder;
@@ -11,12 +13,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+
 namespace Disunity.Store.Shared.Startup {
 
     public static class ServicesStartup {
 
         private static void ConfigureBindings(IServiceCollection services) {
             Binding.ConfigureBindings(services);
+        }
+
+        private static void ConfigureFactories(IServiceCollection services) {
+            FactoryAttribute.ConfigureFactories(services);
         }
 
         private static void ConfigureCookiePolicy(IServiceCollection services) {
@@ -86,6 +93,7 @@ namespace Disunity.Store.Shared.Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, ILogger log) {
             ConfigureBindings(services);
+            ConfigureFactories(services, log);
             ConfigureCookiePolicy(services);
             ConfigureDbContext(services, configuration);
             ConfigureMvc(services);

@@ -11,28 +11,21 @@ using Overby.Extensions.AsyncBinaryReaderWriter;
 
 namespace Disunity.Store.Shared.Archive {
 
+    [Binding(BindType.Singleton)]
     public class ArchiveValidator {
 
         private ILogger<ArchiveValidator> log;
+        private Func<Stream, Archive> archiveFactory;
         private string message;
 
-        public ArchiveValidator(ILogger<ArchiveValidator> log, string message) {
+        public ArchiveValidator(ILogger<ArchiveValidator> log, Func<Stream, Archive> archiveFactory) {
             this.log = log;
-            this.message = message;
+            this.archiveFactory = archiveFactory;
         }
 
-        [Binding(BindType.Singleton)]
-        public static object Binder(IServiceProvider s) {
-            return new ArchiveValidator(s.GetService<ILogger<ArchiveValidator>>(), "Hello world!");
-        }
-
-        public void Validate(IFormFile file, ModelStateDictionary modelState) {
-            log.LogError(message);
-        }
-
-        public async Task<Archive> ProcessFormFile(IFormFile formFile,
-                                                   ModelStateDictionary modelState,
-                                                   string mimeType) {
+        public async Task<Archive> ValidateAsync(IFormFile formFile,
+                                                 ModelStateDictionary modelState,
+                                                 string mimeType) {
             var fieldDisplayName = GetDisplayName(formFile);
             var fileName = GetFileName(formFile);
 
@@ -40,23 +33,27 @@ namespace Disunity.Store.Shared.Archive {
             var empty = CheckEmpty(formFile, modelState, fieldDisplayName, fileName);
             var tooBig = CheckSize(formFile, modelState, fieldDisplayName, fileName);
 
-            if (empty || tooBig) {
+            if (empty) {
+                return null;
+            } 
+            
+            if (tooBig) {
                 return null;
             }
 
-
             try {
-                var archive = new Archive(formFile.OpenReadStream());
+                var stream = formFile.OpenReadStream();
+                var archive = archiveFactory(stream);
                 archive.Validate(formFile, modelState);
+                return archive;
             }
             catch (Exception ex) {
-                modelState.AddModelError(formFile.Name,
-                                         $"The {fieldDisplayName}file ({fileName}) upload failed. " +
-                                         $"Please contact the Discord for support. Error: {ex.Message}");
-                // Log the exception
+                var message = $"The {fieldDisplayName}file ({fileName}) upload failed. " +
+                              $"Please contact the Discord for support. Error: {ex.Message}";
+                modelState.AddModelError(formFile.Name, message);
+                log.LogWarning(message);
+                return null;
             }
-
-            return null;
         }
 
         protected static string GetDisplayName(IFormFile formFile) {
