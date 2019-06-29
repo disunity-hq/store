@@ -93,7 +93,7 @@ namespace Disunity.Store.Shared.Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, ILogger log) {
             ConfigureBindings(services);
-            ConfigureFactories(services, log);
+            ConfigureFactories(services);
             ConfigureCookiePolicy(services);
             ConfigureDbContext(services, configuration);
             ConfigureMvc(services);

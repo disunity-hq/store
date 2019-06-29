@@ -35,7 +35,8 @@ namespace Disunity.Store.Areas.Mods.Pages {
                 return Page();
             }
 
-            _validator.Validate(ArchiveUpload, ModelState);
+            // BUG ldlework is this right?
+            await _validator.ValidateAsync(ArchiveUpload, ModelState, "application/zip");
 
             var tmpPath = Path.GetTempPath();
             var filePath = Path.Join(tmpPath, ArchiveUpload.FileName);
