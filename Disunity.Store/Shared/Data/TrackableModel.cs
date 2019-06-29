@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Disunity.Store.Shared.Data
-{
-    public class TrackableModel : ITrackableModel, IBeforeUpdate
-    {
+namespace Disunity.Store.Shared.Data {
+
+    public class TrackableModel : ITrackableModel {
+
         [DataType(DataType.DateTime)]
         [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; }
@@ -27,9 +27,11 @@ namespace Disunity.Store.Shared.Data
             logger.LogInformation($"TrackableModel setting time to {now}");
         }
 
-        public virtual void OnBeforeUpdate(IServiceProvider serviceProvider)
-        {
-            UpdatedAt = DateTime.Now;
+        [OnBeforeUpdate]
+        public static void OnBeforeUpdate(TrackableModel entity, IServiceProvider serviceProvider) {
+            entity.UpdatedAt = DateTime.Now;
         }
+
     }
+
 }

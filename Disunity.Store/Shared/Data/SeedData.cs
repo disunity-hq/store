@@ -1,20 +1,21 @@
 using System;
 using System.Linq;
+using Disunity.Store.Areas.Orgs.Models;
+using Disunity.Store.Shared.Data.Hooks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Disunity.Store.Shared.Data
-{
-    public static class SeedData
-    {
-        public static void Initialize(IServiceProvider serviceProvider)
-        {
+namespace Disunity.Store.Shared.Data {
+
+    public static class SeedData {
+
+        public static void Initialize(IServiceProvider serviceProvider) {
             using (var context = new ApplicationDbContext(
-                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>(), serviceProvider))
-            {
-                // check if db has rows
-                if (context.Mods.Any())
-                {
+                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>(),
+                serviceProvider,
+                serviceProvider.GetRequiredService<HookManagerContainer>())) {
+//                // check if db has rows
+                if (context.Mods.Any()) {
                     return; // db has been seeded already, skip
                 }
 
@@ -22,5 +23,7 @@ namespace Disunity.Store.Shared.Data
                 context.SaveChanges();
             }
         }
+
     }
+
 }

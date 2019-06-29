@@ -11,28 +11,32 @@ using Disunity.Store.Shared.Data.Hooks;
 using Disunity.Store.Shared.Util;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
-namespace Disunity.Store.Shared.Data
-{
-    public class ApplicationDbContext : IdentityDbContext<UserIdentity>
-    {
+namespace Disunity.Store.Shared.Data {
+
+    public class ApplicationDbContext : IdentityDbContext<UserIdentity> {
+
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ApplicationDbContext> _logger;
+        private readonly HookManagerContainer _hooks;
 
-        static ApplicationDbContext()
-        {
+        static ApplicationDbContext() {
             NpgsqlConnection.GlobalTypeMapper.MapEnum<OrgMemberRole>();
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IServiceProvider serviceProvider)
-            : base(options)
-        {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IServiceProvider serviceProvider,
+                                    HookManagerContainer hooks)
+            : base(options) {
             _serviceProvider = serviceProvider;
+            _hooks = hooks;
             _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
-            DbHookManager<OnBeforeCreateAttribute>.LoadAllHooks(_logger);
+            if (hooks == null) {
+                _logger.LogWarning("Unable to DI hook manager container");
+            }
         }
 
         public DbSet<Org> Orgs { get; set; }
@@ -45,22 +49,23 @@ namespace Disunity.Store.Shared.Data
         public DbSet<Target> Targets { get; set; }
         public DbSet<TargetVersion> TargetVersions { get; set; }
 
-        private class SavedChanges
-        {
-            public IList<object> Added { get; set; }
-            public IList<object> Modified { get; set; }
-            public IList<object> Deleted { get; set; }
+        private class SavedChanges {
 
-            public SavedChanges()
-            {
-                Added = new List<object>();
-                Modified = new List<object>();
-                Deleted = new List<object>();
+            public IList<EntityEntry> Added { get; }
+            public IList<EntityEntry> Modified { get; }
+            public IList<EntityEntry> Deleted { get; }
+            public IList<EntityEntry> Saved { get; }
+
+            public SavedChanges() {
+                Added = new List<EntityEntry>();
+                Modified = new List<EntityEntry>();
+                Deleted = new List<EntityEntry>();
+                Saved = new List<EntityEntry>();
             }
+
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
+        protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
@@ -72,8 +77,7 @@ namespace Disunity.Store.Shared.Data
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
+        public override int SaveChanges(bool acceptAllChangesOnSuccess) {
             var savedChanges = OnBeforeSave();
             var changes = base.SaveChanges(acceptAllChangesOnSuccess);
             OnAfterSave(savedChanges);
@@ -81,66 +85,63 @@ namespace Disunity.Store.Shared.Data
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
+                                                         CancellationToken cancellationToken =
+                                                             default(CancellationToken)) {
             var savedChanges = OnBeforeSave();
             var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
             OnAfterSave(savedChanges);
             return changes;
         }
 
-        private SavedChanges OnBeforeSave()
-        {
+        private SavedChanges OnBeforeSave() {
             var changes = new SavedChanges();
             var entries = ChangeTracker.Entries();
 
-            foreach (var entry in entries)
-            {
-                switch (entry.State)
-                {
+            foreach (var entry in entries) {
+                switch (entry.State) {
                     case EntityState.Deleted:
-                        DbHookManager<OnBeforeDeleteAttribute>.ExecuteForEntity(entry, _serviceProvider);
-                        if (entry.Entity is IBeforeDelete beforeDelete) beforeDelete.OnBeforeDelete(_serviceProvider);
-                        changes.Deleted.Add(entry.Entity);
+                        _hooks.OnBeforeDelete.ExecuteForEntity(entry);
+                        changes.Deleted.Add(entry);
                         break;
+
                     case EntityState.Modified:
-                        DbHookManager<OnBeforeUpdateAttribute>.ExecuteForEntity(entry, _serviceProvider);
-                        if (entry.Entity is IBeforeUpdate beforeUpdate) beforeUpdate.OnBeforeUpdate(_serviceProvider);
-                        changes.Modified.Add(entry.Entity);
+                        _hooks.OnBeforeUpdate.ExecuteForEntity(entry);
+                        changes.Modified.Add(entry);
                         break;
+
                     case EntityState.Added:
-                        DbHookManager<OnBeforeCreateAttribute>.ExecuteForEntity(entry, _serviceProvider);
-                        if (entry.Entity is IBeforeCreate beforeCreate) beforeCreate.OnBeforeCreate(_serviceProvider);
-                        changes.Added.Add(entry.Entity);
+                        _hooks.OnBeforeCreate.ExecuteForEntity(entry);
+                        changes.Added.Add(entry);
                         break;
                 }
 
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
-                {
-                    DbHookManager<OnBeforeSaveAttribute>.ExecuteForEntity(entry, _serviceProvider);
-                    if (entry.Entity is IBeforeSave beforeSave) beforeSave.OnBeforeSave(_serviceProvider);
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
+                    _hooks.OnBeforeSave.ExecuteForEntity(entry);
+                    changes.Saved.Add(entry);
                 }
             }
 
             return changes;
         }
 
-        private void OnAfterSave(SavedChanges changes)
-        {
-            foreach (var entity in changes.Added)
-            {
-                if (entity is IAfterCreate afterCreate) afterCreate.OnAfterCreate(_serviceProvider);
+        private void OnAfterSave(SavedChanges changes) {
+            foreach (var entity in changes.Added) {
+                _hooks.OnAfterCreate.ExecuteForEntity(entity);
             }
 
-            foreach (var entity in changes.Modified)
-            {
-                if (entity is IAfterUpdate afterUpdate) afterUpdate.OnAfterUpdate(_serviceProvider);
+            foreach (var entity in changes.Modified) {
+                _hooks.OnAfterUpdate.ExecuteForEntity(entity);
             }
 
-            foreach (var entity in changes.Deleted)
-            {
-                if (entity is IAfterDelete afterDelete) afterDelete.OnAfterDelete(_serviceProvider);
+            foreach (var entity in changes.Deleted) {
+                _hooks.OnAfterDelete.ExecuteForEntity(entity);
+            }
+
+            foreach (var entity in changes.Saved) {
+                _hooks.OnAfterSave.ExecuteForEntity(entity);
             }
         }
+
     }
+
 }
