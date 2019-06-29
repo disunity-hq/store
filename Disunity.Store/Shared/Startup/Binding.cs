@@ -30,60 +30,34 @@ namespace Disunity.Store.Shared.Startup {
             _bindType = bindType;
         }
 
-        public void BindInterface(IServiceCollection services, Type sourceType) {
-            Type targetType = (Type) _targetType;
+        public void Bind(IServiceCollection services, Type type) {
             switch (_bindType) {
                 case BindType.Singleton:
-                    services.AddSingleton(targetType, sourceType);
+                    services.AddSingleton(type);
                     break;
+
                 case BindType.Scoped:
-                    services.AddScoped(targetType, sourceType);
+                    services.AddScoped(type);
                     break;
+
                 case BindType.Transient:
-                    services.AddTransient(targetType, sourceType);
+                    services.AddTransient(type);
                     break;
             }
         }
 
-        public void Bind(IServiceCollection services, Type sourceType) {
+        public void BindWith(IServiceCollection services, Type type, MethodInfo handler) {
             switch (_bindType) {
                 case BindType.Singleton:
-                    services.AddSingleton(sourceType);
+                    services.AddSingleton(type, (s) => handler.Invoke(null, new[] {s as object}));
                     break;
-                case BindType.Scoped:
-                    services.AddScoped(sourceType);
-                    break;
-                case BindType.Transient:
-                    services.AddTransient(sourceType);
-                    break;
-            }
-        }
 
-        public void BindInterfaceWith(IServiceCollection services, Type sourceType, MethodInfo handler) {
-            Type targetType = (Type) _targetType;
-            switch (_bindType) {
-                case BindType.Singleton:
-                    services.AddSingleton(targetType, s => handler.Invoke(null, new[] { s as object }));
-                    break;
                 case BindType.Scoped:
-                    services.AddScoped(targetType, s => handler.Invoke(null, new[] { s as object }));
+                    services.AddScoped(type, (s) => handler.Invoke(null, new[] {s as object}));
                     break;
-                case BindType.Transient:
-                    services.AddTransient(targetType, s => handler.Invoke(null, new[] { s as object }));
-                    break;
-            }
-        }
 
-        public void BindWith(IServiceCollection services, Type sourceType, MethodInfo handler) {
-            switch (_bindType) {
-                case BindType.Singleton:
-                    services.AddSingleton(sourceType, (s) => handler.Invoke(null, new[] {s as object}));
-                    break;
-                case BindType.Scoped:
-                    services.AddScoped(sourceType, (s) => handler.Invoke(null, new[] {s as object}));
-                    break;
                 case BindType.Transient:
-                    services.AddTransient(sourceType, (s) => handler.Invoke(null, new[] {s as object}));
+                    services.AddTransient(type, (s) => handler.Invoke(null, new[] {s as object}));
                     break;
             }
         }
@@ -92,15 +66,15 @@ namespace Disunity.Store.Shared.Startup {
             if (_targetType == null) {
                 Bind(services, sourceType);
             } else {
-                BindInterface(services, sourceType);
-            } 
+                Bind(services, (Type) _targetType);
+            }
         }
 
         public void ExecuteWith(IServiceCollection services, Type sourceType, MethodInfo handler) {
             if (_targetType == null) {
                 BindWith(services, sourceType, handler);
             } else {
-                BindInterfaceWith(services, sourceType, handler);
+                BindWith(services, (Type) _targetType, handler);
             }
         }
 
@@ -123,14 +97,13 @@ namespace Disunity.Store.Shared.Startup {
                         if (methodAttrs.Count() == 0) {
                             continue;
                         }
-                        
+
                         foreach (Binding attr in methodAttrs) {
                             attr.ExecuteWith(services, type, method);
                         }
                     }
                 }
             }
-            
         }
 
     }
