@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,8 @@ namespace Disunity.Store.Shared.Startup {
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddApiVersioning(options => { options.Conventions.Add(new VersionByNamespaceConvention()); });
         }
 
         public static void ConfigureAuthorization(IServiceCollection services) {
@@ -63,7 +66,7 @@ namespace Disunity.Store.Shared.Startup {
             var githubClientSecret = configuration.GetValue<string>("Auth:Github:ClientSecret");
             var discordClientId = configuration.GetValue<string>("Auth:Discord:ClientId");
             var discordClientSecret = configuration.GetValue<string>("Auth:Discord:ClientSecret");
-            
+
 
             if (!string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret)) {
                 authenticationBuilder.AddGitHub(options => {
