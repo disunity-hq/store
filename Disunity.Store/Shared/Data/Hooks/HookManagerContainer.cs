@@ -1,4 +1,5 @@
 using Disunity.Store.Shared.Startup;
+using Microsoft.EntityFrameworkCore;
 
 namespace Disunity.Store.Shared.Data.Hooks {
 
@@ -31,6 +32,17 @@ namespace Disunity.Store.Shared.Data.Hooks {
             OnAfterUpdate = onAfterUpdate;
             OnAfterSave = onAfterSave;
             OnAfterDelete = onAfterDelete;
+        }
+
+        public void InitializeForAll(DbContext context) {
+            OnBeforeCreate.InitializeForContext(context);
+            OnBeforeUpdate.InitializeForContext(context);
+            OnBeforeSave.InitializeForContext(context);
+            OnBeforeDelete.InitializeForContext(context);
+            OnAfterCreate.InitializeForContext(context);
+            OnAfterUpdate.InitializeForContext(context);
+            OnAfterSave.InitializeForContext(context);
+            OnAfterDelete.InitializeForContext(context);
         }
 
     }

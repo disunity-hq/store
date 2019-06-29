@@ -34,9 +34,8 @@ namespace Disunity.Store.Shared.Data {
             _serviceProvider = serviceProvider;
             _hooks = hooks;
             _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
-            if (hooks == null) {
-                _logger.LogWarning("Unable to DI hook manager container");
-            }
+            
+            _hooks.InitializeForAll(this);
         }
 
         public DbSet<Org> Orgs { get; set; }
@@ -100,23 +99,23 @@ namespace Disunity.Store.Shared.Data {
             foreach (var entry in entries) {
                 switch (entry.State) {
                     case EntityState.Deleted:
-                        _hooks.OnBeforeDelete.ExecuteForEntity(entry);
+                        _hooks.OnBeforeDelete.ExecuteForEntity(this, entry);
                         changes.Deleted.Add(entry);
                         break;
 
                     case EntityState.Modified:
-                        _hooks.OnBeforeUpdate.ExecuteForEntity(entry);
+                        _hooks.OnBeforeUpdate.ExecuteForEntity(this, entry);
                         changes.Modified.Add(entry);
                         break;
 
                     case EntityState.Added:
-                        _hooks.OnBeforeCreate.ExecuteForEntity(entry);
+                        _hooks.OnBeforeCreate.ExecuteForEntity(this, entry);
                         changes.Added.Add(entry);
                         break;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
-                    _hooks.OnBeforeSave.ExecuteForEntity(entry);
+                    _hooks.OnBeforeSave.ExecuteForEntity(this, entry);
                     changes.Saved.Add(entry);
                 }
             }
@@ -126,19 +125,19 @@ namespace Disunity.Store.Shared.Data {
 
         private void OnAfterSave(SavedChanges changes) {
             foreach (var entity in changes.Added) {
-                _hooks.OnAfterCreate.ExecuteForEntity(entity);
+                _hooks.OnAfterCreate.ExecuteForEntity(this, entity);
             }
 
             foreach (var entity in changes.Modified) {
-                _hooks.OnAfterUpdate.ExecuteForEntity(entity);
+                _hooks.OnAfterUpdate.ExecuteForEntity(this, entity);
             }
 
             foreach (var entity in changes.Deleted) {
-                _hooks.OnAfterDelete.ExecuteForEntity(entity);
+                _hooks.OnAfterDelete.ExecuteForEntity(this, entity);
             }
 
             foreach (var entity in changes.Saved) {
-                _hooks.OnAfterSave.ExecuteForEntity(entity);
+                _hooks.OnAfterSave.ExecuteForEntity(this, entity);
             }
         }
 
