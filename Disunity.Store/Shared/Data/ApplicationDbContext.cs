@@ -35,7 +35,7 @@ namespace Disunity.Store.Shared.Data {
             _serviceProvider = serviceProvider;
             _hooks = hooks;
             _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
-            
+
             _hooks.InitializeForAll(this);
         }
 
@@ -95,31 +95,44 @@ namespace Disunity.Store.Shared.Data {
 
         private SavedChanges OnBeforeSave() {
             var changes = new SavedChanges();
-            var entries = ChangeTracker.Entries().ToList();
+            var handledModels = new HashSet<object>();
+            int prevHandledCount;
 
-            foreach (var entry in entries) {
-                switch (entry.State) {
-                    case EntityState.Deleted:
-                        _hooks.OnBeforeDelete.ExecuteForEntity(this, entry);
-                        changes.Deleted.Add(entry);
-                        break;
+            do {
+                prevHandledCount = handledModels.Count;
+                var entries = ChangeTracker.Entries().ToList();
 
-                    case EntityState.Modified:
-                        _hooks.OnBeforeUpdate.ExecuteForEntity(this, entry);
-                        changes.Modified.Add(entry);
-                        break;
+                foreach (var entry in entries) {
+                    if (handledModels.Contains(entry.Entity)) {
+                        continue; // already processed this entity, skip it
+                    }
 
-                    case EntityState.Added:
-                        _hooks.OnBeforeCreate.ExecuteForEntity(this, entry);
-                        changes.Added.Add(entry);
-                        break;
+                    handledModels.Add(entry.Entity);
+
+                    switch (entry.State) {
+                        case EntityState.Deleted:
+                            _hooks.OnBeforeDelete.ExecuteForEntity(this, entry);
+                            changes.Deleted.Add(entry);
+                            break;
+
+                        case EntityState.Modified:
+                            _hooks.OnBeforeUpdate.ExecuteForEntity(this, entry);
+                            changes.Modified.Add(entry);
+                            break;
+
+                        case EntityState.Added:
+                            _hooks.OnBeforeCreate.ExecuteForEntity(this, entry);
+                            changes.Added.Add(entry);
+                            break;
+                    }
+
+                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
+                        _hooks.OnBeforeSave.ExecuteForEntity(this, entry);
+                        changes.Saved.Add(entry);
+                    }
                 }
+            } while (handledModels.Count != prevHandledCount);
 
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
-                    _hooks.OnBeforeSave.ExecuteForEntity(this, entry);
-                    changes.Saved.Add(entry);
-                }
-            }
 
             return changes;
         }

@@ -31,6 +31,11 @@ namespace Disunity.Store.Shared.Data.Hooks {
         /// <term><see cref="IServiceProvider"/></term>
         /// <term>The main <see cref="IServiceProvider"/></term>
         /// </item>
+        /// <item>
+        /// <term>context/dbContext</term>
+        /// <term><see cref="Microsoft.EntityFrameworkCore.DbContext"/></term>
+        /// <term>The <see cref="Microsoft.EntityFrameworkCore.DbContext"/> the hook is being called from</term>
+        /// </item>
         /// </list>
         /// </remarks>
         /// <param name="entityTypes">

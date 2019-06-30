@@ -96,6 +96,8 @@ namespace Disunity.Store.Shared.Data.Hooks {
                 {"entityEntry", entityEntry},
                 {"services", _serviceProvider},
                 {"serviceProvider", _serviceProvider},
+                {"context", context},
+                {"dbContext", context}
             };
 
             foreach (var method in methods) {
