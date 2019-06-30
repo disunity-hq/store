@@ -21,7 +21,7 @@ The code _depends_ on instances of those types.
 
 Configuring a DI container consists of telling it how to make instances of types and interfaces.
 
-If you'll ever want an instance of `Foo`, you have to, ahead of time, tell the container how to provide it. If you want an instance of some type which implements `IUseful`, then you have to previously told the container how to provide it.
+If you'll ever want an instance of `Foo`, you have to, ahead of time, tell the container how to provide it. If you want an instance of some type which implements `IUseful`, then you have to previously have told the container how to provide it.
 
 The way you tell the container how to do this is by "binding" the desired types or interfaces to either:
 
@@ -38,17 +38,19 @@ Similarly, if your code depended on having an instance of `IUseful` but didn't c
 
     var useful = di.GetService<IUseful>()
 
-If this case, the container would create an instance of `Foo` since we told it to bind `IUseful` to `Foo`.
+In this case, the container would create an instance of `Foo` since we told it to bind `IUseful` to `Foo`.
 
 ### Injection
 
-But what if `Foo`, or any other dependency has constructor parameters? That is, what if `Foo` has its _own_ dependencies?
+But what if `Foo`, or any other dependency, has constructor parameters? That is, what if `Foo` has its _own_ dependencies?
 
-The container can call `Foo`'s constructor if all of the parameter types are also bound in the container. The container simply makes instances of those first, and then passes them to `Foo`s constructor. If the parameters have constructor parameters of their own, the container can in turn satisfy those dependencies too -- as long as all the required types and interfaces have been bound.
+The container can call `Foo`'s constructor _if all of the parameter types are also bound in the container_. The container simply makes instances of those first, and then passes them to `Foo`s constructor. If the parameters have constructor parameters of their own, the container can in turn satisfy those dependencies too -- as long as all the required types and interfaces have been bound. 
+
+Properly configured, a DI container can produce your program's entire object graph
 
 ### Factory Closures
 
-In a way, a concrete type's constructor can be thought of a factory in a sense - in that new instances can be made by calling it. 
+In a way, a concrete type's constructor can be thought of a factory - in that new instances can be made by calling it. 
 
 However, what if the container can't provide all of the constructor parameters for a given type? We can't just use a simple binding. Instead, we must provide a factory closure that helps the container do the work of providing those unbound dependencies.
 
