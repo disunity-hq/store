@@ -8,9 +8,11 @@
     "build:Release": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
+    "@aspnet/signalr": "^1.1.4",
     "@syncfusion/ej2": "^17.1.51",
     "@types/jquery": "^3.3.29",
     "@types/jquery-validation-unobtrusive": "^3.2.32",
+    "@types/node": "^12.0.10",
     "autoprefixer": "^9.6.0",
     "awesome-typescript-loader": "^5.2.1",
     "bootstrap": "^4.3.1",
