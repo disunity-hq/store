@@ -87,11 +87,11 @@ In the above example, by changing the lifetime to transient, a new random number
 
 Factory closures allow us to help the container generate unbound dependencies. By binding a factory closure with a transient lifetime, those dependencies can even vary each time they're generated.
 
-But what if we have some data we want to pass in during the creation of a dependency? The factory closure can only take an `IServiceProvider` and only the container can all it.
+But what if we have some data we want to pass in during the creation of a dependency? The factory closure can only take an `IServiceProvider` and only the container can call it.
 
 #### Delegates
 
-What if the type we bound in the container was not a concrete type or interface, but a function type or in .NET-lingo, a delegate? What if we bound a delegate in the container which took our runtime data and produced an instance of our dependency?
+What if the type we bound in the container was not a concrete type or interface, but a function type, or in .NET-lingo, a delegate? What if we bound a delegate in the container which took our runtime data and produced an instance of our dependency?
 
 Imagine that `Foo` depends on `ILogger` and `Stream`. The container can satisfy the `ILogger` dependency, but we only have `Stream` instances at runtime. For example, inside an ASP view we might have the `Stream` representing a form-submitted file.
 
@@ -99,12 +99,16 @@ Imagine that `Foo` depends on `ILogger` and `Stream`. The container can satisfy 
 
 If we have a `Stream` and need a `Foo`, instead of binding `Foo` directly, we can instead bind a delegate `Func<Stream, Foo>`. We'll bind it as as singleton since we don't need multiple copies of the same function:
 
-    di.AsSingleton<Func<Stream, Foo>>(sp => stream => {
+    di.AsSingleton<Func<Stream, Foo>>(sp => {
         var logger = sp.GetService<ILogger>();
-        return new Foo(logger, stream);
+        return stream => new Foo(logger, stream);
     });
 
-Now, we can use the container to get an instance of our factory delegate:
+The factory delegate is just the function returned from the factory closure. The logger is captured from the parent factory closure, and the stream is provided via the parameter:
+
+    stream => new Foo(logger, stream);    
+
+By binding the delegate type to a factory closure which returns our `Foo`-making factory delegate we can now use the container to get an instance of our factory delegate:
 
     var fooFactory = sp.GetService<Func<Stream, Foo>>();
     var foo = fooFactory(someStream);
@@ -139,7 +143,7 @@ By default the lifetime is transient but can be configured:
     public class Foo : IUseful { }
 
 
-Methods can also be utilized to implement simple factories:
+Methods can also be utilized to implement simple factory closures:
 
     public class Foo : IUseful {
         // fields and constructor omitted
