@@ -3,62 +3,61 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using Disunity.Store.Shared.Startup;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Archive {
 
+    public class ArchiveLoadException : Exception {
+
+        public ArchiveLoadException(string message) : base(message) { }
+
+    }
+
     public class Archive {
 
         private ZipArchive archive;
+        private Func<string, Manifest> manifestFactory;
 
-        public Manifest Manifest { get; protected set; }
-        public string Readme { get; protected set; }
+
+        public Manifest Manifest { get; }
+        public string Readme { get; }
 
         private ILogger<Archive> log;
 
-        public Archive(ILogger<Archive> log, Stream stream) {
+        public Archive(ILogger<Archive> log,
+                       Func<string, Manifest> manifestFactory,
+                       Stream stream) {
             this.log = log;
+            this.manifestFactory = manifestFactory;
             archive = new ZipArchive(stream, ZipArchiveMode.Read);
+            Manifest = GetManifest();
+            Readme = GetReadme();
         }
 
         [Factory]
-        public static Func<Stream, Archive> ArchiveFactory(IServiceProvider services) {
+        public static Func<Stream, Archive> StreamArchiveFactory(IServiceProvider services) {
             var logger = services.GetRequiredService<ILogger<Archive>>();
-            return stream => new Archive(logger, stream);
+            var manifestFactory = services.GetRequiredService<Func<string, Manifest>>();
+            return stream => new Archive(logger, manifestFactory, stream);
         }
+
 
         public ZipArchiveEntry GetEntry(string filename) {
             var entry = archive.GetEntry(filename);
             return entry;
         }
 
-        public Manifest GetManifest(IFormFile formFile,
-                                    ModelStateDictionary modelState,
-                                    string filename = "manifest.json") {
+        public Manifest GetManifest(string filename = "manifest.json") {
             var entry = GetEntry(filename);
             using (var file = entry.Open()) {
                 var reader = new StreamReader(file);
                 var json = reader.ReadToEnd();
-                var schema_errors = Manifest.ValidateJson(json);
-
-                foreach (var error in schema_errors) {
-                    modelState.AddModelError(formFile.Name, error.Message);
-                }
-
-                if (schema_errors.Count == 0) {
-                    return Manifest.FromJson(json);
-                }
-
-                return null;
+                return manifestFactory(json);
             }
         }
 
-        public string GetReadme(IFormFile formFile,
-                                ModelStateDictionary modelState,
-                                string filename = "README.md") {
+        public string GetReadme(string filename = "README.md") {
             var entry = GetEntry(filename);
             var encoding = new UTF8Encoding(false, true);
             using (var reader = new StreamReader(entry.Open(), encoding, true)) {
@@ -66,22 +65,11 @@ namespace Disunity.Store.Shared.Archive {
 
                 if (readme.Length == 0) {
                     var message = $"Readme file, {filename} is empty.";
-                    modelState.AddModelError(formFile.Name, message);
+                    throw new ArchiveLoadException(message);
                 }
 
                 return readme;
             }
-        }
-
-        public void Validate(IFormFile formFile,
-                             ModelStateDictionary modelState) {
-            if (archive == null) {
-                modelState.AddModelError(formFile.Name, "Archive was null");
-                return;
-            }
-
-            Manifest = GetManifest(formFile, modelState);
-            Readme = GetReadme(formFile, modelState);
         }
 
     }

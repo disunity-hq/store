@@ -1,57 +1,56 @@
-using System.IO;
-using System.Threading.Tasks;
+using System;
+using System.Linq;
 using Disunity.Store.Areas.Mods.Pages;
 using Disunity.Store.Shared.Archive;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Schema;
 
 namespace Disunity.Store.Areas.API.v1.Mods {
 
     [ApiController]
     [Route("api/v{version:apiVersion}/mods/upload")]
     public class UploadController : ControllerBase {
-        
-        [FromForm] 
-        public IFormFile ArchiveUpload { get; set; }
-        
+
+        private readonly Func<IFormFile, Archive> _archiveFactory;
+
         private readonly ILogger<Upload> _logger;
-        private readonly IArchiveValidator _validator;
-        
-        public UploadController(ILogger<Upload> logger, IArchiveValidator validator)
-        {
+
+        public UploadController(ILogger<Upload> logger,
+                                Func<IFormFile, Archive> archiveFactory) {
             _logger = logger;
-            _validator = validator;
+            _archiveFactory = archiveFactory;
+        }
+
+        [FromForm] public IFormFile ArchiveUpload { get; set; }
+
+        protected object FormatSchemaError(ValidationError e) {
+            return new {
+                Kind = e.ErrorType,
+                e.Path,
+                e.Message,
+                e.LineNumber,
+                e.LinePosition
+            };
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post() {
+        public IActionResult Post() {
             if (!ModelState.IsValid) {
                 return BadRequest();
             }
 
-            var archive = await _validator.ValidateAsync(ArchiveUpload, ModelState, "application/zip");
-            
-//            if (ModelState.ErrorCount == 0) {
-//                _logger.LogError($"We got an archive: {archive.Manifest.Name}");
-//            } else {
-//                foreach (var (key, value) in ModelState) {
-//                    foreach (var error in value.Errors) {
-//                        _logger.LogError($"{key}: {error.ErrorMessage}");
-//                    }
-//                }
-//            }
-//
-//            var tmpPath = Path.GetTempPath();
-//            var filePath = Path.Join(tmpPath, ArchiveUpload.FileName);
-//
-//            if (ArchiveUpload.Length > 0) {
-//                using (var stream = new FileStream(filePath, FileMode.Create)) {
-//                    await ArchiveUpload.CopyToAsync(stream);
-//                }
-//            }
-
-            return new JsonResult(new { Status = "yay" });
+            try {
+                var archive = _archiveFactory(ArchiveUpload);
+                return new JsonResult(new {archive.Manifest.Name});
+            }
+            catch (ManifestSchemaException e) {
+                return BadRequest(new {
+                    Type = "ManifestSchemaException",
+                    Errors = e.Errors.Select(FormatSchemaError)
+                });
+            }
         }
 
     }

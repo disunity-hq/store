@@ -20,12 +20,10 @@ namespace Disunity.Store.Areas.Mods.Pages {
         [BindProperty] public IFormFile ArchiveUpload { get; set; }
         
         private readonly ILogger<Upload> _logger;
-        private readonly ArchiveValidator _validator;
         
-        public Upload(ILogger<Upload> logger, ArchiveValidator validator)
+        public Upload(ILogger<Upload> logger)
         {
             _logger = logger;
-            _validator = validator;
         }
 
         public void OnGet() { }
@@ -34,9 +32,6 @@ namespace Disunity.Store.Areas.Mods.Pages {
             if (!ModelState.IsValid) {
                 return Page();
             }
-
-            // BUG ldlework is this right?
-            await _validator.ValidateAsync(ArchiveUpload, ModelState, "application/zip");
 
             var tmpPath = Path.GetTempPath();
             var filePath = Path.Join(tmpPath, ArchiveUpload.FileName);
