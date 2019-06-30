@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Data.Hooks {
 
-    [Binding(BindType.Singleton)]
+    [Binding(BindType.Singleton, typeof(IDbHookManager<>))]
     public class DbHookManager<T> : IDbHookManager<T> where T : DbHookAttribute {
 
         private readonly IDictionary<DbContext, IDictionary<Type, IList<MethodBase>>> _contextHooks =

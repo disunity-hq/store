@@ -6,24 +6,24 @@ namespace Disunity.Store.Shared.Data.Hooks {
     [Binding(BindType.Singleton)]
     public class HookManagerContainer {
 
-        public DbHookManager<OnBeforeCreate> OnBeforeCreate { get; }
-        public DbHookManager<OnBeforeUpdate> OnBeforeUpdate { get; }
-        public DbHookManager<OnBeforeSave> OnBeforeSave { get; }
-        public DbHookManager<OnBeforeDelete> OnBeforeDelete { get; }
-        public DbHookManager<OnAfterCreate> OnAfterCreate { get; }
-        public DbHookManager<OnAfterUpdate> OnAfterUpdate { get; }
-        public DbHookManager<OnAfterSave> OnAfterSave { get; }
-        public DbHookManager<OnAfterDelete> OnAfterDelete { get; }
+        public IDbHookManager<OnBeforeCreate> OnBeforeCreate { get; }
+        public IDbHookManager<OnBeforeUpdate> OnBeforeUpdate { get; }
+        public IDbHookManager<OnBeforeSave> OnBeforeSave { get; }
+        public IDbHookManager<OnBeforeDelete> OnBeforeDelete { get; }
+        public IDbHookManager<OnAfterCreate> OnAfterCreate { get; }
+        public IDbHookManager<OnAfterUpdate> OnAfterUpdate { get; }
+        public IDbHookManager<OnAfterSave> OnAfterSave { get; }
+        public IDbHookManager<OnAfterDelete> OnAfterDelete { get; }
 
 
-        public HookManagerContainer(DbHookManager<OnBeforeCreate> onBeforeCreate,
-                                    DbHookManager<OnBeforeUpdate> onBeforeUpdate,
-                                    DbHookManager<OnBeforeSave> onBeforeSave,
-                                    DbHookManager<OnBeforeDelete> onBeforeDelete,
-                                    DbHookManager<OnAfterCreate> onAfterCreate,
-                                    DbHookManager<OnAfterUpdate> onAfterUpdate,
-                                    DbHookManager<OnAfterSave> onAfterSave,
-                                    DbHookManager<OnAfterDelete> onAfterDelete) {
+        public HookManagerContainer(IDbHookManager<OnBeforeCreate> onBeforeCreate,
+                                    IDbHookManager<OnBeforeUpdate> onBeforeUpdate,
+                                    IDbHookManager<OnBeforeSave> onBeforeSave,
+                                    IDbHookManager<OnBeforeDelete> onBeforeDelete,
+                                    IDbHookManager<OnAfterCreate> onAfterCreate,
+                                    IDbHookManager<OnAfterUpdate> onAfterUpdate,
+                                    IDbHookManager<OnAfterSave> onAfterSave,
+                                    IDbHookManager<OnAfterDelete> onAfterDelete) {
             OnBeforeCreate = onBeforeCreate;
             OnBeforeUpdate = onBeforeUpdate;
             OnBeforeSave = onBeforeSave;
