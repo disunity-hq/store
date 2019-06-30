@@ -11,8 +11,14 @@ using Overby.Extensions.AsyncBinaryReaderWriter;
 
 namespace Disunity.Store.Shared.Archive {
 
-    [Binding(BindType.Singleton)]
-    public class ArchiveValidator {
+    public interface IArchiveValidator {
+
+        Task<Archive> ValidateAsync(IFormFile formFile, ModelStateDictionary modelState, string mimeType);
+
+    }
+
+    [Binding(BindType.Singleton, typeof(IArchiveValidator))]
+    public class ArchiveValidator : IArchiveValidator {
 
         private ILogger<ArchiveValidator> log;
         private Func<Stream, Archive> archiveFactory;

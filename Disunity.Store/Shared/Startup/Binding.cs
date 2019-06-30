@@ -19,84 +19,85 @@ namespace Disunity.Store.Shared.Startup {
     public class Binding : Attribute {
 
         protected BindType _bindType;
-        protected Object _targetType;
+        protected Object _serviceType;
 
-        public Binding(BindType bindType, Type targetType) {
+        public Binding(BindType bindType, Type serviceType) {
             _bindType = bindType;
-            _targetType = targetType;
+            _serviceType = serviceType;
         }
 
         public Binding(BindType bindType) {
             _bindType = bindType;
         }
 
-        public Binding(Type targetType) {
+        public Binding(Type serviceType) {
             _bindType = BindType.Transient;
-            _targetType = targetType;
+            _serviceType = serviceType;
         }
 
         public Binding() {
             _bindType = BindType.Transient;
         }
 
-        public void Bind(IServiceCollection services, Type type) {
+        public void Bind(IServiceCollection services, Type serviceType, Type implementationType) {
             switch (_bindType) {
                 case BindType.Singleton:
-                    services.AddSingleton(type);
+                    services.AddSingleton(serviceType, implementationType);
                     break;
 
                 case BindType.Scoped:
-                    services.AddScoped(type);
+                    services.AddScoped(serviceType, implementationType);
                     break;
 
                 case BindType.Transient:
-                    services.AddTransient(type);
+                    services.AddTransient(serviceType, implementationType);
                     break;
             }
         }
 
-        public void BindWith(IServiceCollection services, Type type, MethodInfo handler) {
+        public void BindWith(IServiceCollection services, Type serviceType, MethodInfo handler) {
+            var closure = new Func<IServiceProvider, object>(s => handler.Invoke(null, new[] {s}));
             switch (_bindType) {
                 case BindType.Singleton:
-                    services.AddSingleton(type, (s) => handler.Invoke(null, new[] {s as object}));
+                    services.AddSingleton(serviceType, closure);
                     break;
 
                 case BindType.Scoped:
-                    services.AddScoped(type, (s) => handler.Invoke(null, new[] {s as object}));
+                    services.AddScoped(serviceType, closure);
                     break;
 
                 case BindType.Transient:
-                    services.AddTransient(type, (s) => handler.Invoke(null, new[] {s as object}));
+                    services.AddTransient(serviceType, closure);
                     break;
             }
         }
 
-        public void Execute(IServiceCollection services, Type sourceType) {
-            if (_targetType == null) {
-                Bind(services, sourceType);
+        public void Execute(IServiceCollection services, Type implementationType) {
+            if (_serviceType == null) {
+                Bind(services, implementationType, implementationType);
             } else {
-                Bind(services, (Type) _targetType);
+                Bind(services, (Type) _serviceType, implementationType);
             }
         }
 
-        public void ExecuteWith(IServiceCollection services, Type sourceType, MethodInfo handler) {
-            if (_targetType == null) {
-                BindWith(services, sourceType, handler);
+        public void ExecuteWith(IServiceCollection services, Type implementationType, MethodInfo handler) {
+            if (_serviceType == null) {
+                BindWith(services, implementationType, handler);
             } else {
-                BindWith(services, (Type) _targetType, handler);
+                BindWith(services, (Type) _serviceType, handler);
             }
         }
 
         public static void ConfigureBindings(IServiceCollection services) {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                foreach (var type in assembly.GetTypes()) {
-                    var classAttrs = type.GetCustomAttributes(typeof(Binding));
+                foreach (var implementationType in assembly.GetTypes()) {
+                    var classAttrs = implementationType.GetCustomAttributes(typeof(Binding));
 
                     foreach (Binding attr in classAttrs) {
-                        attr.Execute(services, type);
+                        attr.Execute(services, implementationType);
                     }
 
-                    foreach (var method in type.GetRuntimeMethods()) {
+                    foreach (var method in implementationType.GetRuntimeMethods()) {
                         if (!method.IsStatic) {
                             continue;
                         }
@@ -108,7 +109,7 @@ namespace Disunity.Store.Shared.Startup {
                         }
 
                         foreach (Binding attr in methodAttrs) {
-                            attr.ExecuteWith(services, type, method);
+                            attr.ExecuteWith(services, implementationType, method);
                         }
                     }
                 }

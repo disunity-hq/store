@@ -16,9 +16,9 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         public IFormFile ArchiveUpload { get; set; }
         
         private readonly ILogger<Upload> _logger;
-        private readonly ArchiveValidator _validator;
+        private readonly IArchiveValidator _validator;
         
-        public UploadController(ILogger<Upload> logger, ArchiveValidator validator)
+        public UploadController(ILogger<Upload> logger, IArchiveValidator validator)
         {
             _logger = logger;
             _validator = validator;
