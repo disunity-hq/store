@@ -164,11 +164,22 @@ In addition to `[Binding]`, the `[AsSingleton]`, `[AsScoped]` and `[AsTransient]
 
 The `[Factory]` attribute allows you to bind a factory delegate in the container. The simplest use is by applying it to a static function which takes an `IServiceProvider` and returns the delegate:
 
-    [Factory]
-    public static Func<Stream, Foo> FooFactory(IServiceProvider sp) {
-        var logger = sp.GetService<ILogger>();
-        return stream => new Foo(logger, stream);
+    public class Foo {
+        ILogger logger;
+        Stream stream;
+
+        public Foo(ILogger logger, Stream stream) {
+            this.logger = logger;
+            this.stream = stream;
+        }
+
+        [Factory]
+        public static Func<Stream, Foo> FooFactory(IServiceProvider sp) {
+            var logger = sp.GetService<ILogger>();
+            return stream => new Foo(logger, stream);
+        }
     }
+
 
 Now dependants can depend on the delegate:
 
@@ -185,4 +196,4 @@ Now dependants can depend on the delegate:
         }
     }
 
-`Bar` receives a `Func<Stream, Foo>` delegate from the container, which it can use to pass `Stream` instances into to get `Foo` instances. Each `Foo` instance will have its `ILogger` properly injected thanks to our factory implementation.
+`Bar` receives a `Func<Stream, Foo>` factory delegate from the container, which it can use to pass `Stream` instances to get `Foo` instances. Each `Foo` instance will have its `ILogger` properly injected thanks to our factory implementation.
