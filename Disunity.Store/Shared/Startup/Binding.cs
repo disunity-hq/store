@@ -19,7 +19,7 @@ namespace Disunity.Store.Shared.Startup {
     public class Binding : Attribute {
 
         protected BindType _bindType;
-        protected Object _serviceType;
+        protected Type _serviceType;
 
         public Binding(BindType bindType, Type serviceType) {
             _bindType = bindType;
@@ -76,7 +76,7 @@ namespace Disunity.Store.Shared.Startup {
             if (_serviceType == null) {
                 Bind(services, implementationType, implementationType);
             } else {
-                Bind(services, (Type) _serviceType, implementationType);
+                Bind(services, _serviceType, implementationType);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Disunity.Store.Shared.Startup {
             if (_serviceType == null) {
                 BindWith(services, implementationType, handler);
             } else {
-                BindWith(services, (Type) _serviceType, handler);
+                BindWith(services, _serviceType, handler);
             }
         }
 
