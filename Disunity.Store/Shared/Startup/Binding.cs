@@ -119,6 +119,8 @@ namespace Disunity.Store.Shared.Startup {
     }
 
     public class AsSingleton : Binding {
+        
+        public AsSingleton() : base(BindType.Singleton) { }
 
         public AsSingleton(Type serviceType) : base(BindType.Singleton, serviceType) {
             
@@ -128,6 +130,8 @@ namespace Disunity.Store.Shared.Startup {
 
     public class AsTransient : Binding {
 
+        public AsTransient() : base(BindType.Transient) { }
+
         public AsTransient(Type serviceType) : base(BindType.Transient, serviceType) {
             
         }
@@ -135,6 +139,8 @@ namespace Disunity.Store.Shared.Startup {
     }
 
     public class AsScoped : Binding {
+
+        public AsScoped() : base(BindType.Scoped) { }
 
         public AsScoped(Type serviceType) : base(BindType.Scoped, serviceType) {
             
