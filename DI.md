@@ -4,7 +4,13 @@ Dependency Injection is a big topic and central to ASP.NET Core development.
 
 If you're unsure about why you should care, the definitive resource is [Dependency Injection by Mark Seeman](https://www.amazon.com/Dependency-Injection-NET-Mark-Seemann/dp/1935182501) but feel free to just google it.
 
-This document explains the use of the `[Binding]` and `[Factory]` attributes.
+This document explains the use of the DI attributes: 
+
+-`[Binding]`
+-`[AsSingleton]`
+-`[AsScoped]`
+-`[AsTransient]`
+-`[Factory]`
 
 ## Dependency Injection
 
@@ -54,7 +60,7 @@ In a way, a concrete type's constructor can be thought of a factory - in that ne
 
 However, what if the container can't provide all of the constructor parameters for a given type? We can't just use a simple binding. Instead, we must provide a factory closure that helps the container do the work of providing those unbound dependencies.
 
-Imagine `Foo` takes an `ILogger` and an `int` which configures the type somehow. We can assume the `Ilogger` interface is bound usefully. However, instead of binding `int` in the container, we can instead bind `Foo` to a factory closure, which is just a simple lambda:
+Imagine `Foo` takes an `ILogger` and an `int` which configures the type somehow. We can assume the `ILogger` interface is bound usefully. However, instead of binding `int` in the container, we can instead bind `Foo` to a factory closure, which is just a simple lambda:
 
     di.AsSingleton<Foo>(sp => { 
         var logger = sp.GetService<ILogger>();
@@ -148,6 +154,10 @@ Methods can also be utilized to implement simple factories:
             return new Foo(logger, "Hello World);
         }
     }
+
+### Shorthand Attributes
+
+In addition to `[Binding]`, the `[AsSingleton]`, `[AsScoped]` and `[AsTransient]` attributes all do the obvious thing.
 
 
 ## Using the [Factory] attribute
