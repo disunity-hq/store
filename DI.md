@@ -63,7 +63,7 @@ Imagine `Foo` takes an `ILogger` and an `int` which configures the type somehow.
         return new Foo(logger, randomNumber());
     });
 
-When the container must produce an instance of `Foo` it will call this closure. The closure uses the container container to resolve the `ILogger` dependency. But we're telling it how to provide the `int` dependency. 
+When the container must produce an instance of `Foo` it will call this closure. The closure uses the container to resolve the `ILogger` dependency. But we're telling it how to provide the `int` dependency. 
 
 In this case, the container will only ever call the closure once, to produce a single instance, and always return that one. This is thanks to binding `Foo` to the factory via the `AsSingleton` method.
 
