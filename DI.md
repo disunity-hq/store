@@ -34,11 +34,11 @@ The way you tell the container how to do this is by "binding" the desired types 
 
 Once the container knows how to produce instances, your code can request them. If your code _depended_ on using an instance of `Foo`, it could ask the container for one:
 
-    var foo = di.GetService<Foo>();
+    var foo = sp.GetService<Foo>();
 
 Similarly, if your code depended on having an instance of `IUseful` but didn't care which implementation is used, it can again ask the container:
 
-    var useful = di.GetService<IUseful>()
+    var useful = sp.GetService<IUseful>()
 
 In this case, the container would create an instance of `Foo` since we told it to bind `IUseful` to `Foo`.
 
@@ -106,7 +106,7 @@ If we have a `Stream` and need a `Foo`, instead of binding `Foo` directly, we ca
 
 Now, we can use the container to get an instance of our factory delegate:
 
-    var fooFactory = di.GetService<Func<Stream, Foo>>();
+    var fooFactory = sp.GetService<Func<Stream, Foo>>();
     var foo = fooFactory(someStream);
 
 Of course, if the type that owns this code is itself having its dependencies injected by the container, it can just specify the factory delegate as a dependency:
