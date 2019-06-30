@@ -30,6 +30,15 @@ namespace Disunity.Store.Shared.Startup {
             _bindType = bindType;
         }
 
+        public Binding(Type targetType) {
+            _bindType = BindType.Transient;
+            _targetType = targetType;
+        }
+
+        public Binding() {
+            _bindType = BindType.Transient;
+        }
+
         public void Bind(IServiceCollection services, Type type) {
             switch (_bindType) {
                 case BindType.Singleton:
