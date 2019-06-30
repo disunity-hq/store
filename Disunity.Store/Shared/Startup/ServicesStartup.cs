@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -46,9 +45,17 @@ namespace Disunity.Store.Shared.Startup {
         }
 
         public static void ConfigureMvc(IServiceCollection services) {
-            services.AddMvc().AddRazorPagesOptions(options => {
-                options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                    .AddRazorPagesOptions(options => {
+                        options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
+                    })
+                    .AddJsonOptions(options => {
+                        // we need this
+                        options.SerializerSettings.Converters.Add(
+                            new StringEnumConverter());
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    });
 
             services.AddApiVersioning(options => { options.Conventions.Add(new VersionByNamespaceConvention()); });
         }
