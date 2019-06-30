@@ -4,13 +4,9 @@ Dependency Injection is a big topic and central to ASP.NET Core development.
 
 If you're unsure about why you should care, the definitive resource is [Dependency Injection by Mark Seeman](https://www.amazon.com/Dependency-Injection-NET-Mark-Seemann/dp/1935182501) but feel free to just google it.
 
-This document explains the use of the DI attributes: 
+The DI container described in this document is the one used in ASP.NET Core, but the concepts are the same for just about any modern container.
 
--`[Binding]`
--`[AsSingleton]`
--`[AsScoped]`
--`[AsTransient]`
--`[Factory]`
+Skip to the end to learn how to use our DI attributes, `[Binding]`, `[Factory]` and friends.
 
 ## Dependency Injection
 
