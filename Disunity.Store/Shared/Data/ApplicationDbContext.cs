@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -94,7 +95,7 @@ namespace Disunity.Store.Shared.Data {
 
         private SavedChanges OnBeforeSave() {
             var changes = new SavedChanges();
-            var entries = ChangeTracker.Entries();
+            var entries = ChangeTracker.Entries().ToList();
 
             foreach (var entry in entries) {
                 switch (entry.State) {
