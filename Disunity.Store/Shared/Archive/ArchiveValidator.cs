@@ -17,7 +17,7 @@ namespace Disunity.Store.Shared.Archive {
 
     }
 
-    [Binding(BindType.Singleton, typeof(IArchiveValidator))]
+    [AsSingleton(typeof(IArchiveValidator))]
     public class ArchiveValidator : IArchiveValidator {
 
         private ILogger<ArchiveValidator> log;

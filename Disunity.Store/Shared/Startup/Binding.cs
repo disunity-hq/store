@@ -15,7 +15,7 @@ namespace Disunity.Store.Shared.Startup {
     }
 
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class Binding : Attribute {
 
         protected BindType _bindType;
@@ -117,5 +117,30 @@ namespace Disunity.Store.Shared.Startup {
         }
 
     }
+
+    public class AsSingleton : Binding {
+
+        public AsSingleton(Type serviceType) : base(BindType.Singleton, serviceType) {
+            
+        }
+
+    }
+
+    public class AsTransient : Binding {
+
+        public AsTransient(Type serviceType) : base(BindType.Transient, serviceType) {
+            
+        }
+
+    }
+
+    public class AsScoped : Binding {
+
+        public AsScoped(Type serviceType) : base(BindType.Scoped, serviceType) {
+            
+        }
+
+    }
+
 
 }
