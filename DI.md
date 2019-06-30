@@ -32,7 +32,7 @@ If you'll ever want an instance of `Foo`, you have to, ahead of time, tell the c
 The way you tell the container how to do this is by "binding" the desired types or interfaces to either:
 
 - Concrete types (`di.AsSingleton<Foo>()` or `di.AsSingleton<IUseful, Foo>()`)
-- Factories which produce instances of concrete types (`di.AsSingleton<Foo>(di => new Foo())`)
+- Factories which produce instances of concrete types (`di.AsSingleton<Foo>(sp => new Foo())`)
 
 ### Dependencies
 
