@@ -1,0 +1,12 @@
+<h1><%= title %></h1>
+<ul>
+    <% for(var i=0; i<errors.length; i++) { %>
+        <% var error = errors[i]; %>
+        <li>
+            <span><%= error.lineNumber %>:<%= error.linePosition %></span>
+            @<span><%= error.path %></span>
+            <span> <%= error.kind %></span>
+            <span> <%= error.message %></span>
+        </li>
+    <% } %>
+</ul>
