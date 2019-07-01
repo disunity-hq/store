@@ -21,9 +21,13 @@
 <div id="wrapper">
 
     <partial name="_HeaderPartial"/>
+    
 
     <div class="container" id="content">
-        <partial name="_CookieConsentPartial"/>
+        <div id="gutter">
+            <partial name="_CookieConsentPartial"/>
+        </div>
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
