@@ -4,7 +4,9 @@
 @addTagHelper *, Syncfusion.EJ2
 
 @{
-    var asyncSettings = new UploaderAsyncSettings {SaveUrl = "/mods/Upload"};
+    var asyncSettings = new UploaderAsyncSettings {
+        SaveUrl = "/api/v1/mods/upload"
+    };
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
@@ -12,11 +14,13 @@
 
 <div>
     <h1>Upload a mod archive:</h1>
-    <ejs-uploader
-        id="ArchiveUpload"
-        uploading="OnModUpload"
-        asyncSettings="@asyncSettings"
-        multiple="false"
-        autoUpload="false">
-    </ejs-uploader>
+    <div id="uploader" style="margin: 50px;">
+        <input type="file" id="ArchiveUpload" />
+    </div>
+    <div id="error-report"></div>
 </div>
+
+
+@section Scripts {
+    SetupModUploadPage();
+}

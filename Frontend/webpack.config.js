@@ -1,3 +1,5 @@
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -10,6 +12,11 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                loader: "html-loader?exportAsEs6Default"
+            },
             {
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader',
@@ -34,7 +41,8 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        plugins: [ new TsConfigPathsPlugin() ],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.html']
     },
     plugins: [new CopyPlugin(['favicon.ico', {from:'assets', to:'assets'}])],
 };

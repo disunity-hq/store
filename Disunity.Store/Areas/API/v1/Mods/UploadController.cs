@@ -4,6 +4,7 @@ using System.Linq;
 using Disunity.Store.Areas.Mods.Pages;
 using Disunity.Store.Shared.Archive;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using Newtonsoft.Json.Schema;
 namespace Disunity.Store.Areas.API.v1.Mods {
 
     [ApiController]
+    [Authorize]
     [Route("api/v{version:apiVersion}/mods/upload")]
     public class UploadController : ControllerBase {
 
@@ -37,6 +39,11 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                 e.LineNumber,
                 e.LinePosition
             };
+        }
+
+        [HttpGet]
+        public IActionResult Get() {
+            return new JsonResult("Hello World!");
         }
 
         [HttpPost]
