@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -72,15 +74,19 @@ namespace Disunity.Store.Shared.Startup {
             });
 
             services.ConfigureApplicationCookie(options => {
-                options.Events.OnRedirectToLogin = ctx => {
+                options.Events.OnRedirectToLogin = async ctx => {
                     if (ctx.Request.Path.StartsWithSegments("/api") &&
                         ctx.Response.StatusCode == (int) HttpStatusCode.OK) {
                         ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+
+                        var body = JsonConvert.SerializeObject(new {
+                            type = "Unauthorized",
+                            error = "Not authorized.",
+                        }, Formatting.Indented);
+                        await ctx.Response.WriteAsync(body);
                     } else {
                         ctx.Response.Redirect(ctx.RedirectUri);
                     }
-
-                    return Task.FromResult(0);
                 };
             });
 
