@@ -18,15 +18,21 @@
 </head>
 <body>
 <div class="bg-image"></div>
-<partial name="_HeaderPartial"/>
-<div class="container">
-    <partial name="_CookieConsentPartial"/>
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+<div id="wrapper">
 
-<partial name="_FooterPartial"/>
+    <partial name="_HeaderPartial"/>
+
+    <div class="container" id="content">
+        <partial name="_CookieConsentPartial"/>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <div id="footer-padding"></div>
+
+    <partial name="_FooterPartial"/>
+
+</div>
 
 <environment include="Development">
     <script src="~/main.bundle.js" asp-append-version="true"></script>

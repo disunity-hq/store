@@ -17,8 +17,6 @@ img.logo {
   margin-right: 18px;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   font-size: 20px;
 }
@@ -49,23 +47,35 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#wrapper {
+  min-height: 100%;
   position: relative;
-  min-height: calc(100% - 1px);
 }
 
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  height: 100%;
+}
+
+#content {
+  padding-bottom: 100px;
+  /* Height of the footer element */
 }
 
 footer {
   background-color: $body-bg;
   position: absolute;
-  bottom: 0;
   width: 100%;
+  height: 100px;
+  bottom: 0;
+  left: 0;
   white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
 
