@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 
 namespace Disunity.Store.Areas.Targets.Models {
 
@@ -13,7 +15,7 @@ namespace Disunity.Store.Areas.Targets.Models {
         public int? LatestId { get; set; }
         public TargetVersion Latest { get; set; }
 
-        [Required, MaxLength(128)] public string Name { get; set; }
+        [Required] [MaxLength(128)] public string Name { get; set; }
 
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }
 

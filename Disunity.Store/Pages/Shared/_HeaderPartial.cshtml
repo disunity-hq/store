@@ -18,8 +18,7 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
-                    @if (User.IsInRole("Admin"))
-                    {
+                    @if (User.IsInRole("Admin")) {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
                         </li>

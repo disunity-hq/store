@@ -1,13 +1,17 @@
 using System;
-using System.Dynamic;
 using System.Threading.Tasks;
+
 using Disunity.Store.Areas.Identity.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using Syncfusion.Licensing;
+
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -18,13 +22,14 @@ namespace Disunity.Store.Shared.Startup {
                                    IHostingEnvironment env,
                                    IServiceProvider services) {
             // Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(config["Syncfusion:License"]);
+            SyncfusionLicenseProvider.RegisterLicense(config["Syncfusion:License"]);
 
             EnvironmentStartup(app, env, services);
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
             app.UseMvc(routes => {
                 routes.MapAreaRoute("api", "API", "api/v{version:apiVersion}/[controller]/[action=Index]");
             });
@@ -68,6 +73,7 @@ namespace Disunity.Store.Shared.Startup {
 
             foreach (var roleName in roleNames) {
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
+
                 if (!roleExist) {
                     //create the roles and seed them to the database
                     await roleManager.CreateAsync(new IdentityRole(roleName));
@@ -82,6 +88,7 @@ namespace Disunity.Store.Shared.Startup {
             };
 
             var pwd = config["AdminUser:Password"];
+
             if (superuser.Email == null || pwd == null) {
                 logger.LogWarning("Skipping creating super user as user was missing email or password");
                 return; // super user not full specified, don't create it
@@ -91,6 +98,7 @@ namespace Disunity.Store.Shared.Startup {
 
             if (user == null) {
                 var createSuperUser = await userManager.CreateAsync(superuser, pwd);
+
                 if (createSuperUser.Succeeded) {
                     logger.LogInformation($"Successfully created admin user: {superuser.Email}");
 

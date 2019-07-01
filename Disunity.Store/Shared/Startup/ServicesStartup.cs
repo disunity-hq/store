@@ -1,5 +1,6 @@
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Shared.Data;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -38,6 +41,7 @@ namespace Disunity.Store.Shared.Startup {
                                                             options.UseNpgsql(
                                                                 configuration
                                                                     .GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<UserIdentity>()
                     .AddRoles<IdentityRole>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
@@ -52,8 +56,7 @@ namespace Disunity.Store.Shared.Startup {
                     })
                     .AddJsonOptions(options => {
                         // we need this
-                        options.SerializerSettings.Converters.Add(
-                            new StringEnumConverter());
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
                         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     });
 

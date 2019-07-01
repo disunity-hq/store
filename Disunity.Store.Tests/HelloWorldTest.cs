@@ -1,6 +1,7 @@
+using Disunity.Store.Shared.Util;
+
 using Xunit;
 
-using Disunity.Store.Shared.Util;
 
 namespace Disunity.Store.Tests {
 

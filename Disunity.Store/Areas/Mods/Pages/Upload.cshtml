@@ -1,13 +1,14 @@
 @page
+@using Syncfusion.EJ2.Inputs
 @model Disunity.Store.Areas.Mods.Pages.Upload
 @addTagHelper *, Syncfusion.EJ2
 
 @{
-    var asyncSettings = new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = "/mods/Upload" };
+    var asyncSettings = new UploaderAsyncSettings {SaveUrl = "/mods/Upload"};
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-@Html.AntiForgeryToken() 
+@Html.AntiForgeryToken()
 
 <div>
     <h1>Upload a mod archive:</h1>

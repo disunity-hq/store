@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+
 using Disunity.Store.Areas.Identity.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 
 namespace Disunity.Store.Areas.Orgs.Models {
 

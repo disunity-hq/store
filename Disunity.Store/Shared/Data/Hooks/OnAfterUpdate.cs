@@ -1,5 +1,6 @@
 using System;
 
+
 namespace Disunity.Store.Shared.Data.Hooks {
 
     public class OnAfterUpdate : DbHookAttribute {

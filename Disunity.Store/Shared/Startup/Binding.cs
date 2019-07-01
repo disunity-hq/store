@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Binder = System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>;
+
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -57,6 +60,7 @@ namespace Disunity.Store.Shared.Startup {
 
         public void BindWith(IServiceCollection services, Type serviceType, MethodInfo handler) {
             var closure = new Func<IServiceProvider, object>(s => handler.Invoke(null, new[] {s}));
+
             switch (_bindType) {
                 case BindType.Singleton:
                     services.AddSingleton(serviceType, closure);
@@ -119,12 +123,10 @@ namespace Disunity.Store.Shared.Startup {
     }
 
     public class AsSingleton : Binding {
-        
+
         public AsSingleton() : base(BindType.Singleton) { }
 
-        public AsSingleton(Type serviceType) : base(BindType.Singleton, serviceType) {
-            
-        }
+        public AsSingleton(Type serviceType) : base(BindType.Singleton, serviceType) { }
 
     }
 
@@ -132,9 +134,7 @@ namespace Disunity.Store.Shared.Startup {
 
         public AsTransient() : base(BindType.Transient) { }
 
-        public AsTransient(Type serviceType) : base(BindType.Transient, serviceType) {
-            
-        }
+        public AsTransient(Type serviceType) : base(BindType.Transient, serviceType) { }
 
     }
 
@@ -142,11 +142,8 @@ namespace Disunity.Store.Shared.Startup {
 
         public AsScoped() : base(BindType.Scoped) { }
 
-        public AsScoped(Type serviceType) : base(BindType.Scoped, serviceType) {
-            
-        }
+        public AsScoped(Type serviceType) : base(BindType.Scoped, serviceType) { }
 
     }
-
 
 }

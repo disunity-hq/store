@@ -2,9 +2,12 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+
 using Disunity.Store.Shared.Startup;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 
 namespace Disunity.Store.Shared.Archive {
 
@@ -17,13 +20,9 @@ namespace Disunity.Store.Shared.Archive {
     public class Archive {
 
         private ZipArchive archive;
-        private Func<string, Manifest> manifestFactory;
-
-
-        public Manifest Manifest { get; }
-        public string Readme { get; }
 
         private ILogger<Archive> log;
+        private Func<string, Manifest> manifestFactory;
 
         public Archive(ILogger<Archive> log,
                        Func<string, Manifest> manifestFactory,
@@ -34,6 +33,10 @@ namespace Disunity.Store.Shared.Archive {
             Manifest = GetManifest();
             Readme = GetReadme();
         }
+
+
+        public Manifest Manifest { get; }
+        public string Readme { get; }
 
         [Factory]
         public static Func<Stream, Archive> StreamArchiveFactory(IServiceProvider services) {
@@ -50,6 +53,7 @@ namespace Disunity.Store.Shared.Archive {
 
         public Manifest GetManifest(string filename = "manifest.json") {
             var entry = GetEntry(filename);
+
             using (var file = entry.Open()) {
                 var reader = new StreamReader(file);
                 var json = reader.ReadToEnd();
@@ -60,6 +64,7 @@ namespace Disunity.Store.Shared.Archive {
         public string GetReadme(string filename = "README.md") {
             var entry = GetEntry(filename);
             var encoding = new UTF8Encoding(false, true);
+
             using (var reader = new StreamReader(entry.Open(), encoding, true)) {
                 var readme = reader.ReadToEnd();
 

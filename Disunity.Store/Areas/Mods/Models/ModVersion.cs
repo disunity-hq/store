@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using Disunity.Store.Shared.Data;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 
 namespace Disunity.Store.Areas.Mods.Models {
 

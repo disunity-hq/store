@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Shared.Data;
 using Disunity.Store.Shared.Data.Hooks;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 
 namespace Disunity.Store.Areas.Mods.Models {
 
@@ -33,6 +36,13 @@ namespace Disunity.Store.Areas.Mods.Models {
 
         [InverseProperty("Mod")] public List<ModVersion> Versions { get; set; }
 
+        [OnBeforeCreate(typeof(ModVersion))]
+        public static void OnBeforeCreateModVersion(ModVersion entity, ApplicationDbContext context) {
+            // TODO Figure out if this works
+            // TODO Should we be checking to see if it's the most recent version? (only necesary if we don't enforce always increasing)
+            entity.Mod.Latest = entity;
+        }
+
         public class ModConfiguration : IEntityTypeConfiguration<Mod> {
 
             public void Configure(EntityTypeBuilder<Mod> builder) {
@@ -55,13 +65,6 @@ namespace Disunity.Store.Areas.Mods.Models {
                     .WithOne(v => v.Mod);
             }
 
-        }
-
-        [OnBeforeCreate(typeof(ModVersion))]
-        public static void OnBeforeCreateModVersion(ModVersion entity, ApplicationDbContext context) {
-            // TODO Figure out if this works
-            // TODO Should we be checking to see if it's the most recent version? (only necesary if we don't enforce always increasing)
-            entity.Mod.Latest = entity;
         }
 
     }

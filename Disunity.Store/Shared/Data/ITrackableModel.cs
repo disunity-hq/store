@@ -1,5 +1,6 @@
 using System;
 
+
 namespace Disunity.Store.Shared.Data {
 
     public interface ITrackableModel {

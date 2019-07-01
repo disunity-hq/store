@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace Disunity.Store.Pages {
 
     public class IndexModel : PageModel {

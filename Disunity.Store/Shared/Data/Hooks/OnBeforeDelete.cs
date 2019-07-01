@@ -1,5 +1,6 @@
 using System;
 
+
 namespace Disunity.Store.Shared.Data.Hooks {
 
     public class OnBeforeDelete : DbHookAttribute {
@@ -15,7 +16,6 @@ namespace Disunity.Store.Shared.Data.Hooks {
         /// If left empty, the type of the model class will be assumed.
         /// </param>
         public OnBeforeDelete(params Type[] entityTypes) : base(entityTypes) { }
-
 
     }
 

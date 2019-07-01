@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using System.Net;
+
 using Disunity.Store.Shared.Startup;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Disunity.Store.Shared.Archive {
 
@@ -18,6 +21,7 @@ namespace Disunity.Store.Shared.Archive {
         [Factory]
         public static Func<IFormFile, Archive> ArchiveFactory(IServiceProvider services) {
             var archiveFactory = services.GetRequiredService<Func<Stream, Archive>>();
+
             return formFile => {
                 ValidateFormFile(formFile);
                 return archiveFactory(formFile.OpenReadStream());

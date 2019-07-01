@@ -26,8 +26,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.OrgMember)
-    {
+    @foreach (var item in Model.OrgMember) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.User.Id)

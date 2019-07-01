@@ -4,26 +4,30 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Areas.Targets.Models;
 using Disunity.Store.Shared.Data.Hooks;
-using Disunity.Store.Shared.Util;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Npgsql;
+
 
 namespace Disunity.Store.Shared.Data {
 
     public class ApplicationDbContext : IdentityDbContext<UserIdentity> {
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<ApplicationDbContext> _logger;
         private readonly HookManagerContainer _hooks;
+        private readonly ILogger<ApplicationDbContext> _logger;
+
+        private readonly IServiceProvider _serviceProvider;
 
         static ApplicationDbContext() {
             NpgsqlConnection.GlobalTypeMapper.MapEnum<OrgMemberRole>();
@@ -48,22 +52,6 @@ namespace Disunity.Store.Shared.Data {
 
         public DbSet<Target> Targets { get; set; }
         public DbSet<TargetVersion> TargetVersions { get; set; }
-
-        private class SavedChanges {
-
-            public IList<EntityEntry> Added { get; }
-            public IList<EntityEntry> Modified { get; }
-            public IList<EntityEntry> Deleted { get; }
-            public IList<EntityEntry> Saved { get; }
-
-            public SavedChanges() {
-                Added = new List<EntityEntry>();
-                Modified = new List<EntityEntry>();
-                Deleted = new List<EntityEntry>();
-                Saved = new List<EntityEntry>();
-            }
-
-        }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
@@ -153,6 +141,22 @@ namespace Disunity.Store.Shared.Data {
             foreach (var entity in changes.Saved) {
                 _hooks.OnAfterSave.ExecuteForEntity(this, entity);
             }
+        }
+
+        private class SavedChanges {
+
+            public SavedChanges() {
+                Added = new List<EntityEntry>();
+                Modified = new List<EntityEntry>();
+                Deleted = new List<EntityEntry>();
+                Saved = new List<EntityEntry>();
+            }
+
+            public IList<EntityEntry> Added { get; }
+            public IList<EntityEntry> Modified { get; }
+            public IList<EntityEntry> Deleted { get; }
+            public IList<EntityEntry> Saved { get; }
+
         }
 
     }

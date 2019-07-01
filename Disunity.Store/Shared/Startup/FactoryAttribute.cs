@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -19,6 +20,7 @@ namespace Disunity.Store.Shared.Startup {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
             var searchType = typeof(ServiceCollectionServiceExtensions);
             var methods = searchType.GetMethods(flags);
+
             return (from m in methods
                     where m.Name == "AddSingleton" &&
                           m.GetGenericArguments().Length == 1 &&
