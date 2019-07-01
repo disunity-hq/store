@@ -1,19 +1,20 @@
 import * as ejs from '@vendor/ejs';
 
-import ManifestReport from './reports/ManifestSchemaException.html';
-import UnauthorizedReport from './reports/Unauthorized.html';
-
+import ManifestSchemaReport from './ManifestSchemaReport';
+import UnauthorizedReport from './UnauthorizedReport';
+import IErrorReport from './IErrorReport';
 
 export default class ErrorReporter {
 
     private container: JQuery<HTMLElement>;
-    private reportMap = new Map<string, ejs.TemplateFunction>([
-        ["Unauthorized", ejs.compile(UnauthorizedReport)],
-        ["ManifestSchemaException", ejs.compile(ManifestReport)],
-    ]);
+    private reportMap: Map<string, IErrorReport>;
 
     constructor(selector: string) {
         this.container = jQuery(selector);
+        this.reportMap = new Map<string, IErrorReport>([
+            ["Unauthorized", new UnauthorizedReport(this.container)],
+            ["ManifestSchemaException", new ManifestSchemaReport(this.container)],
+        ]);
     }
 
     public Empty() {
@@ -21,13 +22,11 @@ export default class ErrorReporter {
     }
 
     public Set(exception) {
-        this.Empty();
-        
-        var reporter = this.reportMap[exception.type];
+        console.log("ErrorReporter sent exception");
+        var reporter = this.reportMap.get(exception.type);
 
         if (reporter) {
-            var report = reporter(exception);
-            this.container.html(report);
+            reporter.ReportException(exception);
         } else {
             console.log(`Unknown error type: ${exception.type}`);
         }
