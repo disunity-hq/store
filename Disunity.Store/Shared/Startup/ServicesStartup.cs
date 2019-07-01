@@ -1,3 +1,6 @@
+using System.Net;
+using System.Threading.Tasks;
+
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Shared.Data;
 
@@ -67,6 +70,20 @@ namespace Disunity.Store.Shared.Startup {
             services.AddAuthorization(options => {
                 options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
             });
+
+            services.ConfigureApplicationCookie(options => {
+                options.Events.OnRedirectToLogin = ctx => {
+                    if (ctx.Request.Path.StartsWithSegments("/api") &&
+                        ctx.Response.StatusCode == (int) HttpStatusCode.OK) {
+                        ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    } else {
+                        ctx.Response.Redirect(ctx.RedirectUri);
+                    }
+
+                    return Task.FromResult(0);
+                };
+            });
+
         }
 
         public static void ConfigureAntiforgery(IServiceCollection services) {
@@ -83,7 +100,6 @@ namespace Disunity.Store.Shared.Startup {
             var githubClientSecret = configuration.GetValue<string>("Auth:Github:ClientSecret");
             var discordClientId = configuration.GetValue<string>("Auth:Discord:ClientId");
             var discordClientSecret = configuration.GetValue<string>("Auth:Discord:ClientSecret");
-
 
             if (!string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret)) {
                 authenticationBuilder.AddGitHub(options => {
@@ -111,6 +127,7 @@ namespace Disunity.Store.Shared.Startup {
             ConfigureAuthentication(services, configuration);
             ConfigureAntiforgery(services);
             ConfigureRouting(services);
+
         }
 
     }
