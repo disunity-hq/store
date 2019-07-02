@@ -1,14 +1,19 @@
 using System.IO;
 using System.Threading.Tasks;
 
+using Disunity.Store.Pages;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Areas.Mods.Pages {
 
+    [Breadcrumb("Mod upload", FromPage = typeof(IndexModel))]
     public class Upload : PageModel {
 
         private readonly ILogger<Upload> _logger;
