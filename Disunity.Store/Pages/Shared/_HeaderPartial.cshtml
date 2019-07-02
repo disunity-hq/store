@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Mods" asp-page="/Upload">Upload a mod</a>
+                    </li>
                     @if (User.IsInRole("Admin")) {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
