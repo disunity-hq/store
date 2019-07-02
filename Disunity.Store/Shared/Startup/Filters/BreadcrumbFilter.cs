@@ -22,8 +22,12 @@ namespace Disunity.Store.Shared.Startup.Filters {
             var page = context.HandlerInstance as PageModel;
             if (page == null) return;
             var pageType = context.ActionDescriptor.DeclaredModelTypeInfo;
-            var attr = pageType.GetCustomAttributes(typeof(BreadcrumbAttribute)).First() as BreadcrumbAttribute;
-            page.ViewData["ShowBreadcrumbs"] = !attr.Default;
+            var attrs = pageType.GetCustomAttributes(typeof(BreadcrumbAttribute));
+
+            if (attrs.Any() && attrs.First() is BreadcrumbAttribute breadcrumbAttribute) {
+                page.ViewData["ShowBreadcrumbs"] = !breadcrumbAttribute.Default;
+            }
+
             await next();
         }
 
