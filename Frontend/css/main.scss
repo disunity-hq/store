@@ -1,3 +1,10 @@
-@import './custom.scss';
+@import './variables.scss';
+
 @import '~bootstrap/scss/bootstrap';
-@import "./styles.scss";
+
+@import "./global/index.scss";
+@import "./header/index.scss";
+@import "./content/index.scss";
+@import "./footer/index.scss";
+
+@import "./pages/index.scss";

@@ -1,0 +1,14 @@
+.bg-image::after {
+  content: '';
+  background: url(/assets/logo_512x512.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  opacity: 0.08;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
