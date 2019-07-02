@@ -11,7 +11,9 @@
 
     <div class="container" id="content">
         <div id="gutter">
-            <breadcrumb></breadcrumb>
+            @if(ViewData["ShowBreadcrumbs"] is bool showBreadcrumbs && showBreadcrumbs) {
+                <breadcrumb></breadcrumb>
+            }
         </div>
 
         <div id="growler">

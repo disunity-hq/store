@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Disunity.Store.Areas.Identity.Models;
 using Disunity.Store.Shared.Data;
+using Disunity.Store.Shared.Startup.Filters;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -57,11 +58,14 @@ namespace Disunity.Store.Shared.Startup {
         }
 
         public static void ConfigureMvc(IServiceCollection services) {
-            services.AddMvc()
+            services.AddMvc(options => {
+                        options.Filters.Add(new BreadcrumbFilter());
+                    })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .AddRazorPagesOptions(options => {
                         options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
                     })
+                    
                     .AddJsonOptions(options => {
                         // we need this
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
