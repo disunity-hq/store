@@ -105,7 +105,7 @@ namespace Disunity.Store.Shared.Startup {
         }
 
         public static void ConfigureRouting(IServiceCollection services) {
-            services.AddRouting(options => { options.LowercaseUrls = true; });
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddBreadcrumbs(typeof(ServicesStartup).Assembly);
         }
 
@@ -137,11 +137,11 @@ namespace Disunity.Store.Shared.Startup {
             ConfigureFactories(services);
             ConfigureCookiePolicy(services);
             ConfigureDbContext(services, configuration);
+            ConfigureRouting(services);
             ConfigureMvc(services);
             ConfigureAuthorization(services);
             ConfigureAuthentication(services, configuration);
             ConfigureAntiforgery(services);
-            ConfigureRouting(services);
         }
 
     }
