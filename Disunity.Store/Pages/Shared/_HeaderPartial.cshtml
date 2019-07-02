@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
         <div class="container">
-            <a asp-area="" asp-page="/Index">
+            <a id="brand-logo" asp-area="" asp-page="/Index">
                 <img src="~/assets/logo_512x512.png" class="logo" alt="Logo"/>
             </a>
             <a class="navbar-brand" asp-area="" asp-page="/Index">Disunity.io</a>
@@ -21,11 +21,6 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Mods" asp-page="/Upload">Upload a mod</a>
                     </li>
-                    @if (User.IsInRole("Admin")) {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-page="/Index">Admin</a>
-                        </li>
-                    }
                 </ul>
             </div>
         </div>
