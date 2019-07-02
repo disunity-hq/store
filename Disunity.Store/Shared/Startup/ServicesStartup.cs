@@ -20,6 +20,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+using SmartBreadcrumbs;
+using SmartBreadcrumbs.Extensions;
+
 
 namespace Disunity.Store.Shared.Startup {
 
@@ -83,6 +86,7 @@ namespace Disunity.Store.Shared.Startup {
                             type = "Unauthorized",
                             error = "Not authorized.",
                         }, Formatting.Indented);
+
                         await ctx.Response.WriteAsync(body);
                     } else {
                         ctx.Response.Redirect(ctx.RedirectUri);
@@ -98,6 +102,7 @@ namespace Disunity.Store.Shared.Startup {
 
         public static void ConfigureRouting(IServiceCollection services) {
             services.AddRouting(options => { options.LowercaseUrls = true; });
+            services.AddBreadcrumbs(typeof(ServicesStartup).Assembly);
         }
 
         public static void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration) {
@@ -133,7 +138,6 @@ namespace Disunity.Store.Shared.Startup {
             ConfigureAuthentication(services, configuration);
             ConfigureAntiforgery(services);
             ConfigureRouting(services);
-
         }
 
     }

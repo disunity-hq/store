@@ -7,9 +7,12 @@ using Disunity.Store.Shared.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Areas.Admin.Pages.Mods {
 
+    [Breadcrumb("Mods", FromPage = typeof(AdminIndexModel))]
     public class IndexModel : PageModel {
 
         private readonly ApplicationDbContext _context;
