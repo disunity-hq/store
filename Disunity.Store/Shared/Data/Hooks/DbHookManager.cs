@@ -10,15 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
+using Syncfusion.EJ2.Linq;
+
 
 namespace Disunity.Store.Shared.Data.Hooks {
 
     [Binding(BindType.Singleton, typeof(IDbHookManager<>))]
     public class DbHookManager<T> : IDbHookManager<T> where T : DbHookAttribute {
 
-        private readonly IDictionary<DbContext, IDictionary<Type, IList<MethodBase>>> _contextHooks =
-            new Dictionary<DbContext, IDictionary<Type, IList<MethodBase>>>();
+        private class HookMap : Dictionary<Type, IList<MethodBase>> { }
 
+        private readonly IDictionary<DbContext, HookMap> _contextHooks = new Dictionary<DbContext, HookMap>();
         private readonly ILogger<DbHookManager<T>> _logger;
         private readonly IServiceProvider _serviceProvider;
 
@@ -27,53 +29,63 @@ namespace Disunity.Store.Shared.Data.Hooks {
             _serviceProvider = serviceProvider;
         }
 
+        private IEnumerable<Type> DbSetTypesForContext(DbContext context) {
+            return context.GetType()
+                          .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                          .Select(p => p.PropertyType)
+                          .Where(t => t.IsGenericType)
+                          .Where(t => typeof(DbSet<>).IsAssignableFrom(t.GetGenericTypeDefinition()));
+        }
+
+        private void RegisterHandler(HookMap hooks, Type entityType, MethodBase method) {
+            if (!hooks.ContainsKey(entityType)) {
+                hooks.Add(entityType, new List<MethodBase>());
+            }
+
+            hooks[entityType].Add(method);
+
+            _logger.LogDebug(
+                $"Registered {method.Name} to listen for {typeof(T).Name} on {entityType.Name}");
+        }
+
+        private void HandleAttr(HookMap hooks, Type classType, MethodBase method, T hookAttr) {
+            var targetEntityTypes = hookAttr.EntityTypes.Length > 0
+                ? hookAttr.EntityTypes
+                : new[] {classType};
+
+            targetEntityTypes.ForEach(entityType => RegisterHandler(hooks, entityType, method));
+        }
+
+        private void HandleMethod(HookMap hooks, Type classType, MethodBase method) {
+            foreach (var attr in method.GetCustomAttributes(typeof(T))) {
+                HandleAttr(hooks, classType, method, attr as T);
+            }
+
+        }
+
+        private void HandleEntityType(HookMap hooks, Type dbSetType) {
+            var classType = dbSetType.GetGenericArguments()[0];
+
+            for (var derivedType = classType;
+                 derivedType != typeof(object) && derivedType != null;
+                 derivedType = derivedType.BaseType) {
+
+                var staticMethods = derivedType.GetMethods(BindingFlags.Static);
+                foreach (var method in staticMethods) {
+                    HandleMethod(hooks, classType, method);                
+                }
+            }
+        }
+
         public void InitializeForContext(DbContext context) {
-            var hooks = new Dictionary<Type, IList<MethodBase>>();
+            var hooks = new HookMap();
 
             if (!_contextHooks.TryAdd(context, hooks)) {
                 throw new InvalidOperationException("Hook Manager has already been initialized with given context");
             }
 
-            var contextPropsTypes = context.GetType()
-                                           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                           .Select(p => p.PropertyType)
-                                           .Where(t => t.IsGenericType)
-                                           .Where(t => typeof(DbSet<>).IsAssignableFrom(t.GetGenericTypeDefinition()));
-
-            foreach (var prop in contextPropsTypes) {
-                var classType = prop.GetGenericArguments()[0];
-
-                for (var derivedType = classType;
-                     derivedType != typeof(object) && derivedType != null;
-                     derivedType = derivedType.BaseType) {
-                    foreach (var method in derivedType.GetMethods()) {
-                        if (!method.IsStatic) {
-                            continue;
-                        }
-
-                        var methodAttrs = method.GetCustomAttributes(typeof(T));
-
-                        foreach (T hookAttr in methodAttrs) {
-                            var targetEntityTypes = hookAttr.EntityTypes;
-
-                            // Default to containing class if no types specified
-                            if (targetEntityTypes.Length == 0) {
-                                targetEntityTypes = new[] {classType};
-                            }
-
-                            foreach (var entityType in targetEntityTypes) {
-                                if (!hooks.ContainsKey(entityType)) {
-                                    hooks.Add(entityType, new List<MethodBase>());
-                                }
-
-                                hooks[entityType].Add(method);
-
-                                _logger.LogDebug(
-                                    $"Registered {method.Name} to listen for {typeof(T).Name} on {entityType.Name}");
-                            }
-                        }
-                    }
-                }
+            foreach (var dbSetType in DbSetTypesForContext(context)) {
+                HandleEntityType(hooks, dbSetType);
             }
 
             _logger.LogDebug($"Registered {typeof(T).Name} for {hooks.Keys.Count} types");
