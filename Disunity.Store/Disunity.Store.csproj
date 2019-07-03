@@ -24,5 +24,28 @@
         <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.1.0.53" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\ModVersions\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\ModVersions\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\ModVersions\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\ModVersions\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\ModVersions\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\OrgMembers\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\OrgMembers\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\OrgMembers\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\OrgMembers\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\OrgMembers\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Orgs\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Index.cshtml" />
+    </ItemGroup>
+
 
 </Project>
