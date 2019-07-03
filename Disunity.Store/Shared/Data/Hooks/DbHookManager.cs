@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Disunity.Store.Shared.Extensions;
 using Disunity.Store.Shared.Startup;
 using Disunity.Store.Shared.Util;
 
@@ -27,14 +28,6 @@ namespace Disunity.Store.Shared.Data.Hooks {
         public DbHookManager(ILogger<DbHookManager<T>> logger, IServiceProvider serviceProvider) {
             _logger = logger;
             _serviceProvider = serviceProvider;
-        }
-
-        private IEnumerable<Type> DbSetTypesForContext(DbContext context) {
-            return context.GetType()
-                          .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                          .Select(p => p.PropertyType)
-                          .Where(t => t.IsGenericType)
-                          .Where(t => typeof(DbSet<>).IsAssignableFrom(t.GetGenericTypeDefinition()));
         }
 
         private void RegisterHandler(HookMap hooks, Type entityType, MethodBase method) {
@@ -86,7 +79,7 @@ namespace Disunity.Store.Shared.Data.Hooks {
                 throw new InvalidOperationException("Hook Manager has already been initialized with given context");
             }
 
-            foreach (var dbSetType in DbSetTypesForContext(context)) {
+            foreach (var dbSetType in context.DbSetTypes()) {
                 HandleEntityType(hooks, dbSetType);
             }
 
