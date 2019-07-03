@@ -24,19 +24,14 @@ namespace Disunity.Store.Shared.Data {
         private readonly HookManagerContainer _hooks;
         private readonly ILogger<ApplicationDbContext> _logger;
 
-        private readonly IServiceProvider _serviceProvider;
-
         static ApplicationDbContext() {
             NpgsqlConnection.GlobalTypeMapper.MapEnum<OrgMemberRole>();
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IServiceProvider serviceProvider,
-                                    HookManagerContainer hooks)
-            : base(options) {
-            _serviceProvider = serviceProvider;
-            _hooks = hooks;
-            _logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+                                    HookManagerContainer hooks) : base(options) {
 
+            _hooks = hooks;
             _hooks.InitializeForAll(this);
         }
 
@@ -52,108 +47,24 @@ namespace Disunity.Store.Shared.Data {
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
             builder.ForNpgsqlHasEnum<OrgMemberRole>();
-
-            // Configure all models
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess) {
-            var savedChanges = OnBeforeSave();
+            var savedChanges = _hooks.BeforeSave(this);
             var changes = base.SaveChanges(acceptAllChangesOnSuccess);
-            OnAfterSave(savedChanges);
+            _hooks.AfterSave(this, savedChanges);
             return changes;
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
                                                          CancellationToken cancellationToken =
                                                              default(CancellationToken)) {
-            var savedChanges = OnBeforeSave();
+            var savedChanges = _hooks.BeforeSave(this);
             var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            OnAfterSave(savedChanges);
+            _hooks.AfterSave(this, savedChanges);
             return changes;
-        }
-
-        private SavedChanges OnBeforeSave() {
-            var changes = new SavedChanges();
-            var handledModels = new HashSet<object>();
-            int prevHandledCount;
-
-            do {
-                prevHandledCount = handledModels.Count;
-                var entries = ChangeTracker.Entries().ToList();
-
-                foreach (var entry in entries) {
-                    if (handledModels.Contains(entry.Entity)) {
-                        continue; // already processed this entity, skip it
-                    }
-
-                    handledModels.Add(entry.Entity);
-
-                    switch (entry.State) {
-                        case EntityState.Deleted:
-                            _hooks.OnBeforeDelete.ExecuteForEntity(this, entry);
-                            changes.Deleted.Add(entry);
-                            break;
-
-                        case EntityState.Modified:
-                            _hooks.OnBeforeUpdate.ExecuteForEntity(this, entry);
-                            changes.Modified.Add(entry);
-                            break;
-
-                        case EntityState.Added:
-                            _hooks.OnBeforeCreate.ExecuteForEntity(this, entry);
-                            changes.Added.Add(entry);
-                            break;
-                    }
-
-                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
-                        _hooks.OnBeforeSave.ExecuteForEntity(this, entry);
-                        changes.Saved.Add(entry);
-                    }
-                }
-            } while (handledModels.Count != prevHandledCount);
-
-
-            return changes;
-        }
-
-        private void OnAfterSave(SavedChanges changes) {
-            foreach (var entity in changes.Added) {
-                _hooks.OnAfterCreate.ExecuteForEntity(this, entity);
-            }
-
-            foreach (var entity in changes.Modified) {
-                _hooks.OnAfterUpdate.ExecuteForEntity(this, entity);
-            }
-
-            foreach (var entity in changes.Deleted) {
-                _hooks.OnAfterDelete.ExecuteForEntity(this, entity);
-            }
-
-            foreach (var entity in changes.Saved) {
-                _hooks.OnAfterSave.ExecuteForEntity(this, entity);
-            }
-        }
-
-        private class SavedChanges {
-
-            public SavedChanges() {
-                Added = new List<EntityEntry>();
-                Modified = new List<EntityEntry>();
-                Deleted = new List<EntityEntry>();
-                Saved = new List<EntityEntry>();
-            }
-
-            public IList<EntityEntry> Added { get; }
-            public IList<EntityEntry> Modified { get; }
-            public IList<EntityEntry> Deleted { get; }
-            public IList<EntityEntry> Saved { get; }
-
         }
 
     }

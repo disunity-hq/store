@@ -12,11 +12,11 @@ namespace Disunity.Store.Shared.Data {
     public static class SeedData {
 
         public static void Initialize(IServiceProvider serviceProvider) {
-            using (var context = new ApplicationDbContext(
-                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>(),
-                serviceProvider,
-                serviceProvider.GetRequiredService<HookManagerContainer>())) {
-//                // check if db has rows
+            var dbOptions = serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>();
+            var hookManager = serviceProvider.GetRequiredService<HookManagerContainer>();
+
+            using (var context = new ApplicationDbContext(dbOptions, hookManager)) {
+                // check if db has rows
                 if (context.Mods.Any()) {
                     return; // db has been seeded already, skip
                 }

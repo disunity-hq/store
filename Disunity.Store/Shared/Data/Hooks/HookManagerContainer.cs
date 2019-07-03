@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using Disunity.Store.Shared.Startup;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 namespace Disunity.Store.Shared.Data.Hooks {
@@ -45,6 +49,84 @@ namespace Disunity.Store.Shared.Data.Hooks {
             OnAfterSave.InitializeForContext(context);
             OnAfterDelete.InitializeForContext(context);
         }
+        
+        public SavedChanges BeforeSave(ApplicationDbContext dbContext) {
+            var changes = new SavedChanges();
+            var handledModels = new HashSet<object>();
+            int prevHandledCount;
+
+            do {
+                prevHandledCount = handledModels.Count;
+                var entries = dbContext.ChangeTracker.Entries().ToList();
+
+                foreach (var entry in entries) {
+                    if (handledModels.Contains(entry.Entity)) {
+                        continue; // already processed dbContext entity, skip it
+                    }
+
+                    handledModels.Add(entry.Entity);
+
+                    switch (entry.State) {
+                        case EntityState.Deleted:
+                            OnBeforeDelete.ExecuteForEntity(dbContext, entry);
+                            changes.Deleted.Add(entry);
+                            break;
+
+                        case EntityState.Modified:
+                            OnBeforeUpdate.ExecuteForEntity(dbContext, entry);
+                            changes.Modified.Add(entry);
+                            break;
+
+                        case EntityState.Added:
+                            OnBeforeCreate.ExecuteForEntity(dbContext, entry);
+                            changes.Added.Add(entry);
+                            break;
+                    }
+
+                    if (entry.State == EntityState.Added || entry.State == EntityState.Modified) {
+                        OnBeforeSave.ExecuteForEntity(dbContext, entry);
+                        changes.Saved.Add(entry);
+                    }
+                }
+            } while (handledModels.Count != prevHandledCount);
+
+
+            return changes;
+        }
+
+        public void AfterSave(ApplicationDbContext dbContext, SavedChanges changes) {
+            foreach (var entity in changes.Added) {
+                OnAfterCreate.ExecuteForEntity(dbContext, entity);
+            }
+
+            foreach (var entity in changes.Modified) {
+                OnAfterUpdate.ExecuteForEntity(dbContext, entity);
+            }
+
+            foreach (var entity in changes.Deleted) {
+                OnAfterDelete.ExecuteForEntity(dbContext, entity);
+            }
+
+            foreach (var entity in changes.Saved) {
+                OnAfterSave.ExecuteForEntity(dbContext, entity);
+            }
+        }
+
+        public class SavedChanges {
+
+            public SavedChanges() {
+                Added = new List<EntityEntry>();
+                Modified = new List<EntityEntry>();
+                Deleted = new List<EntityEntry>();
+                Saved = new List<EntityEntry>();
+            }
+
+            public IList<EntityEntry> Added { get; }
+            public IList<EntityEntry> Modified { get; }
+            public IList<EntityEntry> Deleted { get; }
+            public IList<EntityEntry> Saved { get; }
+
+        }        
 
     }
 
