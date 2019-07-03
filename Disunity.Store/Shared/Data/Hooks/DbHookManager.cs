@@ -70,9 +70,11 @@ namespace Disunity.Store.Shared.Data.Hooks {
                  derivedType != typeof(object) && derivedType != null;
                  derivedType = derivedType.BaseType) {
 
-                var staticMethods = derivedType.GetMethods(BindingFlags.Static);
+                var staticMethods =
+                    derivedType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
                 foreach (var method in staticMethods) {
-                    HandleMethod(hooks, classType, method);                
+                    HandleMethod(hooks, classType, method);
                 }
             }
         }

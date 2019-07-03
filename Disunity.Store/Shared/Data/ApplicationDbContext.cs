@@ -24,10 +24,12 @@ namespace Disunity.Store.Shared.Data {
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-                                    HookManagerContainer hooks) : base(options) {
+                                    HookManagerContainer hooks,
+                                    ILogger<ApplicationDbContext> logger) : base(options) {
 
             _hooks = hooks;
             _hooks.InitializeForAll(this);
+            _logger = logger;
         }
 
         public DbSet<Org> Orgs { get; set; }
