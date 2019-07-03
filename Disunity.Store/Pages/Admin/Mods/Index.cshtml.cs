@@ -12,7 +12,7 @@ using SmartBreadcrumbs.Attributes;
 
 namespace Disunity.Store.Pages.Admin.Mods {
 
-    [Breadcrumb("Mods", FromPage = typeof(AdminIndexModel))]
+    [Breadcrumb("Mods", FromPage = typeof(Disunity.Store.Pages.Admin.IndexModel))]
     public class IndexModel : PageModel {
 
         private readonly ApplicationDbContext _context;

@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SmartBreadcrumbs.Attributes;
 
 
-namespace Disunity.Store.Pages {
+namespace Disunity.Store.Pages.Admin {
 
-    [Breadcrumb("Admin", FromPage = typeof(IndexModel))]
-    public class AdminIndexModel : PageModel {
+    [Breadcrumb("Admin", FromPage = typeof(Disunity.Store.Pages.IndexModel))]
+    public class IndexModel : PageModel {
 
         public void OnGet() { }
 
