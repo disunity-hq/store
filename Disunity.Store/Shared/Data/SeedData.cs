@@ -10,22 +10,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Data {
 
-    public static class SeedData {
+    public class SeedData {
 
-        public static void Initialize(IServiceProvider serviceProvider) {
-            var dbOptions = serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>();
-            var hookManager = serviceProvider.GetRequiredService<HookManagerContainer>();
-            var logger = serviceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+        public SeedData(ApplicationDbContext dbContext, ILogger<SeedData> logger) {
 
-            using (var context = new ApplicationDbContext(dbOptions, hookManager, logger)) {
-                // check if db has rows
-                if (context.Mods.Any()) {
-                    return; // db has been seeded already, skip
-                }
 
-                // TODO put seed data here
-                context.SaveChanges();
+            if (dbContext.Mods.Any()) {
+                logger.LogInformation("Database already seeded. Skipping.");
+                return; // db has been seeded already, skip
             }
+
+            logger.LogInformation("Seeding database.");
+            // TODO put seed data here
+            dbContext.SaveChanges();
+            logger.LogInformation("Database seeded.");
+            
         }
 
     }

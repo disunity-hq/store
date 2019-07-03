@@ -55,6 +55,8 @@ namespace Disunity.Store.Shared.Startup {
                     .AddRoles<IdentityRole>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<SeedData>();
         }
 
         public static void ConfigureMvc(IServiceCollection services) {
