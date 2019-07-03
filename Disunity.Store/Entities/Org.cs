@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using Disunity.Store.Areas.Identity.Models;
-using Disunity.Store.Areas.Mods.Models;
 using Disunity.Store.Shared.Data;
 using Disunity.Store.Shared.Data.Hooks;
 
@@ -10,7 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Disunity.Store.Areas.Orgs.Models {
+namespace Disunity.Store.Entities {
 
     public class Org : TrackableModel {
 

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-using Disunity.Store.Areas.Identity.Models;
+using Disunity.Store.Entities;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

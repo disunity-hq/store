@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-using Disunity.Store.Areas.Identity.Models;
+using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
 using Disunity.Store.Shared.Startup.Filters;
 
@@ -62,9 +62,9 @@ namespace Disunity.Store.Shared.Startup {
                         options.Filters.Add(new BreadcrumbFilter());
                     })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                    .AddRazorPagesOptions(options => {
-                        options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
-                    })
+//                    .AddRazorPagesOptions(options => {
+//                        options.Conventions.AuthorizeFolder("/Admin", "IsAdmin");
+//                    })
                     
                     .AddJsonOptions(options => {
                         // we need this

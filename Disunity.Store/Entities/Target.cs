@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Disunity.Store.Areas.Targets.Models {
+namespace Disunity.Store.Entities {
 
     public class Target {
 

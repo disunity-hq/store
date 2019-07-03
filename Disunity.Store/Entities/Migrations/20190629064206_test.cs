@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
 
-namespace Disunity.Store.Shared.Migrations {
+namespace Disunity.Store.Entities.Migrations {
 
     public partial class test : Migration {
 

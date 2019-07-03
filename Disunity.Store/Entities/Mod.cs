@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Shared.Data;
 using Disunity.Store.Shared.Data.Hooks;
 
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Disunity.Store.Areas.Mods.Models {
+namespace Disunity.Store.Entities {
 
     public class Mod : TrackableModel {
 

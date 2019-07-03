@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Disunity.Store.Areas.Mods.Models {
+namespace Disunity.Store.Entities {
 
     public class ModVersion : TrackableModel {
 

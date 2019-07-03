@@ -1,6 +1,5 @@
 ﻿using System;
 
-using Disunity.Store.Areas.Orgs.Models;
 using Disunity.Store.Shared.Data;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 
-namespace Disunity.Store.Shared.Migrations {
+namespace Disunity.Store.Entities.Migrations {
 
     [DbContext(typeof(ApplicationDbContext))]
     internal partial class ApplicationDbContextModelSnapshot : ModelSnapshot {

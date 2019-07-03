@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-using Disunity.Store.Areas.Mods.Models;
+using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Mvc;

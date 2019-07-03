@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-using Disunity.Store.Areas.Mods.Pages;
+using Disunity.Store.Pages.Mods;
 using Disunity.Store.Shared.Archive;
 
 using Microsoft.AspNetCore.Authorization;

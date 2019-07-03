@@ -45,6 +45,11 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Users\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Mods\Pages\Upload.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages\Orgs" />
     </ItemGroup>
 
 

@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 
-using Disunity.Store.Areas.Orgs.Models;
-
 using Microsoft.AspNetCore.Identity;
 
 
-namespace Disunity.Store.Areas.Identity.Models {
+namespace Disunity.Store.Entities {
 
     public class UserIdentity : IdentityUser {
 

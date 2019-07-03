@@ -1,8 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using Disunity.Store.Pages;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using SmartBreadcrumbs.Attributes;
 
 
-namespace Disunity.Store.Areas.Mods.Pages {
+namespace Disunity.Store.Pages.Mods {
 
     [Breadcrumb("Mod upload", FromPage = typeof(IndexModel))]
     public class Upload : PageModel {

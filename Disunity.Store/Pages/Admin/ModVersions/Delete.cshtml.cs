@@ -1,15 +1,18 @@
 using System.Threading.Tasks;
 
-using Disunity.Store.Areas.Mods.Models;
+using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Pages.Admin.ModVersions {
 
+    [Breadcrumb("Delete", FromPage = typeof(IndexModel))]
     public class DeleteModel : PageModel {
 
         private readonly ApplicationDbContext _context;

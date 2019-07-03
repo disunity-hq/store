@@ -1,13 +1,11 @@
 ﻿using System;
 
-using Disunity.Store.Areas.Orgs.Models;
-
 using Microsoft.EntityFrameworkCore.Migrations;
 
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 
-namespace Disunity.Store.Shared.Migrations {
+namespace Disunity.Store.Entities.Migrations {
 
     public partial class Initial : Migration {
 

@@ -1,14 +1,17 @@
 using System.Threading.Tasks;
 
-using Disunity.Store.Areas.Identity.Models;
+using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Pages.Admin.Users {
 
+    [Breadcrumb("Create", FromPage = typeof(IndexModel))]
     public class CreateModel : PageModel {
 
         private readonly ApplicationDbContext _context;
