@@ -9,11 +9,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Pages.Admin.Mods {
 
+    [Breadcrumb("Edit", FromPage = typeof(IndexModel))]
     public class EditModel : PageModel {
 
+        
         private readonly ApplicationDbContext _context;
 
         public EditModel(ApplicationDbContext context) {

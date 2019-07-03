@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Pages.Admin.Mods {
-
+    
+    [Breadcrumb("Create", FromPage = typeof(IndexModel))]
     public class CreateModel : PageModel {
 
         private readonly ApplicationDbContext _context;

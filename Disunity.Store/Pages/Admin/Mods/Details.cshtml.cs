@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
+using SmartBreadcrumbs.Attributes;
+
 
 namespace Disunity.Store.Pages.Admin.Mods {
 
+    [Breadcrumb("Detail", FromPage = typeof(IndexModel))]
     public class DetailsModel : PageModel {
 
         private readonly ApplicationDbContext _context;
