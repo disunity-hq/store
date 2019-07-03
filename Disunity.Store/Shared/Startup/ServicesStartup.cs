@@ -56,7 +56,7 @@ namespace Disunity.Store.Shared.Startup {
                     .AddDefaultUI(UIFramework.Bootstrap4)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped<SeedData>();
+            services.AddScoped<DbSeeder>();
         }
 
         public static void ConfigureMvc(IServiceCollection services) {

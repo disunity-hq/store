@@ -77,7 +77,7 @@ namespace Disunity.Store.Shared.Startup {
                     dbContext.Database.Migrate();
                 }
 
-                services.GetRequiredService<SeedData>();
+                services.GetRequiredService<DbSeeder>();
             }
             catch (Exception ex) {
                 var logger = services.GetRequiredService<ILogger<Startup>>();

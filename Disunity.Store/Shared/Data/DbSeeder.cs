@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Data {
 
-    public class SeedData {
+    public class DbSeeder {
 
-        public SeedData(ApplicationDbContext dbContext, ILogger<SeedData> logger) {
+        public DbSeeder(ApplicationDbContext dbContext, ILogger<DbSeeder> logger) {
 
 
             if (dbContext.Mods.Any()) {
