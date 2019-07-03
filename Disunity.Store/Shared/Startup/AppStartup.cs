@@ -2,10 +2,12 @@ using System;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,8 @@ namespace Disunity.Store.Shared.Startup {
                                    IServiceProvider services) {
             // Register Syncfusion license
             SyncfusionLicenseProvider.RegisterLicense(config["Syncfusion:License"]);
+
+            DatabaseStartup(config, env, services);
 
             EnvironmentStartup(app, env, services);
 
@@ -60,6 +64,24 @@ namespace Disunity.Store.Shared.Startup {
                 DevelopmentStartup(app, env, services);
             } else {
                 ProductionStartup(app, env, services);
+            }
+        }
+
+        public static void DatabaseStartup(IConfiguration config,
+                                           IHostingEnvironment env,
+                                           IServiceProvider services) {
+            var dbContext = services.GetRequiredService<ApplicationDbContext>();
+
+            try {
+                if (config.GetValue("Database.MigrateOnStartup", env.IsDevelopment())) {
+                    dbContext.Database.Migrate();
+                }
+
+                SeedData.Initialize(services);
+            }
+            catch (Exception ex) {
+                var logger = services.GetRequiredService<ILogger<Startup>>();
+                logger.LogError(ex, "An error occurred seeding the DB.");
             }
         }
 

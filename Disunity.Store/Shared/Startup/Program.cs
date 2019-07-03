@@ -15,23 +15,7 @@ namespace Disunity.Store.Shared.Startup {
     public class Program {
 
         public static void Main(string[] args) {
-            var host = CreateWebHostBuilder(args).Build();
-
-            using (var scope = host.Services.CreateScope()) {
-                var services = scope.ServiceProvider;
-
-                try {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    context.Database.Migrate(); // probably don't do this in production
-                    SeedData.Initialize(services);
-                }
-                catch (Exception ex) {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
-            }
-
-            host.Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
