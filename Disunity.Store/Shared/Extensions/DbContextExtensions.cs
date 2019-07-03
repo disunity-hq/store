@@ -16,7 +16,11 @@ namespace Disunity.Store.Shared.Extensions {
                           .Select(p => p.PropertyType)
                           .Where(t => t.IsGenericType)
                           .Where(t => typeof(DbSet<>).IsAssignableFrom(t.GetGenericTypeDefinition()));
-        }    
+        }
+
+        public static IEnumerable<Type> DbEntityTypes(this DbContext context) {
+            return context.DbSetTypes().Select(t => t.GetGenericArguments()[0]);
+        }
 
     }
 

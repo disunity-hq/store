@@ -56,18 +56,17 @@ namespace Disunity.Store.Shared.Data.Hooks {
 
         }
 
-        private void HandleEntityType(HookMap hooks, Type dbSetType) {
-            var classType = dbSetType.GetGenericArguments()[0];
-
-            for (var derivedType = classType;
+        private void HandleEntityType(HookMap hooks, Type entityType) {
+            for (var derivedType = entityType;
                  derivedType != typeof(object) && derivedType != null;
                  derivedType = derivedType.BaseType) {
 
-                var staticMethods =
-                    derivedType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                var staticMethods = derivedType.GetMethods(BindingFlags.Static | 
+                                                           BindingFlags.Public | 
+                                                           BindingFlags.NonPublic);
 
                 foreach (var method in staticMethods) {
-                    HandleMethod(hooks, classType, method);
+                    HandleMethod(hooks, entityType, method);
                 }
             }
         }
@@ -79,8 +78,8 @@ namespace Disunity.Store.Shared.Data.Hooks {
                 throw new InvalidOperationException("Hook Manager has already been initialized with given context");
             }
 
-            foreach (var dbSetType in context.DbSetTypes()) {
-                HandleEntityType(hooks, dbSetType);
+            foreach (var entityType in context.DbEntityTypes()) {
+                HandleEntityType(hooks, entityType);
             }
 
             _logger.LogDebug($"Registered {typeof(T).Name} for {hooks.Keys.Count} types");
