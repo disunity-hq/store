@@ -24,7 +24,9 @@ namespace Disunity.Store.Shared.Startup {
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider) {
-            AppStartup.Startup(Configuration, app, env, serviceProvider);
+            var appLogger = serviceProvider.GetRequiredService<ILogger<AppStartup>>();
+            var appStartup = new AppStartup(Configuration, appLogger, app, env, serviceProvider);
+            appStartup.Startup();
         }
 
     }
