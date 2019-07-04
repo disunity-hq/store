@@ -1,7 +1,8 @@
-using System;
+using System.Collections.Generic;
+
+using Disunity.Store.Shared.Startup.Services;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,22 +12,23 @@ namespace Disunity.Store.Shared.Startup {
 
     public class Startup {
 
-        public Startup(ILoggerFactory logFactory, IConfiguration configuration) {
-            Logger = logFactory.CreateLogger<Startup>();
-            Configuration = configuration;
+        public Startup(ILoggerFactory logFactory, IConfiguration config) {
+            _logger = logFactory.CreateLogger<Startup>();
+            _config = config;
         }
 
-        public IConfiguration Configuration { get; }
-        public ILogger Logger { get; protected set; }
+        private IConfiguration _config { get; }
+        private ILogger _logger { get; set; }
 
         public void ConfigureServices(IServiceCollection services) {
-            ServicesStartup.ConfigureServices(services, Configuration, Logger);
+            ServicesStartup.ConfigureServices(services, _config, _logger);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider) {
-            var appLogger = serviceProvider.GetRequiredService<ILogger<AppStartup>>();
-            var appStartup = new AppStartup(Configuration, appLogger, app, env, serviceProvider);
-            appStartup.Startup();
+        public void Configure(IApplicationBuilder app, IEnumerable<IStartupService> startupServices) {
+            foreach (var startupService in startupServices) {
+                _logger.LogWarning($"Starting service: {startupService.GetType().Name}");
+                startupService.Startup(app);
+            }
         }
 
     }

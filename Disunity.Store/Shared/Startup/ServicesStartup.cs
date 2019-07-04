@@ -1,7 +1,4 @@
-using System;
-using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
@@ -21,7 +18,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-using SmartBreadcrumbs;
 using SmartBreadcrumbs.Extensions;
 
 
@@ -58,14 +54,11 @@ namespace Disunity.Store.Shared.Startup {
         }
 
         public static void ConfigureMvc(IServiceCollection services) {
-            services.AddMvc(options => {
-                        options.Filters.Add(new BreadcrumbFilter());
-                    })
+            services.AddMvc(options => { options.Filters.Add(new BreadcrumbFilter()); })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
 //                    .AddRazorPagesOptions(options => {
 //                        options.Conventions.AuthorizeFolder("/Admin", "IsAdmin");
 //                    })
-                    
                     .AddJsonOptions(options => {
                         // we need this
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());

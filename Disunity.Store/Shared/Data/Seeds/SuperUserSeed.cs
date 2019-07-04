@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Startup;
@@ -11,33 +12,30 @@ using Microsoft.Extensions.Logging;
 namespace Disunity.Store.Shared.Data.Seeds {
 
     [AsScoped]
-    public class SuperUserSeed {
+    public class SuperUserSeed : ISeeder {
 
         private readonly ILogger<SuperUserSeed> _logger;
         private readonly IConfiguration _config;
         private readonly UserManager<UserIdentity> _userManager;
+        private readonly ApplicationDbContext _dbContext;
 
-        public SuperUserSeed(ApplicationDbContext dbContext,
-                             IConfiguration config,
+        public SuperUserSeed(IConfiguration config,
                              ILogger<SuperUserSeed> logger,
-                             UserManager<UserIdentity> userManager) {
+                             UserManager<UserIdentity> userManager,
+                             ApplicationDbContext dbContext) {
 
 
             _logger = logger;
             _config = config;
             _userManager = userManager;
-
-            if (dbContext.Users.Any()) {
-                _logger.LogInformation("Skipping.");
-            } else {
-                _logger.LogInformation("Seeding.");
-                Seed();
-                _logger.LogInformation("Seeded.");
-            }
-
+            _dbContext = dbContext;
         }
 
-        private async void Seed() {
+        public bool ShouldSeed() {
+            return _dbContext.Users.Any();
+        }
+
+        public async Task Seed() {
             var password = _config["AdminUser:Password"];
             var emailAddress = _config["AdminUser:Email"];
 

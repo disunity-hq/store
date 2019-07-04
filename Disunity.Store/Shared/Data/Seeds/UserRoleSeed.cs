@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Startup;
@@ -9,31 +10,28 @@ using Microsoft.Extensions.Logging;
 
 
 namespace Disunity.Store.Shared.Data.Seeds {
-    
+
     [AsScoped]
-    public class UserRoleSeed {
+    public class UserRoleSeed : ISeeder {
 
         private readonly ILogger<UserRoleSeed> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _dbContext;
 
-        public UserRoleSeed(ApplicationDbContext dbContext,
-                             RoleManager<IdentityRole> roleManager,
-                             ILogger<UserRoleSeed> logger) {
+        public UserRoleSeed(ILogger<UserRoleSeed> logger,
+                            RoleManager<IdentityRole> roleManager,
+                            ApplicationDbContext dbContext) {
 
             _logger = logger;
             _roleManager = roleManager;
-
-            if (dbContext.UserRoles.Any()) {
-                logger.LogInformation("Skipping.");
-            } else {
-                logger.LogInformation("Seeding.");
-                Seed();
-                logger.LogInformation("Seeded.");
-            }
-
+            _dbContext = dbContext;
         }
 
-        private async void Seed() {
+        public bool ShouldSeed() {
+            return _dbContext.UserRoles.Any();
+        }
+
+        public async Task Seed() {
             var roleNames = Enum.GetNames(typeof(UserRoles));
 
             foreach (var roleName in roleNames) {
@@ -45,7 +43,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
                 await _roleManager.CreateAsync(new IdentityRole(roleName));
                 _logger.LogInformation($"Created role: {roleName}");
             }
-            
+
         }
 
     }

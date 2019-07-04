@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -20,7 +19,11 @@ namespace Disunity.Store.Shared.Startup.Filters {
         public async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context,
                                                       PageHandlerExecutionDelegate next) {
             var page = context.HandlerInstance as PageModel;
-            if (page == null) return;
+
+            if (page == null) {
+                return;
+            }
+
             var pageType = context.ActionDescriptor.DeclaredModelTypeInfo;
             var attrs = pageType.GetCustomAttributes(typeof(BreadcrumbAttribute));
 

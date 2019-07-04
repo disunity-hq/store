@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Disunity.Store.Entities;
@@ -13,15 +14,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Syncfusion.EJ2.Linq;
+
 
 namespace Disunity.Store.Shared.Data {
 
     [AsScoped]
     public class DbSeeder {
 
-        public DbSeeder(UserRoleSeed userRoleSeed,
-                        SuperUserSeed superUserSeed) {
-            
+        private readonly IEnumerable<ISeeder> _seeds;
+        
+        public DbSeeder(IEnumerable<ISeeder> seeds) {
+            _seeds = seeds;
+        }
+
+        public async void Seed() {
+            foreach (var seed in _seeds) {
+                if (seed.ShouldSeed()) {
+                    await seed.Seed();
+                }
+            }
         }
     }
 
