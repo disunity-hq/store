@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using Disunity.Store.Shared.Startup.Binders;
 using Disunity.Store.Shared.Startup.Services;
 
 using Microsoft.AspNetCore.Builder;
@@ -12,21 +13,25 @@ namespace Disunity.Store.Shared.Startup {
 
     public class Startup {
 
-        public Startup(ILoggerFactory logFactory, IConfiguration config) {
+        private ILogger _logger { get; set; }
+        private IEnumerable<IStartupBinder> _binders { get; }
+
+
+        public Startup(ILoggerFactory logFactory, IConfiguration config, IEnumerable<IStartupBinder> binders) {
             _logger = logFactory.CreateLogger<Startup>();
-            _config = config;
+            _binders = binders;
         }
 
-        private IConfiguration _config { get; }
-        private ILogger _logger { get; set; }
-
         public void ConfigureServices(IServiceCollection services) {
-            ServicesStartup.ConfigureServices(services, _config, _logger);
+            foreach (var startupBinder in _binders) {
+                _logger.LogInformation($"Starting binder: {startupBinder.GetType().Name}");
+                startupBinder.Bind(services);
+            }
         }
 
         public void Configure(IApplicationBuilder app, IEnumerable<IStartupService> startupServices) {
             foreach (var startupService in startupServices) {
-                _logger.LogWarning($"Starting service: {startupService.GetType().Name}");
+                _logger.LogInformation($"Starting service: {startupService.GetType().Name}");
                 startupService.Startup(app);
             }
         }
