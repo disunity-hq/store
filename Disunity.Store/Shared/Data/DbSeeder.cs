@@ -1,8 +1,12 @@
 using System;
 using System.Linq;
 
+using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data.Hooks;
+using Disunity.Store.Shared.Data.Seeds;
+using Disunity.Store.Shared.Startup;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,23 +14,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Data {
 
+    [AsScoped]
     public class DbSeeder {
 
-        public DbSeeder(ApplicationDbContext dbContext, ILogger<DbSeeder> logger) {
-
-
-            if (dbContext.Mods.Any()) {
-                logger.LogInformation("Database already seeded. Skipping.");
-                return; // db has been seeded already, skip
-            }
-
-            logger.LogInformation("Seeding database.");
-            // TODO put seed data here
-            dbContext.SaveChanges();
-            logger.LogInformation("Database seeded.");
-            
-        }
-
+        public DbSeeder(UserRoleSeed userRoleSeed,
+                        SuperUserSeed superUserSeed) { }
     }
 
 }
