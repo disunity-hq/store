@@ -28,14 +28,14 @@ namespace Disunity.Store.Shared.Startup {
                                                                     .GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<UserIdentity>()
                     .AddRoles<IdentityRole>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddDefaultUI()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         public static void ConfigureMvc(IServiceCollection services) {
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeAreaFolder("Admin", "/", "IsAdmin");
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         public static void ConfigureAuthorization(IServiceCollection services) {

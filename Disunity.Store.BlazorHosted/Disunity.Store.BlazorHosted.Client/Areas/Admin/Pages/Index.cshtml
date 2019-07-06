@@ -1,0 +1,25 @@
+@page
+@model Disunity.Store.Areas.Admin.Pages.Index
+
+@{
+    ViewData["Title"] = "Admin Area";
+}
+
+<h1>Admin Area</h1>
+<h4>Pages</h4>
+<ul>
+    <li>
+        <a asp-page="./Mods/Index">Mods</a>
+    </li>
+    <li>
+        <a asp-page="./ModVersions/Index">ModVersions</a>
+    </li>
+    <li>
+        <a asp-page="./Orgs/Index">Orgs</a>
+    </li>
+    <li>
+        <a asp-page="./OrgMembers/Index">OrgMembers</a>
+    </li> <li>
+        <a asp-page="./Users/Index">Users</a>
+    </li>
+</ul>
