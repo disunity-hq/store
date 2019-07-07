@@ -15,7 +15,7 @@ namespace Disunity.Store.Shared.Startup.Binders {
         public void Bind(IServiceCollection services) {
             services.AddMvc(options => { options.Filters.Add(new BreadcrumbFilter()); })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                    .AddJsonOptions(options => {
+                    .AddNewtonsoftJson(options => {
                         // we need this
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
