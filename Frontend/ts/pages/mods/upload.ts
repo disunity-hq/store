@@ -2,7 +2,7 @@ import { Uploader } from '@syncfusion/ej2-inputs'
 
 import { htmlToElement } from 'utils';
 
-import ErrorReporter from './ErrorReporter';
+import ErrorReporter from 'shared/ErrorReporter';
 
 
 export class ModUploadPage {
@@ -36,6 +36,6 @@ export class ModUploadPage {
     }
 }
 
-export function SetupModUploadPage() {
+export function InitPageScript() {
     return new ModUploadPage();
 }

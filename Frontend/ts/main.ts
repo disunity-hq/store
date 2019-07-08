@@ -6,5 +6,3 @@ import 'jquery-validation-unobtrusive';
 import '../css/main.scss';
 
 export {jQuery};
-
-export * from './mods/uploader';

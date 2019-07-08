@@ -1,11 +1,31 @@
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
-
+const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
+const entries = (() => {
+    const pagesPath = path.join(__dirname, 'ts/pages');
+    console.log(`pagesPath: ${pagesPath}`);
+    var pages = glob.sync(`${pagesPath}/**/*.ts`);
+    return pages.reduce((acc, item) => {
+        var relPath = path.relative(pagesPath, item);
+        var keyName = relPath.replace(/\.[^/.]+$/, "");
+        acc[keyName] = item;
+        return acc;
+    }, {
+        'main': path.join(__dirname, 'ts/main.ts')
+    });
+})();
+
+for (let key in entries) {
+    console.log(key);
+}
 
 module.exports = {
-    entry: path.join(__dirname, 'ts/main.ts'),
+    entry: entries,
     output: {
         path: path.join(__dirname, 'dist'),
         libraryTarget: 'window',

@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = merge.smart(require('./webpack.config'), {
   mode: 'production',
   output: {
-    filename: 'main.bundle.min.js'
+    filename: 'js/[name].min.js'
   },
   optimization: {
     minimize: true,

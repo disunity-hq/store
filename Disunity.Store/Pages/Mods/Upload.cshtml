@@ -2,6 +2,7 @@
 @using Syncfusion.EJ2.Inputs
 @model Disunity.Store.Pages.Mods.Upload
 @addTagHelper *, Syncfusion.EJ2
+@addTagHelper *, Disunity.Store
 
 @{
     var asyncSettings = new UploaderAsyncSettings {
@@ -22,7 +23,5 @@
 <div id="error-report"></div>
 
 @section Scripts {
-    <script>
-        SetupModUploadPage();
-    </script>
+    <page-script />
 }

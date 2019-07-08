@@ -5,7 +5,7 @@ module.exports = merge.smart(require('./webpack.config'), {
   mode: 'development',
   devtool: 'cheap-eval-source-map',
   output: {
-    filename: 'main.bundle.js'
+    filename: 'js/[name].js'
   },
   plugins: [
     new MiniCssExtractPlugin({
