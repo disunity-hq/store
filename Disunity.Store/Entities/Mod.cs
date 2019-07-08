@@ -26,6 +26,8 @@ namespace Disunity.Store.Entities {
 
         [Required] [MaxLength(128)] public string Name { get; set; }
 
+        [Required] [MaxLength(128)] public string Slug { get; set; }
+
         public bool? IsActive { get; set; }
         public bool? IsDeprecated { get; set; }
         public bool? IsPinned { get; set; }
@@ -45,11 +47,16 @@ namespace Disunity.Store.Entities {
         public class ModConfiguration : IEntityTypeConfiguration<Mod> {
 
             public void Configure(EntityTypeBuilder<Mod> builder) {
+                // Set field defaults
                 builder.Property(m => m.IsActive).HasDefaultValue(true);
                 builder.Property(m => m.IsDeprecated).HasDefaultValue(false);
                 builder.Property(m => m.IsPinned).HasDefaultValue(false);
 
-                builder.HasAlternateKey(m => m.Name);
+                // Ensure name is unique with the org
+                builder.HasAlternateKey(m => new {m.OwnerId, m.Name});
+
+                // Ensure slug is unique within the org
+                builder.HasAlternateKey(m => new {m.OwnerId, m.Slug});
 
                 builder
                     .HasOne(m => m.Owner)

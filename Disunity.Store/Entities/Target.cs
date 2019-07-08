@@ -17,6 +17,8 @@ namespace Disunity.Store.Entities {
 
         [Required] [MaxLength(128)] public string Name { get; set; }
 
+        [Required] public string Slug { get; set; }
+
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }
 
         public class TargetConfiguration : IEntityTypeConfiguration<Target> {

@@ -15,6 +15,8 @@ namespace Disunity.Store.Entities {
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public string Slug { get; set; }
+
         public List<OrgMember> Members { get; set; }
 
         public List<Mod> Mods { get; set; }
@@ -36,6 +38,7 @@ namespace Disunity.Store.Entities {
 
             public void Configure(EntityTypeBuilder<Org> builder) {
                 builder.HasAlternateKey(o => o.Name);
+                builder.HasIndex(o => o.Slug).IsUnique();
 
                 builder.HasMany(o => o.Mods)
                        .WithOne(m => m.Owner);

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using Disunity.Store.Shared.Data;
@@ -15,6 +16,9 @@ namespace Disunity.Store.Entities {
         public ModVersion ModVersion { get; set; }
 
         [DataType(DataType.ImageUrl)] public string SourceIp { get; set; }
+
+        // TODO Use UpdatedAt for this field
+        [DataType(DataType.DateTime)] public DateTime LatestDownload { get; set; }
 
         public int? TotalDownloads { get; set; }
         public int? CountedDownloads { get; set; }

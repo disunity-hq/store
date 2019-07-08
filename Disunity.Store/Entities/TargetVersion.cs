@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,6 +17,8 @@ namespace Disunity.Store.Entities {
         [Required] [MaxLength(128)] public string Name { get; set; }
 
         [Required] [MaxLength(16)] public string VersionNumber { get; set; }
+
+        [InverseProperty("Version")] public TargetVersionCompatibility DisunityCompatibility { get; set; }
 
         [Required]
         [MaxLength(1024)]

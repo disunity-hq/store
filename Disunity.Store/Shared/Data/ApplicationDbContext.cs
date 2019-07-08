@@ -36,11 +36,19 @@ namespace Disunity.Store.Shared.Data {
         public DbSet<OrgMember> OrgMembers { get; set; }
 
         public DbSet<Mod> Mods { get; set; }
+        public DbSet<ModDependency> ModDependencies { get; set; }
         public DbSet<ModVersion> ModVersions { get; set; }
         public DbSet<ModVersionDownloadEvent> ModVersionDownloadEvents { get; set; }
+        public DbSet<ModTargetCompatibility> ModTargetCompatibilities { get; set; }
+        public DbSet<ModDisunityCompatibility> ModDisunityCompatibilities { get; set; }
 
         public DbSet<Target> Targets { get; set; }
         public DbSet<TargetVersion> TargetVersions { get; set; }
+        public DbSet<TargetVersionCompatibility> TargetVersionCompatibilities { get; set; }
+
+        public DbSet<DisunityVersion> DisunityVersions { get; set; }
+        public DbSet<DisunityVersionCompatibility> DisunityVersionCompatibilities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);

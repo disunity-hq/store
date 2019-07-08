@@ -27,6 +27,8 @@ namespace Disunity.Store.Entities {
 
         [Required] [MaxLength(256)] public string Description { get; set; }
 
+        [Required] [MaxLength] public string Readme { get; set; }
+
         [MaxLength(1024)]
         [Required]
         [DataType(DataType.Upload)]

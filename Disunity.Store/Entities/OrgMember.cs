@@ -9,6 +9,7 @@ namespace Disunity.Store.Entities {
     public enum OrgMemberRole {
 
         Owner,
+        Admin,
         Member
 
     }
