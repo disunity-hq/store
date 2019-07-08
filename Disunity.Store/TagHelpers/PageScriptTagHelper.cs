@@ -22,26 +22,43 @@ namespace Disunity.Store.TagHelpers {
             _env = env;
             _context = context;
             _logger = logger;
-        }        
+        }
+
+        private string GetSrcForPath(string path) {
+            if (_env.IsDevelopment()) {
+                return $"/js/{path}.js";
+            } else {
+                return $"/js/{path}.min.js";
+            }
+        }
+
+        private async Task<string> GetContentForTag(TagHelperOutput output) {
+            return (await output.GetChildContentAsync()).GetContent().ToLower();
+        }
+
+        private string GetPathForPage() {
+            var page = _context.HttpContext.GetRouteData().Values["page"] as string;
+            return page?.Substring(1, page.Length - 1).ToLower();
+        }
+
+        private string GetAddendum(string path) {
+            return string.IsNullOrEmpty(path) ? "\n<script>InitPageScript();</script>" : "";
+        }
+
+        private string GetContent(string src, string addendum) {
+            return $"<script src=\"{src}\"></script>{addendum}";
+        }
         
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {
-            string path = (await output.GetChildContentAsync()).GetContent().ToLower();
-            string addendum = string.IsNullOrEmpty(path) ? "\n<script>InitPageScript();</script>" : "";
+            var path = await GetContentForTag(output);
+            var addendum = GetAddendum(path); 
 
             if (string.IsNullOrEmpty(path)) {
-                string page = _context.HttpContext.GetRouteData().Values["page"] as string;
-                path = page.Substring(1, page.Length - 1).ToLower();
+                path = GetPathForPage();
             }
-            
-            string src;
-            
-            if (_env.IsDevelopment()) {
-                src = $"/js/{path}.js";
-            } else {
-                src = $"/js/{path}.min.js";
-            }
-            
-            string content = $"<script src=\"{src}\"></script>{addendum}";
+
+            var src = GetSrcForPath(path);
+            var content = GetContent(src, addendum); 
 
             output.TagName = null;
             output.Content.SetHtmlContent(content);
