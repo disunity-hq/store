@@ -1,9 +1,0 @@
-# CShapr build dir
-obj/
-bin/
-
-# useless autogened file
-ScaffoldingReadme.txt
-
-# npm install files
-node_modules/

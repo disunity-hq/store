@@ -1,0 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+
+namespace Disunity.Store.Code.Data.Hooks {
+
+    public interface IDbHookManager<T> where T : DbHookAttribute {
+
+        void InitializeForContext(DbContext context);
+
+        void ExecuteForEntity(DbContext context, EntityEntry entityEntry);
+
+    }
+
+}

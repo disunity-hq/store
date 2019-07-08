@@ -34,8 +34,6 @@ services:
       - cache
     volumes:
       - static-data:/Frontend/dist
-      - ./Disunity.Store/Pages:/app/Pages
-      - ./Disunity.Store/Areas:/app/Areas
 
   db:
     image: postgres:10.4-alpine

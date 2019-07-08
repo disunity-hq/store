@@ -17,7 +17,7 @@ ENTRYPOINT npm run build:Watch -- --output-path /Build
 ##
 ## STAGE: build
 ##
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -36,7 +36,8 @@ RUN dotnet publish -c Release -o out
 ##
 ## STAGE: runtime
 ##
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
+COPY --from=build /root/.nuget /root/.nuget
 COPY --from=build /app/asp/out ./
 ENTRYPOINT ["dotnet", "Disunity.Store.dll"]
