@@ -13,12 +13,13 @@ using Microsoft.Extensions.Logging;
 namespace Disunity.Store.TagHelpers {
 
     public class PageScriptTagHelper : TagHelper {
-        
+
         private readonly IHostingEnvironment _env;
         private readonly IHttpContextAccessor _context;
         private readonly ILogger<PageScriptTagHelper> _logger;
 
-        public PageScriptTagHelper(IHostingEnvironment env, IHttpContextAccessor context, ILogger<PageScriptTagHelper> logger) {
+        public PageScriptTagHelper(IHostingEnvironment env, IHttpContextAccessor context,
+                                   ILogger<PageScriptTagHelper> logger) {
             _env = env;
             _context = context;
             _logger = logger;
@@ -41,24 +42,38 @@ namespace Disunity.Store.TagHelpers {
             return page?.Substring(1, page.Length - 1).ToLower();
         }
 
-        private string GetAddendum(string path) {
-            return string.IsNullOrEmpty(path) ? "\n<script>InitPageScript();</script>" : "";
+        private string GetAddendum(string route) {
+            var template = $@"\n<script>
+
+            try {{
+                InitPageScript();
+            }}
+            catch (error) {{
+                console.error('Page script failed to initialize for {route}\n' + error);
+            }}
+
+            </script>";
+
+            return template;
         }
 
-        private string GetContent(string src, string addendum) {
-            return $"<script src=\"{src}\"></script>{addendum}";
+        private string GetContent(string path) {
+            var src = GetSrcForPath(path);
+            return $"<script src=\"{src}\"></script>";
         }
-        
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {
             var path = await GetContentForTag(output);
-            var addendum = GetAddendum(path); 
+
+            string content;
 
             if (string.IsNullOrEmpty(path)) {
-                path = GetPathForPage();
+                var route = GetPathForPage();
+                var addendum = GetAddendum(route);
+                content = GetContent(route) + addendum;
+            } else {
+                content = GetContent(path);
             }
-
-            var src = GetSrcForPath(path);
-            var content = GetContent(src, addendum); 
 
             output.TagName = null;
             output.Content.SetHtmlContent(content);
