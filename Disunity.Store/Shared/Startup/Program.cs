@@ -23,13 +23,6 @@ namespace Disunity.Store.Shared.Startup {
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             return WebHost.CreateDefaultBuilder(args)
                           .UseWebRoot("../Frontend/dist")
-                          .ConfigureServices(di => {
-                              Assembly
-                                  .GetEntryAssembly()
-                                  ?.GetTypes()
-                                  .Where(t => t.Name.EndsWith("Binder") && t.IsClass)
-                                  .ForEach(t => di.AddSingleton(typeof(IStartupBinder), t));
-                          })
                           .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
                           .ConfigureLogging(f => f.AddConsole().AddDebug())
                           .UseStartup<Startup>();

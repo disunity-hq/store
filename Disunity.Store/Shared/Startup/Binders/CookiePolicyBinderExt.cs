@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class CookiePolicyBinder : IStartupBinder {
+    public static class CookiePolicyBinderExt {
 
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureCookies(this IServiceCollection services) {
             services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;

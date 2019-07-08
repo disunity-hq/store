@@ -10,9 +10,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class MvcBinder : IStartupBinder {
+    public static class MvcBinderExt {
 
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureMvc(this IServiceCollection services) {
             services.AddMvc(options => { options.Filters.Add(new BreadcrumbFilter()); })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .AddJsonOptions(options => {

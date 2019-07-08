@@ -7,9 +7,9 @@ using SmartBreadcrumbs.Extensions;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class RoutingBinder : IStartupBinder {
+    public static class RoutingBinderExt {
 
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureRouting(this IServiceCollection services) {
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddBreadcrumbs(Assembly.GetEntryAssembly());
         }

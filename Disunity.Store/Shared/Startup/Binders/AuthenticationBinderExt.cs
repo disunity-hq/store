@@ -4,20 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class AuthenticationBinder : IStartupBinder {
+    public static class AuthenticationBinderExt {
 
-        private readonly IConfiguration _config;
-
-        public AuthenticationBinder(IConfiguration config) {
-            _config = config;
-        }
-
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration config) {
             var authenticationBuilder = services.AddAuthentication();
-            var githubClientId = _config.GetValue<string>("Auth:Github:ClientId");
-            var githubClientSecret = _config.GetValue<string>("Auth:Github:ClientSecret");
-            var discordClientId = _config.GetValue<string>("Auth:Discord:ClientId");
-            var discordClientSecret = _config.GetValue<string>("Auth:Discord:ClientSecret");
+            var githubClientId = config.GetValue<string>("Auth:Github:ClientId");
+            var githubClientSecret = config.GetValue<string>("Auth:Github:ClientSecret");
+            var discordClientId = config.GetValue<string>("Auth:Discord:ClientId");
+            var discordClientSecret = config.GetValue<string>("Auth:Discord:ClientSecret");
 
             if (!string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret)) {
                 authenticationBuilder.AddGitHub(options => {

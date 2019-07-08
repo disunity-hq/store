@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class AuthorizationBinder : IStartupBinder {
+    public static class AuthorizationBinderExt {
 
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureAuthorization(this IServiceCollection services) {
             services.AddAuthorization(options => {
                 options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
             });

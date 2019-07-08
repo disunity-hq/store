@@ -13,25 +13,26 @@ namespace Disunity.Store.Shared.Startup {
 
     public class Startup {
 
-        private ILogger _logger { get; set; }
-        private IEnumerable<IStartupBinder> _binders { get; }
+        private IConfiguration _config;
 
-
-        public Startup(ILoggerFactory logFactory, IConfiguration config, IEnumerable<IStartupBinder> binders) {
-            _logger = logFactory.CreateLogger<Startup>();
-            _binders = binders;
+        public Startup(ILoggerFactory logFactory, IConfiguration config) {
+            _config = config;
         }
 
         public void ConfigureServices(IServiceCollection services) {
-            foreach (var startupBinder in _binders) {
-                _logger.LogInformation($"Starting binder: {startupBinder.GetType().Name}");
-                startupBinder.Bind(services);
-            }
+            services.ConfigureAttributes();
+            services.ConfigureAuthentication(_config);
+            services.ConfigureAuthorization();
+            services.ConfigureCookies();
+            services.ConfigureDatabase(_config);
+            services.ConfigureIdentity();
+            services.ConfigureMvc();
+            services.ConfigureRouting();
         }
 
-        public void Configure(IApplicationBuilder app, IEnumerable<IStartupService> startupServices) {
+        public void Configure(IApplicationBuilder app, ILogger<Startup> logger, IEnumerable<IStartupService> startupServices) {
             foreach (var startupService in startupServices) {
-                _logger.LogInformation($"Starting service: {startupService.GetType().Name}");
+                logger.LogInformation($"Starting service: {startupService.GetType().Name}");
                 startupService.Startup(app);
             }
         }

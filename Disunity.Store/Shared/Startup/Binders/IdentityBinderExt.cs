@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Disunity.Store.Shared.Startup.Binders {
 
-    public class IdentityBinder : IStartupBinder {
+    public static class IdentityBinderExt {
 
-        public void Bind(IServiceCollection services) {
+        public static void ConfigureIdentity(this IServiceCollection services) {
             services.AddDefaultIdentity<UserIdentity>()
                     .AddRoles<IdentityRole>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
