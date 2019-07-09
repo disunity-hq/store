@@ -16,10 +16,51 @@ namespace Disunity.Store.Entities.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:Enum:org_member_role", "owner,member")
+                .HasAnnotation("Npgsql:Enum:org_member_role", "owner,admin,member")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("Disunity.Store.Entities.DisunityVersion", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("URL");
+
+                    b.Property<string>("Version")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Version")
+                        .IsUnique();
+
+                    b.ToTable("DisunityVersions");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.DisunityVersionCompatibility", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("MaxCompatibleVersionId");
+
+                    b.Property<int?>("MinCompatibleVersionId");
+
+                    b.Property<int>("VersionId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MaxCompatibleVersionId");
+
+                    b.HasIndex("MinCompatibleVersionId");
+
+                    b.HasIndex("VersionId")
+                        .IsUnique();
+
+                    b.ToTable("DisunityVersionCompatibilities");
+                });
 
             modelBuilder.Entity("Disunity.Store.Entities.Mod", b =>
                 {
@@ -27,6 +68,10 @@ namespace Disunity.Store.Entities.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -42,23 +87,89 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<int?>("LatestId");
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(128);
-
-                    b.Property<int?>("OwnerId");
 
                     b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
+                    b.HasAlternateKey("OwnerId", "DisplayName");
+
+                    b.HasAlternateKey("OwnerId", "Slug");
 
                     b.HasIndex("LatestId");
 
-                    b.HasIndex("OwnerId");
-
                     b.ToTable("Mods");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
+                {
+                    b.Property<int>("DependantId");
+
+                    b.Property<int>("DependencyId");
+
+                    b.Property<int?>("MaxVersionId");
+
+                    b.Property<int?>("MinVersionId");
+
+                    b.HasKey("DependantId", "DependencyId");
+
+                    b.HasIndex("DependencyId");
+
+                    b.HasIndex("MaxVersionId");
+
+                    b.HasIndex("MinVersionId");
+
+                    b.ToTable("ModDependencies");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModDisunityCompatibility", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("MaxCompatibleVersionId");
+
+                    b.Property<int?>("MinCompatibleVersionId");
+
+                    b.Property<int>("VersionId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MaxCompatibleVersionId");
+
+                    b.HasIndex("MinCompatibleVersionId");
+
+                    b.HasIndex("VersionId")
+                        .IsUnique();
+
+                    b.ToTable("ModDisunityCompatibilities");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModTargetCompatibility", b =>
+                {
+                    b.Property<int>("VersionId");
+
+                    b.Property<int>("TargetId");
+
+                    b.Property<int?>("MaxCompatibleVersionId");
+
+                    b.Property<int?>("MinCompatibleVersionId");
+
+                    b.HasKey("VersionId", "TargetId");
+
+                    b.HasIndex("MaxCompatibleVersionId");
+
+                    b.HasIndex("MinCompatibleVersionId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("ModTargetCompatibilities");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModVersion", b =>
@@ -71,6 +182,10 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(256);
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<int?>("Downloads")
                         .ValueGeneratedOnAdd()
@@ -92,9 +207,8 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<int?>("ModVersionId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
+                    b.Property<string>("Readme")
+                        .IsRequired();
 
                     b.Property<DateTime>("UpdatedAt");
 
@@ -108,7 +222,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
+                    b.HasAlternateKey("DisplayName");
 
                     b.HasAlternateKey("VersionNumber");
 
@@ -131,6 +245,8 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<DateTime>("LatestDownload");
+
                     b.Property<int?>("TotalDownloads")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
@@ -151,14 +267,20 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Slug");
 
                     b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
+                    b.HasAlternateKey("DisplayName");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Orgs");
                 });
@@ -183,15 +305,19 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
                     b.Property<int?>("LatestId");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(128);
 
                     b.HasKey("ID");
 
-                    b.HasAlternateKey("Name");
+                    b.HasAlternateKey("DisplayName");
 
                     b.HasIndex("LatestId")
                         .IsUnique();
@@ -208,13 +334,13 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
                     b.Property<string>("IconUrl")
                         .IsRequired()
                         .HasMaxLength(1024);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
 
                     b.Property<int>("TargetId");
 
@@ -228,13 +354,52 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasAlternateKey("Name");
+                    b.HasAlternateKey("DisplayName");
 
                     b.HasAlternateKey("VersionNumber");
 
                     b.HasIndex("TargetId");
 
                     b.ToTable("TargetVersions");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.TargetVersionCompatibility", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("MaxCompatibleVersionId");
+
+                    b.Property<int?>("MinCompatibleVersionId");
+
+                    b.Property<int>("VersionId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MaxCompatibleVersionId");
+
+                    b.HasIndex("MinCompatibleVersionId");
+
+                    b.HasIndex("VersionId")
+                        .IsUnique();
+
+                    b.ToTable("TargetVersionCompatibilities");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.UnityVersion", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Version")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Version")
+                        .IsUnique();
+
+                    b.ToTable("UnityVersion");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.UserIdentity", b =>
@@ -270,6 +435,8 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("Slug");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -283,6 +450,9 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -398,6 +568,22 @@ namespace Disunity.Store.Entities.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Disunity.Store.Entities.DisunityVersionCompatibility", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.UnityVersion", "MaxCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MaxCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.UnityVersion", "MinCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MinCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.DisunityVersion", "Version")
+                        .WithOne("CompatibileUnityVersion")
+                        .HasForeignKey("Disunity.Store.Entities.DisunityVersionCompatibility", "VersionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Disunity.Store.Entities.Mod", b =>
                 {
                     b.HasOne("Disunity.Store.Entities.ModVersion", "Latest")
@@ -408,6 +594,64 @@ namespace Disunity.Store.Entities.Migrations
                         .WithMany("Mods")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "Dependant")
+                        .WithMany()
+                        .HasForeignKey("DependantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Disunity.Store.Entities.Mod", "Dependency")
+                        .WithMany()
+                        .HasForeignKey("DependencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "MaxVersion")
+                        .WithMany()
+                        .HasForeignKey("MaxVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "MinVersion")
+                        .WithMany()
+                        .HasForeignKey("MinVersionId");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModDisunityCompatibility", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.DisunityVersion", "MaxCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MaxCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.DisunityVersion", "MinCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MinCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "Version")
+                        .WithMany()
+                        .HasForeignKey("VersionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.ModTargetCompatibility", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.TargetVersion", "MaxCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MaxCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.TargetVersion", "MinCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MinCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.Target", "Target")
+                        .WithMany()
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "Version")
+                        .WithMany()
+                        .HasForeignKey("VersionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModVersion", b =>
@@ -455,6 +699,22 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasOne("Disunity.Store.Entities.Target")
                         .WithMany("Versions")
                         .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.TargetVersionCompatibility", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.UnityVersion", "MaxCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MaxCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.UnityVersion", "MinCompatibleVersion")
+                        .WithMany()
+                        .HasForeignKey("MinCompatibleVersionId");
+
+                    b.HasOne("Disunity.Store.Entities.TargetVersion", "Version")
+                        .WithOne("DisunityCompatibility")
+                        .HasForeignKey("Disunity.Store.Entities.TargetVersionCompatibility", "VersionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
