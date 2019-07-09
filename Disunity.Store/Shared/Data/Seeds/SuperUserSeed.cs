@@ -32,7 +32,8 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public bool ShouldSeed() {
-            return _dbContext.Users.Any();
+            // should seed if admin user doesn't exist
+            return !_dbContext.Users.Any(u => u.Email == _config["AdminUser:Email"]);
         }
 
         public async Task Seed() {
@@ -40,7 +41,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
             var emailAddress = _config["AdminUser:Email"];
 
             if (emailAddress == null || password == null) {
-                _logger.LogWarning("Skipping creating super user as user was missing email or password");
+                _logger.LogInformation("Skipping creating super user as user was missing email or password");
                 return;
             }
 

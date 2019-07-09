@@ -8,6 +8,8 @@ using Disunity.Store.Shared.Startup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
+using Syncfusion.EJ2.Linq;
+
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
@@ -28,7 +30,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public bool ShouldSeed() {
-            return _dbContext.UserRoles.Any();
+            return _dbContext.UserRoles.Count() == Enum.GetValues(typeof(UserRoles)).Length;
         }
 
         public async Task Seed() {
