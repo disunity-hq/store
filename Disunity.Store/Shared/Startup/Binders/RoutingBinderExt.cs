@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,8 @@ namespace Disunity.Store.Shared.Startup.Binders {
 
         public static void ConfigureRouting(this IServiceCollection services) {
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddBreadcrumbs(Assembly.GetEntryAssembly());
+            var assembly = typeof(RoutingBinderExt).Assembly;
+            services.AddBreadcrumbs(assembly);
         }
 
     }

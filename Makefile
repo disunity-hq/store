@@ -9,13 +9,13 @@ up: build
 	docker-compose up db cache frontend web
 
 ef:
-	docker-compose run -w /app/Disunity.Store dotnet ef $(args)
+	docker-compose run -w /app/Disunity.Store dotnet ef -v $(args)
 
 dropdb:
-	docker-compose run -w /app/Disunity.Store dotnet ef database drop
+	docker-compose run -w /app/Disunity.Store dotnet ef -v database drop
 
 initdb:
-	docker-compose run -w /app/Disunity.Store dotnet ef migrations add Initial -o Shared/Migrations
+	docker-compose run -w /app/Disunity.Store dotnet ef -v migrations add Initial -o Entities/Migrations
 
 test:
 	docker-compose run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Store.Tests/start.sh dotnet
