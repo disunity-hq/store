@@ -17,7 +17,7 @@ namespace Disunity.Store.Entities {
 
         [DataType(DataType.ImageUrl)] public string SourceIp { get; set; }
 
-        // TODO Use UpdatedAt for this field
+        // TODO Use UpdatedAt for this field?
         [DataType(DataType.DateTime)] public DateTime LatestDownload { get; set; }
 
         public int? TotalDownloads { get; set; }

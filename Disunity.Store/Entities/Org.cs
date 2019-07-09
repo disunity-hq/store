@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using Disunity.Store.Shared.Data;
 using Disunity.Store.Shared.Data.Hooks;
@@ -13,7 +14,7 @@ namespace Disunity.Store.Entities {
     public class Org : TrackableModel {
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        [Required] [MaxLength(128)] public string DisplayName { get; set; }
 
         public string Slug { get; set; }
 
@@ -28,7 +29,7 @@ namespace Disunity.Store.Entities {
             }
 
             context.Orgs.Add(new Org() {
-                Name = user.UserName,
+                DisplayName = user.UserName,
                 Members = new List<OrgMember>()
                     {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
             });
@@ -37,7 +38,7 @@ namespace Disunity.Store.Entities {
         public class OrgConfiguration : IEntityTypeConfiguration<Org> {
 
             public void Configure(EntityTypeBuilder<Org> builder) {
-                builder.HasAlternateKey(o => o.Name);
+                builder.HasAlternateKey(o => o.DisplayName);
                 builder.HasIndex(o => o.Slug).IsUnique();
 
                 builder.HasMany(o => o.Mods)

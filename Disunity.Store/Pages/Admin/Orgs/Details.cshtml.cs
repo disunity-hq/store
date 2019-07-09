@@ -32,7 +32,7 @@ namespace Disunity.Store.Pages.Admin.Orgs {
                 return NotFound();
             }
 
-            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.Name == OrgName);
+            Org = await _context.Orgs.FirstOrDefaultAsync(m => m.DisplayName == OrgName);
 
             if (Org == null) {
                 return NotFound();

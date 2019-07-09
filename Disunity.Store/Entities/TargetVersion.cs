@@ -14,7 +14,7 @@ namespace Disunity.Store.Entities {
         public int TargetId { get; set; }
         public Target Target { get; set; }
 
-        [Required] [MaxLength(128)] public string Name { get; set; }
+        [Required] [MaxLength(128)] public string DisplayName { get; set; }
 
         [Required] [MaxLength(16)] public string VersionNumber { get; set; }
 
@@ -35,7 +35,7 @@ namespace Disunity.Store.Entities {
         public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion> {
 
             public void Configure(EntityTypeBuilder<TargetVersion> builder) {
-                builder.HasAlternateKey(v => v.Name);
+                builder.HasAlternateKey(v => v.DisplayName);
                 builder.HasAlternateKey(v => v.VersionNumber);
             }
 

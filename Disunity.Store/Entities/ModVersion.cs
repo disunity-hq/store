@@ -16,7 +16,7 @@ namespace Disunity.Store.Entities {
         public int ModId { get; set; }
         public Mod Mod { get; set; }
 
-        [Required] [MaxLength(128)] public string Name { get; set; }
+        [Required] [MaxLength(128)] public string DisplayName { get; set; }
 
         public bool? IsActive { get; set; }
         public int? Downloads { get; set; }
@@ -48,7 +48,7 @@ namespace Disunity.Store.Entities {
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
 
                 builder.HasAlternateKey(v => v.VersionNumber);
-                builder.HasAlternateKey(v => v.Name);
+                builder.HasAlternateKey(v => v.DisplayName);
             }
 
         }

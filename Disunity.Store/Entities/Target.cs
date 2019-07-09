@@ -13,11 +13,12 @@ namespace Disunity.Store.Entities {
         public int ID { get; set; }
 
         public int? LatestId { get; set; }
+        
         public TargetVersion Latest { get; set; }
 
-        [Required] [MaxLength(128)] public string Name { get; set; }
+        [Required] [MaxLength(128)] public string DisplayName { get; set; }
 
-        [Required] public string Slug { get; set; }
+        [Required] [MaxLength(128)] public string Slug { get; set; }
 
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }
 
@@ -29,7 +30,7 @@ namespace Disunity.Store.Entities {
 
                 builder.HasMany(t => t.Versions);
 
-                builder.HasAlternateKey(t => t.Name);
+                builder.HasAlternateKey(t => t.DisplayName);
             }
 
         }

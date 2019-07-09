@@ -14,7 +14,7 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ModVersion[0].Name)
+            @Html.DisplayNameFor(model => model.ModVersion[0].DisplayName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ModVersion[0].IsActive)
@@ -50,7 +50,7 @@
     @foreach (var item in Model.ModVersion) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.DisplayName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)

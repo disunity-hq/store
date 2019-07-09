@@ -31,7 +31,7 @@ namespace Disunity.Store.Pages.Admin.OrgMembers {
             OrgMember = await _context.OrgMembers
                                       .Include(o => o.Org)
                                       .Include(o => o.User)
-                                      .FirstOrDefaultAsync(m => m.Org.Name == orgId && m.User.UserName == userId);
+                                      .FirstOrDefaultAsync(m => m.Org.DisplayName == orgId && m.User.UserName == userId);
 
             if (OrgMember == null) {
                 return NotFound();
