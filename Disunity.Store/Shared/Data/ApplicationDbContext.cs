@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +29,12 @@ namespace Disunity.Store.Shared.Data {
                                     ILogger<ApplicationDbContext> logger) : base(options, hooks) {
 
             _logger = logger;
+
+            Database.GetDbConnection().StateChange += (sender, args) => {
+                if (args.CurrentState == ConnectionState.Open) {
+                    (Database.GetDbConnection() as NpgsqlConnection)?.ReloadTypes();
+                }
+            };
         }
 
         public DbSet<Org> Orgs { get; set; }
