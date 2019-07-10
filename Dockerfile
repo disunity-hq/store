@@ -18,11 +18,23 @@ ENTRYPOINT npm run build:Watch -- --output-path /Build
 ## STAGE: build
 ##
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+
+# Install Mono
+RUN apt update && apt install -y apt-transport-https dirmngr gnupg ca-certificates && \
+        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+        echo "deb https://download.mono-project.com/repo/debian stable-stretch main" | tee /etc/apt/sources.list.d/mono-official-stable.list && \
+        apt update && apt install -y mono-devel
+
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
+COPY .paket/ ./.paket/
+COPY paket.dependencies ./
+COPY paket.lock ./
 COPY Disunity.Store/*.csproj ./asp/
-RUN dotnet restore asp
+COPY Disunity.Store/paket.references ./asp/
+RUN ls -la /app
+RUN mono .paket/paket.exe install
 
 # copy frontend
 COPY --from=frontend /Build/. ../Frontend/dist
