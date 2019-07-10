@@ -1,0 +1,22 @@
+source https://api.nuget.org/v3/index.json
+
+nuget AspNet.Security.OAuth.Discord >= 2.1.0
+nuget AspNet.Security.OAuth.GitHub >= 2.1.0
+nuget Microsoft.AspNetCore.App
+nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
+nuget Microsoft.AspNetCore.Razor.Design >= 2.2.0
+nuget Microsoft.EntityFrameworkCore.Sqlite >= 2.2.1
+nuget Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3
+nuget Newtonsoft.Json.Schema >= 3.0.11
+nuget Npgsql.EntityFrameworkCore.PostgreSQL >= 2.2.4
+nuget Npgsql.EntityFrameworkCore.PostgreSQL.Design >= 1.1.1
+nuget Overby.Extensions.AsyncBinaryReaderWriter >= 1.0.39
+nuget SemanticVersion >= 2.0.0
+nuget SmartBreadcrumbs >= 2.1.0
+nuget Syncfusion.EJ2.AspNet.Core >= 17.1.0.53
+
+nuget Microsoft.EntityFrameworkCore.Sqlite >= 2.2.1
+nuget Microsoft.NET.Test.Sdk >= 15.9.0
+nuget Moq >= 4.12.0
+nuget xunit >= 2.4.0
+nuget xunit.runner.visualstudio >= 2.4.0
