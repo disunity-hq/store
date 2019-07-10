@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data.Hooks;
@@ -28,7 +29,7 @@ namespace Disunity.Store.Shared.Data {
             _seeds = seeds;
         }
 
-        public async void Seed() {
+        public async Task Seed() {
             foreach (var seed in _seeds) {
                 if (seed.ShouldSeed()) {
                     await seed.Seed();

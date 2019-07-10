@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Disunity.Store.Shared.Data;
 
@@ -40,7 +41,7 @@ namespace Disunity.Store.Shared.Startup.Services {
 
                     if (_config.GetValue("Database.SeedOnStartup", _env.IsDevelopment())) {
                         var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-                        seeder.Seed();
+                        seeder.Seed().Wait();
                     }
                 }
             }

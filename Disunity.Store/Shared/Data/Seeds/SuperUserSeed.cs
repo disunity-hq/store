@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
-    [AsScoped]
+    [AsScoped(typeof(ISeeder))]
     public class SuperUserSeed : ISeeder {
 
         private readonly ILogger<SuperUserSeed> _logger;
