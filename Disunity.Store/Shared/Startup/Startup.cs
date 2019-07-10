@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Disunity.Store.Shared.Startup.Binders;
 using Disunity.Store.Shared.Startup.Services;
 
+using EFCoreHooks.Extensions;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,7 @@ namespace Disunity.Store.Shared.Startup {
             services.ConfigureIdentity();
             services.ConfigureMvc();
             services.ConfigureRouting();
+            services.ConfigureDbHooks();
         }
 
         public void Configure(IApplicationBuilder app, ILogger<Startup> logger, IEnumerable<IStartupService> startupServices) {

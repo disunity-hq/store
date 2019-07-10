@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-using Disunity.Store.Shared.Data.Hooks;
+using EFCoreHooks.Attributes;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,7 +19,7 @@ namespace Disunity.Store.Shared.Data {
         [Display(Name = "Updated At")]
         public DateTime UpdatedAt { get; set; }
 
-        [OnBeforeCreate]
+        [OnBeforeCreate(WatchDescendants = true)]
         public static void OnBeforeCreate(TrackableModel entity, IServiceProvider services) {
             var now = DateTime.Now;
             entity.CreatedAt = now;
@@ -29,7 +29,7 @@ namespace Disunity.Store.Shared.Data {
             logger.LogInformation($"TrackableModel setting time to {now}");
         }
 
-        [OnBeforeUpdate]
+        [OnBeforeUpdate(WatchDescendants = true)]
         public static void OnBeforeUpdate(TrackableModel entity, IServiceProvider serviceProvider) {
             entity.UpdatedAt = DateTime.Now;
         }

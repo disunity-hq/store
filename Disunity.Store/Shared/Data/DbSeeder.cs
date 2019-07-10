@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data.Hooks;
 using Disunity.Store.Shared.Data.Seeds;
 using Disunity.Store.Shared.Startup;
 
@@ -24,18 +23,21 @@ namespace Disunity.Store.Shared.Data {
     public class DbSeeder {
 
         private readonly IEnumerable<ISeeder> _seeds;
-        
+
         public DbSeeder(IEnumerable<ISeeder> seeds) {
             _seeds = seeds;
         }
 
         public async Task Seed() {
+
+
             foreach (var seed in _seeds) {
                 if (seed.ShouldSeed()) {
                     await seed.Seed();
                 }
             }
         }
+
     }
 
 }

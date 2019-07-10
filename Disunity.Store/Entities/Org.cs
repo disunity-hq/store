@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Data.Hooks;
+
+using EFCoreHooks.Attributes;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -22,17 +24,18 @@ namespace Disunity.Store.Entities {
 
         public List<Mod> Mods { get; set; }
 
-        [OnBeforeCreate(typeof(UserIdentity))]
-        public static void OnBeforeCreateUser(EntityEntry entityEntry, ApplicationDbContext context) {
-            if (!(entityEntry.Entity is UserIdentity user)) {
-                return;
-            }
+        [OnBeforeCreate(typeof(UserIdentity), WatchDescendants = false)]
+        public static void OnBeforeCreateUser(UserIdentity user, ApplicationDbContext context) {
 
-            context.Orgs.Add(new Org() {
-                DisplayName = user.UserName,
-                Members = new List<OrgMember>()
-                    {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
-            });
+            var org = context.Orgs.FirstOrDefault(o => o.DisplayName == user.UserName);
+
+            if (org == null) {
+                context.Orgs.Add(new Org() {
+                    DisplayName = user.UserName,
+                    Members = new List<OrgMember>()
+                        {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
+                });
+            }
         }
 
         public class OrgConfiguration : IEntityTypeConfiguration<Org> {

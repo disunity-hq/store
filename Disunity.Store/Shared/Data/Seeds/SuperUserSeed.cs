@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ using Disunity.Store.Shared.Startup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 
 
 namespace Disunity.Store.Shared.Data.Seeds {
@@ -19,16 +21,20 @@ namespace Disunity.Store.Shared.Data.Seeds {
         private readonly UserManager<UserIdentity> _userManager;
         private readonly ApplicationDbContext _dbContext;
 
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+
         public SuperUserSeed(IConfiguration config,
                              ILogger<SuperUserSeed> logger,
                              UserManager<UserIdentity> userManager,
-                             ApplicationDbContext dbContext) {
+                             ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager) {
 
 
             _logger = logger;
             _config = config;
             _userManager = userManager;
             _dbContext = dbContext;
+            _roleManager = roleManager;
         }
 
         public bool ShouldSeed() {
@@ -37,6 +43,21 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public async Task Seed() {
+            // Temporary seed user roles here too
+            var roleNames = Enum.GetNames(typeof(UserRoles));
+
+            foreach (var roleName in roleNames) {
+
+                if (await _roleManager.RoleExistsAsync(roleName)) {
+                    continue;
+                }
+
+                await _roleManager.CreateAsync(new IdentityRole(roleName));
+                _logger.LogInformation($"Created role: {roleName}");
+            }
+            //
+
+
             var password = _config["AdminUser:Password"];
             var emailAddress = _config["AdminUser:Email"];
 

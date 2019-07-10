@@ -3,7 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data.Hooks;
+
+using EFCoreHooks;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,8 @@ using Npgsql;
 
 namespace Disunity.Store.Shared.Data {
 
-    public class ApplicationDbContext : IdentityDbContext<UserIdentity> {
+    public class ApplicationDbContext : HookedIdentityDbContext<UserIdentity> {
 
-        private readonly HookManagerContainer _hooks;
         private readonly ILogger<ApplicationDbContext> _logger;
 
         static ApplicationDbContext() {
@@ -25,10 +25,8 @@ namespace Disunity.Store.Shared.Data {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
                                     HookManagerContainer hooks,
-                                    ILogger<ApplicationDbContext> logger) : base(options) {
+                                    ILogger<ApplicationDbContext> logger) : base(options, hooks) {
 
-            _hooks = hooks;
-            _hooks.InitializeForAll(this);
             _logger = logger;
         }
 
@@ -54,22 +52,6 @@ namespace Disunity.Store.Shared.Data {
             base.OnModelCreating(builder);
             builder.ForNpgsqlHasEnum<OrgMemberRole>();
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess) {
-            var savedChanges = _hooks.BeforeSave(this);
-            var changes = base.SaveChanges(acceptAllChangesOnSuccess);
-            _hooks.AfterSave(this, savedChanges);
-            return changes;
-        }
-
-        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-                                                         CancellationToken cancellationToken =
-                                                             default(CancellationToken)) {
-            var savedChanges = _hooks.BeforeSave(this);
-            var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            _hooks.AfterSave(this, savedChanges);
-            return changes;
         }
 
     }

@@ -13,8 +13,8 @@ using Syncfusion.EJ2.Linq;
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
-    [AsScoped(typeof(ISeeder))]
-    public class UserRoleSeed : ISeeder {
+//    [AsScoped(typeof(ISeeder))]
+    public class UserRoleSeed:ISeeder {
 
         private readonly ILogger<UserRoleSeed> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;

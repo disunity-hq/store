@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Data.Hooks;
+
+using EFCoreHooks.Attributes;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
