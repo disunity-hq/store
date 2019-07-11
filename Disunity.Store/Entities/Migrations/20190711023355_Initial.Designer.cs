@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Disunity.Store.Entities.Migrations
+namespace Disunity.Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190709060115_Initial")]
+    [Migration("20190711023355_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace Disunity.Store.Entities.Migrations
             modelBuilder
                 .HasAnnotation("Npgsql:Enum:org_member_role", "owner,admin,member")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Disunity.Store.Entities.DisunityVersion", b =>
@@ -95,8 +95,6 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(128);
-
-                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 
@@ -212,8 +210,6 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<string>("Readme")
                         .IsRequired();
 
-                    b.Property<DateTime>("UpdatedAt");
-
                     b.Property<string>("VersionNumber")
                         .IsRequired()
                         .HasMaxLength(16);
@@ -274,8 +270,6 @@ namespace Disunity.Store.Entities.Migrations
                         .HasMaxLength(128);
 
                     b.Property<string>("Slug");
-
-                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 

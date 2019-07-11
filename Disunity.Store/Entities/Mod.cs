@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
-    public class Mod : TrackableModel {
+    public class Mod : ICreatedAt {
 
         public Mod() {
             IsActive = true;
@@ -73,6 +74,8 @@ namespace Disunity.Store.Entities {
             }
 
         }
+
+        public DateTime CreatedAt { get; set; }
 
     }
 

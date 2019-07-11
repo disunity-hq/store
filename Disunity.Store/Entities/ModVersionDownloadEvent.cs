@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
-    public class ModVersionDownloadEvent : TrackableModel {
+    public class ModVersionDownloadEvent : ICreatedAt, IUpdatedAt {
 
         [Required] public int ModVersionId { get; set; }
 
@@ -32,6 +32,10 @@ namespace Disunity.Store.Entities {
             }
 
         }
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
 
     }
 

@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using Disunity.Store.Shared.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
-    public class ModVersion : TrackableModel {
+    public class ModVersion : ICreatedAt {
 
         public int Id { get; set; }
 
@@ -52,6 +52,8 @@ namespace Disunity.Store.Entities {
             }
 
         }
+
+        public DateTime CreatedAt { get; set; }
 
     }
 

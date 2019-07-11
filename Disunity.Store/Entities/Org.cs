@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
-    public class Org : TrackableModel {
+    public class Org : ICreatedAt {
 
         public int Id { get; set; }
         [Required] [MaxLength(128)] public string DisplayName { get; set; }
@@ -49,6 +50,8 @@ namespace Disunity.Store.Entities {
             }
 
         }
+
+        public DateTime CreatedAt { get; set; }
 
     }
 

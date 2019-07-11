@@ -3,7 +3,7 @@ using Disunity.Store.Entities;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Disunity.Store.Entities.Migrations
+namespace Disunity.Store.Migrations
 {
     public partial class Initial : Migration
     {
@@ -72,10 +72,9 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
-                    Slug = table.Column<string>(nullable: true)
+                    Slug = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -307,8 +306,6 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     ModId = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     IsActive = table.Column<bool>(nullable: true, defaultValue: true),
@@ -319,6 +316,7 @@ namespace Disunity.Store.Entities.Migrations
                     Readme = table.Column<string>(nullable: false),
                     FileUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     IconUrl = table.Column<string>(maxLength: 1024, nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     ModVersionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -340,15 +338,14 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     OwnerId = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     Slug = table.Column<string>(maxLength: 128, nullable: false),
                     IsActive = table.Column<bool>(nullable: true, defaultValue: true),
                     IsDeprecated = table.Column<bool>(nullable: true, defaultValue: false),
                     IsPinned = table.Column<bool>(nullable: true, defaultValue: false),
-                    LatestId = table.Column<int>(nullable: true)
+                    LatestId = table.Column<int>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -375,11 +372,11 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     ModVersionId = table.Column<int>(nullable: false),
                     SourceIp = table.Column<string>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     LatestDownload = table.Column<DateTime>(nullable: false),
                     TotalDownloads = table.Column<int>(nullable: true, defaultValue: 1),
-                    CountedDownloads = table.Column<int>(nullable: true, defaultValue: 1)
+                    CountedDownloads = table.Column<int>(nullable: true, defaultValue: 1),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
