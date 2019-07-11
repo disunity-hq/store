@@ -11,17 +11,21 @@ namespace Disunity.Store.Entities {
 
     public class ModVersionDownloadEvent : ICreatedAt, IUpdatedAt {
 
+        private const double CountedDownloadDebounceTime = 10 * 60f;
+
         [Required] public int ModVersionId { get; set; }
 
         public ModVersion ModVersion { get; set; }
 
         [DataType(DataType.ImageUrl)] public string SourceIp { get; set; }
 
-        // TODO Use UpdatedAt for this field?
         [DataType(DataType.DateTime)] public DateTime LatestDownload { get; set; }
 
         public int? TotalDownloads { get; set; }
         public int? CountedDownloads { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
 
         public class ModVersionDownloadEventConfiguration : IEntityTypeConfiguration<ModVersionDownloadEvent> {
 
@@ -33,9 +37,25 @@ namespace Disunity.Store.Entities {
 
         }
 
-        public DateTime CreatedAt { get; set; }
+        /// <summary>
+        /// Increment <see cref="TotalDownloads"/> and try to increment <see cref="CountedDownloads"/>
+        /// </summary>
+        /// <returns></returns>
+        public bool TryCountDownload() {
+            var now = DateTime.Now;
+            var diff = now - LatestDownload;
 
-        public DateTime UpdatedAt { get; set; }
+            TotalDownloads++;
+
+            if (diff.TotalSeconds < CountedDownloadDebounceTime) {
+                return false;
+            }
+
+            CountedDownloads++;
+            LatestDownload = now;
+            return true;
+
+        }
 
     }
 
