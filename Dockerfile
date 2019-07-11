@@ -33,7 +33,6 @@ COPY paket.dependencies ./
 COPY paket.lock ./
 COPY Disunity.Store/*.csproj ./asp/
 COPY Disunity.Store/paket.references ./asp/
-RUN ls -la /app
 RUN mono .paket/paket.exe install
 
 # copy frontend
