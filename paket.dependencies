@@ -25,5 +25,5 @@ nuget xunit.runner.visualstudio >= 2.4.0
 
 nuget EFCoreHooks >= 0.1.0
 
-git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.sh", OS: mono, Packages: /nupkg
+git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.sh", OS: mono, Packages: /BindingAttributes/nupkg
 nuget BindingAttributes
