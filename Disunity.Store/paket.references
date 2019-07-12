@@ -12,6 +12,8 @@ Overby.Extensions.AsyncBinaryReaderWriter
 SemanticVersion
 SmartBreadcrumbs
 Syncfusion.EJ2.AspNet.Core
-EFCoreHooks
 Swashbuckle.AspNetCore
 Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
+
+EFCoreHooks
+BindingAttributes

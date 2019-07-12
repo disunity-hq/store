@@ -1777,3 +1777,12 @@ NUGET
       xunit.extensibility.core (2.4.1) - restriction: >= netstandard1.1
     xunit.runner.visualstudio (2.4.1)
       Microsoft.NET.Test.Sdk (>= 15.0) - restriction: >= netcoreapp1.0
+  remote: paket-files/github.com/dustinlacewell/BindingAttributes/nupkg
+    BindingAttributes (0.1.0)
+      Microsoft.Extensions.DependencyInjection (>= 2.2) - restriction: >= netcoreapp2.1
+GIT
+  remote: https://github.com/dustinlacewell/BindingAttributes.git
+     (1c6e9264dd7f1df096590ab5703553a09a2a6159)
+      build: build.sh
+      path: /nupkg
+      os: mono
