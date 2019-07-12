@@ -5,6 +5,8 @@
         <UserSecretsId>aspnet-Disunity.Store-838BBC79-3F86-4426-B42C-66E2D9D5F58D</UserSecretsId>
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
         <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AspNet.Security.OAuth.Discord" Version="2.1.0" />
