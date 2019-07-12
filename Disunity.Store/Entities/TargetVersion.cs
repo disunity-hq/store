@@ -32,6 +32,9 @@ namespace Disunity.Store.Entities {
         [DataType(DataType.ImageUrl)]
         public string IconUrl { get; set; }
 
+        [MaxLength(128)]
+        public string Hash { get; set; }
+
         public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion> {
 
             public void Configure(EntityTypeBuilder<TargetVersion> builder) {

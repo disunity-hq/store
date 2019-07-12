@@ -406,7 +406,7 @@ NUGET
       Microsoft.AspNetCore.Routing.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Net.Http.Headers (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.AspNetCore.Mvc.Analyzers (2.2) - restriction: >= netcoreapp2.2
-    Microsoft.AspNetCore.Mvc.ApiExplorer (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.AspNetCore.Mvc.ApiExplorer (2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Mvc.Core (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.AspNetCore.Mvc.Core (2.2.5) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Authentication.Core (>= 2.2) - restriction: >= netstandard2.0
@@ -427,11 +427,11 @@ NUGET
     Microsoft.AspNetCore.Mvc.Cors (2.2) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Cors (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Mvc.Core (>= 2.2) - restriction: >= netstandard2.0
-    Microsoft.AspNetCore.Mvc.DataAnnotations (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.AspNetCore.Mvc.DataAnnotations (2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Mvc.Core (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Localization (>= 2.2) - restriction: >= netstandard2.0
       System.ComponentModel.Annotations (>= 4.5) - restriction: >= netstandard2.0
-    Microsoft.AspNetCore.Mvc.Formatters.Json (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.AspNetCore.Mvc.Formatters.Json (2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.JsonPatch (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Mvc.Core (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.AspNetCore.Mvc.Formatters.Xml (2.2) - restriction: >= netcoreapp2.2
@@ -507,7 +507,7 @@ NUGET
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Logging.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Options (>= 2.2) - restriction: >= netstandard2.0
-    Microsoft.AspNetCore.Routing (2.2.2) - restriction: >= netcoreapp2.2
+    Microsoft.AspNetCore.Routing (2.2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Http.Extensions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Routing.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Logging.Abstractions (>= 2.2) - restriction: >= netstandard2.0
@@ -603,7 +603,7 @@ NUGET
       Microsoft.AspNetCore.StaticFiles (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.WebSockets (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.FileProviders.Physical (>= 2.2) - restriction: >= netstandard2.0
-    Microsoft.AspNetCore.StaticFiles (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.AspNetCore.StaticFiles (2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Hosting.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Http.Extensions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2) - restriction: >= netstandard2.0
@@ -746,7 +746,7 @@ NUGET
       Microsoft.Extensions.Primitives (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.Extensions.FileProviders.Composite (2.2) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2) - restriction: >= netstandard2.0
-    Microsoft.Extensions.FileProviders.Embedded (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.Extensions.FileProviders.Embedded (2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.Extensions.FileProviders.Physical (2.2) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2) - restriction: >= netstandard2.0
@@ -1097,10 +1097,27 @@ NUGET
       SQLitePCLRaw.core (>= 1.1.14) - restriction: >= uap10.0
     SQLitePCLRaw.provider.sqlite3.ios_unified (1.1.14) - restriction: >= xamarinios
       SQLitePCLRaw.core (>= 1.1.14) - restriction: >= xamarinios
-    Syncfusion.EJ2.AspNet.Core (17.1.0.53)
+    Swashbuckle.AspNetCore (4.0.1)
+      Swashbuckle.AspNetCore.Swagger (>= 4.0.1) - restriction: >= netstandard2.0
+      Swashbuckle.AspNetCore.SwaggerGen (>= 4.0.1) - restriction: >= netstandard2.0
+      Swashbuckle.AspNetCore.SwaggerUI (>= 4.0.1) - restriction: >= netstandard2.0
+    Swashbuckle.AspNetCore.Swagger (4.0.1) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Mvc.Core (>= 2.0) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Mvc.Formatters.Json (>= 2.0) - restriction: >= netstandard2.0
+    Swashbuckle.AspNetCore.SwaggerGen (4.0.1) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Mvc.ApiExplorer (>= 2.0) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Mvc.Core (>= 2.0) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Mvc.DataAnnotations (>= 2.0) - restriction: >= netstandard2.0
+      Swashbuckle.AspNetCore.Swagger (>= 4.0.1) - restriction: >= netstandard2.0
+    Swashbuckle.AspNetCore.SwaggerUI (4.0.1) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.Routing (>= 2.0) - restriction: >= netstandard2.0
+      Microsoft.AspNetCore.StaticFiles (>= 2.0) - restriction: >= netstandard2.0
+      Microsoft.Extensions.FileProviders.Embedded (>= 2.0) - restriction: >= netstandard2.0
+      Newtonsoft.Json (>= 9.0.1) - restriction: >= netstandard2.0
+    Syncfusion.EJ2.AspNet.Core (17.2.0.34)
       Newtonsoft.Json (>= 9.0.1 < 13.0)
-      Syncfusion.Licensing (>= 17.1.0.53)
-    Syncfusion.Licensing (17.1.0.53)
+      Syncfusion.Licensing (>= 17.2.0.34)
+    Syncfusion.Licensing (17.2.0.34)
     System.AppContext (4.3) - restriction: || (&& (< net35) (>= net46) (< netstandard1.4)) (&& (< net35) (>= netstandard1.3) (< netstandard1.4) (< win8) (< wpa81)) (&& (< net35) (>= netstandard1.4) (< netstandard1.5) (< win8) (< wpa81)) (&& (< net35) (>= netstandard1.5) (< netstandard1.6) (< win8) (< wpa81)) (&& (< net35) (>= netstandard1.6) (< netstandard2.0) (< win8) (< wpa81)) (>= netcoreapp2.2) (&& (< netstandard2.0) (>= uap10.0) (< uap10.1))
       System.Runtime (>= 4.3) - restriction: || (&& (< monoandroid) (< monotouch) (< net46) (>= netstandard1.6) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net46) (>= netstandard1.3) (< netstandard1.6))
     System.Buffers (4.5) - restriction: || (&& (< monoandroid) (< monotouch) (< net35) (>= netstandard1.6) (< netstandard2.0) (< win8) (< wpa81) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net35) (< netstandard1.2) (>= netstandard1.3) (< win8)) (&& (< monoandroid) (< net35) (>= netstandard1.3) (< netstandard1.4) (< win8) (< wpa81)) (&& (< monoandroid) (< net35) (>= netstandard1.4) (< netstandard1.5) (< win8) (< wpa81)) (&& (< monoandroid) (< net35) (>= netstandard1.5) (< netstandard1.6) (< win8) (< wpa81)) (&& (< monoandroid) (< netstandard1.1) (>= netstandard2.0) (< win8)) (&& (>= monotouch) (>= netstandard2.0)) (&& (< net35) (>= net46) (< netstandard1.4)) (&& (< net45) (>= net451) (>= netstandard2.0)) (&& (< net45) (< netcoreapp2.0) (>= netstandard2.0)) (&& (>= net451) (< netstandard1.1) (>= netstandard2.0)) (&& (>= net461) (>= netstandard2.0)) (>= netcoreapp2.2) (&& (< netstandard1.1) (>= netstandard2.0) (>= win8)) (&& (>= netstandard2.0) (>= xamarintvos)) (&& (>= netstandard2.0) (>= xamarinwatchos)) (&& (< netstandard2.0) (>= uap10.0) (< uap10.1)) (&& (< netstandard2.0) (>= uap10.0) (< win8) (< wpa81)) (>= xamarinios) (>= xamarinmac)

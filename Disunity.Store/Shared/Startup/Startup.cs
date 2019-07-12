@@ -29,6 +29,7 @@ namespace Disunity.Store.Shared.Startup {
             services.ConfigureDatabase(_config);
             services.ConfigureIdentity();
             services.ConfigureMvc();
+            services.ConfigureSwagger();
             services.ConfigureRouting();
             services.ConfigureDbHooks();
         }
