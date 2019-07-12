@@ -4,6 +4,7 @@ nuget AspNet.Security.OAuth.Discord >= 2.1.0
 nuget AspNet.Security.OAuth.GitHub >= 2.1.0
 nuget Microsoft.AspNetCore.App
 nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
+nuget Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
 nuget Microsoft.AspNetCore.Razor.Design >= 2.2.0
 nuget Microsoft.EntityFrameworkCore.Sqlite >= 2.2.1
 nuget Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3

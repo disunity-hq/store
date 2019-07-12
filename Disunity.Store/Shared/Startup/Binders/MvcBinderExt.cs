@@ -23,6 +23,11 @@ namespace Disunity.Store.Shared.Startup.Binders {
 
             services.AddApiVersioning(options => { options.Conventions.Add(new VersionByNamespaceConvention()); });
 
+            services.AddVersionedApiExplorer(options => {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             services.AddAntiforgery(options => { options.HeaderName = "xsrf-token"; });
         }
 
