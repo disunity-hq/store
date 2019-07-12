@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Builder;

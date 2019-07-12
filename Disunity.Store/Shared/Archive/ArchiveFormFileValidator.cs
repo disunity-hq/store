@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 
+using BindingAttributes;
+
 using Disunity.Store.Shared.Startup;
 
 using Microsoft.AspNetCore.Http;

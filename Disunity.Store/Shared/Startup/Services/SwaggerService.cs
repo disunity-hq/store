@@ -1,5 +1,7 @@
 using System.ComponentModel;
 
+using BindingAttributes;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;

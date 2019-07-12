@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using BindingAttributes;
+
 using Disunity.Store.Shared.Startup;
 
 using Microsoft.Extensions.DependencyInjection;

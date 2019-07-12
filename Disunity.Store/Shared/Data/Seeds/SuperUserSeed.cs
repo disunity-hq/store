@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Startup;
 

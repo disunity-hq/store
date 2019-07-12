@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
+using BindingAttributes;
+
 using Disunity.Store.Shared.Startup;
 
 using Microsoft.Extensions.DependencyInjection;
