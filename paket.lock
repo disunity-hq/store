@@ -1782,7 +1782,20 @@ NUGET
       Microsoft.Extensions.DependencyInjection (>= 2.2) - restriction: >= netcoreapp2.1
 GIT
   remote: https://github.com/dustinlacewell/BindingAttributes.git
-     (f7ff83f0a0f34665b35ad8fe209fd4cfdec63797)
+     (fb3ef738eb7d0f14ae98740b030bcefba41bacab)
       build: build.sh
       path: /BindingAttributes/nupkg
       os: mono
+     (fb3ef738eb7d0f14ae98740b030bcefba41bacab)
+      build: build.bat
+      path: /BindingAttributes/nupkg
+      os: windows
+  remote: https://github.com/dustinlacewell/EFCoreHooks.git
+     (ced0ffd192b2cc9202808cfa2bf0379574eebc09)
+      build: build.sh
+      path: /EFCoreHooks/nupkg
+      os: mono
+     (ced0ffd192b2cc9202808cfa2bf0379574eebc09)
+      build: build.bat
+      path: /EFCoreHooks/nupkg
+      os: windows

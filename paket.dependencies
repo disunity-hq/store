@@ -23,8 +23,10 @@ nuget Moq >= 4.12.0
 nuget xunit >= 2.4.0
 nuget xunit.runner.visualstudio >= 2.4.0
 
-nuget EFCoreHooks >= 0.1.0
-
 git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.sh", OS: mono, Packages: /BindingAttributes/nupkg
 git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.bat", OS: windows, Packages: /BindingAttributes/nupkg
 nuget BindingAttributes
+
+git https://github.com/dustinlacewell/EFCoreHooks.git use-paket build: "build.sh", OS: mono, Packages: /EFCoreHooks/nupkg
+git https://github.com/dustinlacewell/EFCoreHooks.git use-paket build: "build.bat", OS: windows, Packages: /EFCoreHooks/nupkg
+nuget EFCoreHooks
