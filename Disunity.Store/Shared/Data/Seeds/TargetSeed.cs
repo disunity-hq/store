@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Startup;
 
 using Microsoft.AspNetCore.Hosting;
 

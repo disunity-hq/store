@@ -12,10 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 
+using TopoSort;
+
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
+    [DependsOn(typeof(UserRoleSeed))]
     public class SuperUserSeed : ISeeder {
 
         private readonly ILogger<SuperUserSeed> _logger;

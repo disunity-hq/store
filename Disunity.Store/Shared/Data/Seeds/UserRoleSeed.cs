@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Startup;
 
@@ -13,7 +15,7 @@ using Syncfusion.EJ2.Linq;
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
-//    [AsScoped(typeof(ISeeder))]
+    [AsScoped(typeof(ISeeder))]
     public class UserRoleSeed:ISeeder {
 
         private readonly ILogger<UserRoleSeed> _logger;

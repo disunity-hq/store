@@ -27,9 +27,12 @@ nuget xunit.runner.visualstudio >= 2.4.0
 
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.sh", OS: mono, Packages: /EFCoreHooks/nupkg
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.bat", OS: windows, Packages: /EFCoreHooks/nupkg
-
 nuget EFCoreHooks >= 0.1.0
 
 git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.sh", OS: mono, Packages: /BindingAttributes/nupkg
 git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.bat", OS: windows, Packages: /BindingAttributes/nupkg
 nuget BindingAttributes
+
+git https://github.com/dustinlacewell/TopoSort.git master build: "build.sh", OS: mono, Packages: /TopoSort/nupkg
+git https://github.com/dustinlacewell/TopoSort.git master build: "build.bat", OS: windows, Packages: /TopoSort/nupkg
+nuget TopoSort

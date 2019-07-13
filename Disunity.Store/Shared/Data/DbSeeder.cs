@@ -18,6 +18,8 @@ using Microsoft.Extensions.Logging;
 
 using Syncfusion.EJ2.Linq;
 
+using TopoSort;
+
 
 namespace Disunity.Store.Shared.Data {
 
@@ -27,7 +29,7 @@ namespace Disunity.Store.Shared.Data {
         private readonly IEnumerable<ISeeder> _seeds;
 
         public DbSeeder(IEnumerable<ISeeder> seeds) {
-            _seeds = seeds;
+            _seeds = seeds.TopoSort();
         }
 
         public async Task Seed() {
