@@ -14,6 +14,7 @@ SmartBreadcrumbs
 Syncfusion.EJ2.AspNet.Core
 Swashbuckle.AspNetCore
 Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
-
 EFCoreHooks
 BindingAttributes
+AutoMapper
+AutoMapper.Extensions.Microsoft.DependencyInjection

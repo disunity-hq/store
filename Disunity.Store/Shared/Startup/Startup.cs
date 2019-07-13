@@ -32,6 +32,7 @@ namespace Disunity.Store.Shared.Startup {
             services.ConfigureSwagger();
             services.ConfigureRouting();
             services.ConfigureDbHooks();
+            services.ConfigureAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, ILogger<Startup> logger, IEnumerable<IStartupService> startupServices) {
