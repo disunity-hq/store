@@ -36,6 +36,9 @@ namespace Disunity.Store.Entities {
 
             public void Configure(EntityTypeBuilder<ModDependency> builder) {
                 builder.HasKey(c => new {c.DependantId, c.DependencyId});
+
+                builder.HasOne(d => d.MinVersion);
+                builder.HasOne(d => d.MaxVersion);
             }
 
         }

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190711023355_Initial")]
+    [Migration("20190713043934_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,8 +205,6 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<int>("ModId");
 
-                    b.Property<int?>("ModVersionId");
-
                     b.Property<string>("Readme")
                         .IsRequired();
 
@@ -225,8 +223,6 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasAlternateKey("VersionNumber");
 
                     b.HasIndex("ModId");
-
-                    b.HasIndex("ModVersionId");
 
                     b.ToTable("ModVersions");
                 });
@@ -332,6 +328,9 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Hash")
                         .HasMaxLength(128);
 
                     b.Property<string>("IconUrl")
@@ -595,7 +594,7 @@ namespace Disunity.Store.Entities.Migrations
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
                 {
                     b.HasOne("Disunity.Store.Entities.ModVersion", "Dependant")
-                        .WithMany()
+                        .WithMany("Dependencies")
                         .HasForeignKey("DependantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -645,7 +644,7 @@ namespace Disunity.Store.Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Disunity.Store.Entities.ModVersion", "Version")
-                        .WithMany()
+                        .WithMany("TargetCompatibilities")
                         .HasForeignKey("VersionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -656,10 +655,6 @@ namespace Disunity.Store.Entities.Migrations
                         .WithMany("Versions")
                         .HasForeignKey("ModId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Disunity.Store.Entities.ModVersion")
-                        .WithMany("Dependencies")
-                        .HasForeignKey("ModVersionId");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModVersionDownloadEvent", b =>

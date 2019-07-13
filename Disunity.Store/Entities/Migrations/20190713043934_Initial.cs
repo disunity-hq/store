@@ -316,20 +316,13 @@ namespace Disunity.Store.Entities.Migrations
                     Readme = table.Column<string>(nullable: false),
                     FileUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     IconUrl = table.Column<string>(maxLength: 1024, nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ModVersionId = table.Column<int>(nullable: true)
+                    CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ModVersions", x => x.Id);
                     table.UniqueConstraint("AK_ModVersions_DisplayName", x => x.DisplayName);
                     table.UniqueConstraint("AK_ModVersions_VersionNumber", x => x.VersionNumber);
-                    table.ForeignKey(
-                        name: "FK_ModVersions_ModVersions_ModVersionId",
-                        column: x => x.ModVersionId,
-                        principalTable: "ModVersions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -420,7 +413,8 @@ namespace Disunity.Store.Entities.Migrations
                     VersionNumber = table.Column<string>(maxLength: 16, nullable: false),
                     WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     Description = table.Column<string>(maxLength: 256, nullable: false),
-                    IconUrl = table.Column<string>(maxLength: 1024, nullable: false)
+                    IconUrl = table.Column<string>(maxLength: 1024, nullable: false),
+                    Hash = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -609,11 +603,6 @@ namespace Disunity.Store.Entities.Migrations
                 name: "IX_ModVersions_ModId",
                 table: "ModVersions",
                 column: "ModId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ModVersions_ModVersionId",
-                table: "ModVersions",
-                column: "ModVersionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrgMembers_OrgId",

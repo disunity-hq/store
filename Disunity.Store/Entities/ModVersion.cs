@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -38,7 +39,8 @@ namespace Disunity.Store.Entities {
         [DataType(DataType.ImageUrl)]
         public string IconUrl { get; set; }
 
-        public List<ModDependency> Dependencies { get; set; }
+        [InverseProperty("Dependant")] public List<ModDependency> Dependencies { get; set; }
+        [InverseProperty("Version")] public List<ModTargetCompatibility> TargetCompatibilities { get; set; }
 
         public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
 
@@ -50,6 +52,7 @@ namespace Disunity.Store.Entities {
                 builder.HasAlternateKey(v => v.DisplayName);
 
                 builder.HasMany(v => v.Dependencies).WithOne(d => d.Dependant);
+                builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);
             }
 
         }
