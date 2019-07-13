@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
 using Disunity.Store.Entities;
 using Disunity.Store.Entities.DataTransferObjects;
 using Disunity.Store.Shared.Data;
@@ -18,9 +21,11 @@ namespace Disunity.Store.Areas.API.v1.Mods {
     public class ModListController : ControllerBase {
 
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ModListController(ApplicationDbContext context) {
+        public ModListController(ApplicationDbContext context, IMapper mapper) {
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -35,7 +40,8 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                                                                         [FromQuery] int pageSize = 10) {
             var mods = _context.Mods
 //                                     .Include(m => m.Versions)
-                               .Page(page, pageSize);
+                               .Page(page, pageSize)
+                               .ProjectTo<ModDto>(_mapper.ConfigurationProvider);
 
             var modList = await mods.ToListAsync();
             return new JsonResult(modList);
@@ -51,7 +57,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         /// </remarks>
         /// <param name="targetId">The target id to search for compatible mods</param>
         /// <param name="page">The current page of information to display, begins at 1.</param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageSize">The page size to use when calculating pagination</param>
         /// <returns>An array of all found mods that are compatible with</returns>
         /// <response code="200">Return a JSON array of all found mods compatible with the given target id</response>
         [HttpGet("{targetId}")]
@@ -72,7 +78,9 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                                      .Page(page, pageSize)
                                      .ToList();
 
-            return new JsonResult(targetMods);
+            var mappedTargetMods = _mapper.Map<List<ModDto>>(targetMods);
+
+            return new JsonResult(mappedTargetMods);
         }
         
     }
