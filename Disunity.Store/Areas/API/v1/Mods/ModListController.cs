@@ -13,6 +13,10 @@ using Disunity.Store.Shared.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+using Syncfusion.EJ2.Linq;
+
 
 namespace Disunity.Store.Areas.API.v1.Mods {
 
@@ -22,10 +26,12 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<ModListController> _logger;
 
-        public ModListController(ApplicationDbContext context, IMapper mapper) {
+        public ModListController(ApplicationDbContext context, IMapper mapper, ILogger<ModListController> logger) {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -57,7 +63,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         /// </remarks>
         /// <param name="targetId">The target id to search for compatible mods</param>
         /// <param name="page">The current page of information to display, begins at 1.</param>
-        /// <param name="pageSize">The page size to use when calculating pagination</param>
+        /// <param name="pageSize">The page size to use when calculating pagination=</param>
         /// <returns>An array of all found mods that are compatible with</returns>
         /// <response code="200">Return a JSON array of all found mods compatible with the given target id</response>
         [HttpGet("{targetId}")]
@@ -65,24 +71,23 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         public ActionResult<IEnumerable<ModDto>> GetModsFromTarget([FromRoute] int targetId,
                                                                    [FromQuery] int page = 0,
                                                                    [FromQuery] int pageSize = 10) {
+
             var targetMods = _context.Mods
                                      .Include(m => m.Versions)
-                                     .Select(m => new {
-                                         m,
-                                         Versions = m.Versions.Where(
-                                             v => v.TargetCompatibilities.Any(c => c.TargetId == targetId))
-                                     })
-                                     .AsEnumerable()
-                                     .Select(x => x.m)
-                                     .Where(m => m.Versions.Any())
-                                     .Page(page, pageSize)
-                                     .ToList();
+                                     .ThenInclude(v => v.TargetCompatibilities)
+                                     .Where(m => m.Versions.Any(
+                                                v => v.TargetCompatibilities.Any(t => t.TargetId == targetId)));
 
-            var mappedTargetMods = _mapper.Map<List<ModDto>>(targetMods);
+            targetMods.ForEach(m => m.Versions = m.Versions
+                                                  .Where(v => v.TargetCompatibilities.Any(t => t.TargetId == targetId))
+                                                  .ToList());
+
+
+            var mappedTargetMods = _mapper.Map<IEnumerable<ModDto>>(targetMods);
 
             return new JsonResult(mappedTargetMods);
         }
-        
+
     }
 
 }

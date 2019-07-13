@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 using Disunity.Store.Shared.Data;
 
@@ -39,11 +40,16 @@ namespace Disunity.Store.Entities {
 
         [InverseProperty("Mod")] public List<ModVersion> Versions { get; set; }
 
-        [OnBeforeCreate(typeof(ModVersion))]
+        [OnAfterCreate(typeof(ModVersion))]
         public static void OnBeforeCreateModVersion(ModVersion entity, ApplicationDbContext context) {
-            // TODO Figure out if this works
-            // TODO Should we be checking to see if it's the most recent version? (only necesary if we don't enforce always increasing)
-            entity.Mod.Latest = entity;
+            var mod = context.Mods.FirstOrDefault(m => m.Id == entity.ModId);
+
+            if (mod == null) {
+                return;
+            }
+
+            mod.Latest = entity;
+            context.SaveChanges();
         }
 
         public class ModConfiguration : IEntityTypeConfiguration<Mod> {
