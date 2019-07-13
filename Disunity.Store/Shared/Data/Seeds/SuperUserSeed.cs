@@ -48,21 +48,6 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public async Task Seed() {
-            // Temporary seed user roles here too
-            var roleNames = Enum.GetNames(typeof(UserRoles));
-
-            foreach (var roleName in roleNames) {
-
-                if (await _roleManager.RoleExistsAsync(roleName)) {
-                    continue;
-                }
-
-                await _roleManager.CreateAsync(new IdentityRole(roleName));
-                _logger.LogInformation($"Created role: {roleName}");
-            }
-            //
-
-
             var password = _config["AdminUser:Password"];
             var emailAddress = _config["AdminUser:Email"];
 
