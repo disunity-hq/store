@@ -7,6 +7,8 @@ using BindingAttributes;
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Startup;
 
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
@@ -14,13 +16,15 @@ namespace Disunity.Store.Shared.Data.Seeds {
     public class TargetSeed : ISeeder {
 
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _env;
 
-        public TargetSeed(ApplicationDbContext context) {
+        public TargetSeed(ApplicationDbContext context, IHostingEnvironment env) {
             _context = context;
+            _env = env;
         }
 
         public bool ShouldSeed() {
-            return !_context.Targets.Any();
+            return _env.IsDevelopment() && !_context.Targets.Any();
         }
 
         public Task Seed() {

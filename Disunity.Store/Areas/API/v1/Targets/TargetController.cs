@@ -45,20 +45,17 @@ namespace Disunity.Store.Areas.API.v1.Targets {
         [ProducesResponseType(200)]
         [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<TargetDto>>> GetAll() {
-            var targetsRaw = _context.Targets
-                                     .Include(t => t.Latest)
-                                     .ThenInclude(v => v.DisunityCompatibility)
-                                     .ThenInclude(d => d.MinCompatibleVersion)
-                                     .Include(t => t.Latest)
-                                     .ThenInclude(v => v.DisunityCompatibility)
-                                     .ThenInclude(d => d.MaxCompatibleVersion)
-                                     .Include(t => t.Versions);
+            var targets = await _context.Targets
+                                        .Include(t => t.Latest)
+                                        .ThenInclude(v => v.DisunityCompatibility)
+                                        .ThenInclude(d => d.MinCompatibleVersion)
+                                        .Include(t => t.Latest)
+                                        .ThenInclude(v => v.DisunityCompatibility)
+                                        .ThenInclude(d => d.MaxCompatibleVersion)
+                                        .Include(t => t.Versions)
+                                        .ProjectTo<TargetDto>(_mapper.ConfigurationProvider)
+                                        .ToListAsync();
 
-
-            var targets = await _mapper.ProjectTo<TargetDto>(targetsRaw).ToListAsync();
-
-            _logger.LogInformation(
-                $"Max version {targetsRaw.First()?.Latest.DisunityCompatibility.MaxCompatibleVersion.Version}");
 
             return new JsonResult(targets);
         }
@@ -78,9 +75,14 @@ namespace Disunity.Store.Areas.API.v1.Targets {
         [HttpGet("find")]
         [Produces("application/json")]
         public async Task<ActionResult<TargetVersionDto>> FindTargetVersionByHash([Required, FromQuery] string hash) {
-            var targetVersionsRaw = _context.TargetVersions.Where(v => v.Hash == hash);
+            var foundVersion = await _context.TargetVersions.Where(v => v.Hash == hash)
+                                             .Include(v => v.DisunityCompatibility)
+                                             .ThenInclude(d => d.MinCompatibleVersion)
+                                             .Include(v => v.DisunityCompatibility)
+                                             .ThenInclude(d => d.MaxCompatibleVersion)
+                                             .ProjectTo<TargetVersionDto>(_mapper.ConfigurationProvider)
+                                             .FirstOrDefaultAsync();
 
-            var foundVersion = await targetVersionsRaw.FirstOrDefaultAsync();
 
             if (foundVersion == null) {
                 return new NotFoundResult();
