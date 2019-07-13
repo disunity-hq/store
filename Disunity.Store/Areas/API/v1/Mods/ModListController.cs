@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+using Newtonsoft.Json;
+
 using Syncfusion.EJ2.Linq;
 
 
@@ -38,19 +40,15 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         /// <summary>
         /// Get a list of all mods registered with disunity.io
         /// </summary>
+        /// <param name="page">The current page of information to display, begins at 1.</param>
+        /// <param name="pageSize">The page size to use when calculating pagination=</param>
         /// <returns>An array of all found mods that are compatible with</returns>
         /// <response code="200">Return a JSON array of all mods registered with disunity.io</response>
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<IEnumerable<ModDto>>> GetAllMods([FromQuery] int page = 0,
+        public Task<ActionResult<IEnumerable<ModDto>>> GetAllMods([FromQuery] int page = 0,
                                                                         [FromQuery] int pageSize = 10) {
-            var mods = _context.Mods
-//                                     .Include(m => m.Versions)
-                               .Page(page, pageSize)
-                               .ProjectTo<ModDto>(_mapper.ConfigurationProvider);
-
-            var modList = await mods.ToListAsync();
-            return new JsonResult(modList);
+            return GetModsFromTarget(null, page, pageSize);
         }
 
         /// <summary>
@@ -68,24 +66,34 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         /// <response code="200">Return a JSON array of all found mods compatible with the given target id</response>
         [HttpGet("{targetId}")]
         [Produces("application/json")]
-        public ActionResult<IEnumerable<ModDto>> GetModsFromTarget([FromRoute] int targetId,
-                                                                   [FromQuery] int page = 0,
-                                                                   [FromQuery] int pageSize = 10) {
+        public async Task<ActionResult<IEnumerable<ModDto>>> GetModsFromTarget([FromRoute] int? targetId=null,
+                                                                               [FromQuery] int page = 0,
+                                                                               [FromQuery] int pageSize = 10) {
 
-            var targetMods = _context.Mods
+            IQueryable<Mod> targetMods;
+
+            if (targetId == null) {
+                targetMods = _context.Mods;
+            } else {
+                targetMods = _context.Mods
                                      .Include(m => m.Versions)
                                      .ThenInclude(v => v.TargetCompatibilities)
                                      .Where(m => m.Versions.Any(
                                                 v => v.TargetCompatibilities.Any(t => t.TargetId == targetId)));
 
-            targetMods.ForEach(m => m.Versions = m.Versions
-                                                  .Where(v => v.TargetCompatibilities.Any(t => t.TargetId == targetId))
-                                                  .ToList());
+                targetMods.ForEach(m => m.Versions = m.Versions
+                                                      .Where(v => v.TargetCompatibilities.Any(
+                                                                 t => t.TargetId == targetId))
+                                                      .ToList());
+            }
 
+            var mappedTargetMods = await targetMods
+                                         .OrderBy(v => v.Id)
+                                         .Page(page, pageSize)
+                                         .ProjectTo<ModDto>(_mapper.ConfigurationProvider)
+                                         .ToListAsync();
 
-            var mappedTargetMods = _mapper.Map<IEnumerable<ModDto>>(targetMods);
-
-            return new JsonResult(mappedTargetMods);
+            return new JsonResult(mappedTargetMods, new JsonSerializerSettings(){NullValueHandling = NullValueHandling.Include});
         }
 
     }
