@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -39,8 +40,12 @@ namespace Disunity.Store.Entities {
         [DataType(DataType.ImageUrl)]
         public string IconUrl { get; set; }
 
-        [InverseProperty("Dependant")] public List<ModDependency> Dependencies { get; set; }
+        [InverseProperty("Dependant")] public List<ModDependency> ModDependencies { get; set; }
         [InverseProperty("Version")] public List<ModTargetCompatibility> TargetCompatibilities { get; set; }
+
+        [NotMapped] public List<ModDependency> Dependencies => ModDependencies.Where(d => d.DependencyType == ModDependencyType.Dependency).ToList();
+        [NotMapped] public List<ModDependency> OptionalDependencies => ModDependencies.Where(d => d.DependencyType == ModDependencyType.OptionalDependency).ToList();
+        [NotMapped] public List<ModDependency> Incompatibilities => ModDependencies.Where(d => d.DependencyType == ModDependencyType.Incompatible).ToList();
 
         public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
 
@@ -50,7 +55,7 @@ namespace Disunity.Store.Entities {
 
                 builder.HasAlternateKey(v => new {v.ModId, v.VersionNumber});
 
-                builder.HasMany(v => v.Dependencies).WithOne(d => d.Dependant);
+                builder.HasMany(v => v.ModDependencies).WithOne(d => d.Dependant);
                 builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);
             }
 

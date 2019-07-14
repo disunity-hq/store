@@ -4,6 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
+    public enum ModDependencyType {
+
+        /// <summary>
+        /// This mod is a normal dependency 
+        /// </summary>
+        Dependency,
+        /// <summary>
+        /// 
+        /// </summary>
+        OptionalDependency,
+        Incompatible
+
+    }
+
     public class ModDependency {
 
         public int DependantId { get; set; }
@@ -17,6 +31,11 @@ namespace Disunity.Store.Entities {
         /// The dependency required by <see cref="Dependant"/>
         /// </summary>
         public Mod Dependency { get; set; }
+
+        /// <summary>
+        /// The type of dependency represented by this row
+        /// </summary>
+        public ModDependencyType DependencyType { get; set; }
 
         public int? MinVersionId { get; set; }
         /// <summary>
