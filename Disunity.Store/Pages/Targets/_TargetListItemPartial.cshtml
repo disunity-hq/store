@@ -1,0 +1,23 @@
+@model Disunity.Store.Entities.Target
+
+@addTagHelper *, Syncfusion.EJ2
+
+<div class="col-xs-12">
+    <div class="e-card e-card-horizontal e-card-stacked target-list-row">
+        <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
+        <div class="e-card-stacked">
+            <div class="e-card-header">
+                <div class="e-card-header-caption">
+                    <div class="e-card-header-title">@Model.DisplayName</div>
+                </div>
+            </div>
+            <div class="e-card-content">
+                <p>
+
+                    @Model?.Latest.Description
+                </p>
+                <p>@Model?.Latest.IconUrl</p>
+            </div>
+        </div>
+    </div>
+</div>
