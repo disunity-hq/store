@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ using Disunity.Store.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators.Internal;
 using Microsoft.Extensions.Logging;
 
 using TopoSort;
@@ -37,6 +39,8 @@ namespace Disunity.Store.Shared.Data.Seeds {
         public async Task Seed() {
             var targets = await _context.Targets.ToListAsync();
 
+            var random = new Random();
+
             foreach (var target in targets) {
                 Org testOrg = new Org();
 
@@ -48,13 +52,32 @@ namespace Disunity.Store.Shared.Data.Seeds {
                         };
                     }
 
+                    var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
+
+                    var attachedVersion = await _context.VersionNumbers.FirstOrDefaultAsync(
+                        v => v.Major == version.Major &&
+                             v.Minor == version.Minor &&
+                             v.Patch == version.Patch);
+
+                    if (attachedVersion == null) {
+                        attachedVersion = version;
+
+                        _logger.LogInformation(
+                            $"Creating new VersionNumber {attachedVersion.Major}.{attachedVersion.Minor}.{attachedVersion.Patch}");
+
+                        _context.VersionNumbers.Add(attachedVersion);
+                        await _context.SaveChangesAsync();
+
+
+                    }
+
                     var modVersion = new ModVersion() {
                         Description = "This is a mod!",
                         Readme = "# Markdown!",
                         DisplayName = $"test-org-mod-{i}",
                         FileUrl = "",
                         IconUrl = "/assets/logoc_512x512.png",
-                        VersionNumber = "",
+                        VersionNumber = attachedVersion,
                         WebsiteUrl = "",
                         TargetCompatibilities = new List<ModTargetCompatibility>()
                             {new ModTargetCompatibility() {Target = target}}

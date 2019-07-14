@@ -28,12 +28,11 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<string>("URL");
 
-                    b.Property<string>("Version")
-                        .IsRequired();
+                    b.Property<int>("VersionNumberId");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Version")
+                    b.HasIndex("VersionNumberId")
                         .IsUnique();
 
                     b.ToTable("DisunityVersions");
@@ -110,6 +109,8 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<int>("DependantId");
 
                     b.Property<int>("DependencyId");
+
+                    b.Property<int>("DependencyType");
 
                     b.Property<int?>("MaxVersionId");
 
@@ -206,9 +207,7 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<string>("Readme")
                         .IsRequired();
 
-                    b.Property<string>("VersionNumber")
-                        .IsRequired()
-                        .HasMaxLength(16);
+                    b.Property<int>("VersionNumberId");
 
                     b.Property<string>("WebsiteUrl")
                         .IsRequired()
@@ -216,7 +215,9 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ModId", "VersionNumber");
+                    b.HasAlternateKey("ModId", "VersionNumberId");
+
+                    b.HasIndex("VersionNumberId");
 
                     b.ToTable("ModVersions");
                 });
@@ -372,12 +373,11 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Version")
-                        .IsRequired();
+                    b.Property<int>("VersionNumberId");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Version")
+                    b.HasIndex("VersionNumberId")
                         .IsUnique();
 
                     b.ToTable("UnityVersion");
@@ -436,6 +436,24 @@ namespace Disunity.Store.Entities.Migrations
                         .IsUnique();
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.VersionNumber", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Major");
+
+                    b.Property<int>("Minor");
+
+                    b.Property<int>("Patch");
+
+                    b.HasKey("ID");
+
+                    b.HasAlternateKey("Major", "Minor", "Patch");
+
+                    b.ToTable("VersionNumbers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -549,6 +567,14 @@ namespace Disunity.Store.Entities.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Disunity.Store.Entities.DisunityVersion", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.VersionNumber", "VersionNumber")
+                        .WithMany()
+                        .HasForeignKey("VersionNumberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Disunity.Store.Entities.DisunityVersionCompatibility", b =>
                 {
                     b.HasOne("Disunity.Store.Entities.UnityVersion", "MaxCompatibleVersion")
@@ -580,7 +606,7 @@ namespace Disunity.Store.Entities.Migrations
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
                 {
                     b.HasOne("Disunity.Store.Entities.ModVersion", "Dependant")
-                        .WithMany("Dependencies")
+                        .WithMany("ModDependencies")
                         .HasForeignKey("DependantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -641,6 +667,11 @@ namespace Disunity.Store.Entities.Migrations
                         .WithMany("Versions")
                         .HasForeignKey("ModId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Disunity.Store.Entities.VersionNumber", "VersionNumber")
+                        .WithMany()
+                        .HasForeignKey("VersionNumberId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModVersionDownloadEvent", b =>
@@ -692,6 +723,14 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasOne("Disunity.Store.Entities.TargetVersion", "Version")
                         .WithOne("DisunityCompatibility")
                         .HasForeignKey("Disunity.Store.Entities.TargetVersionCompatibility", "VersionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.UnityVersion", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.VersionNumber", "VersionNumber")
+                        .WithMany()
+                        .HasForeignKey("VersionNumberId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

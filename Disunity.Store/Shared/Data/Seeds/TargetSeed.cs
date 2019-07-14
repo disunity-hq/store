@@ -8,6 +8,8 @@ using Disunity.Store.Entities;
 
 using Microsoft.AspNetCore.Hosting;
 
+using TopoSort;
+
 
 namespace Disunity.Store.Shared.Data.Seeds {
 
@@ -27,8 +29,8 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public Task Seed() {
-            var unity2015 = new UnityVersion() {Version = "2015"};
-            var unity2018 = new UnityVersion() {Version = "2018"};
+            var unity2015 = new UnityVersion() {VersionNumber = (VersionNumber)"2015.1.0"};
+            var unity2018 = new UnityVersion() {VersionNumber = (VersionNumber) "2018.0.1"};
             
             for (var i = 0; i < 10; i++) {
                 var targetVersion = new TargetVersion() {

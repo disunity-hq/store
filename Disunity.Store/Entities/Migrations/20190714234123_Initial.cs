@@ -53,20 +53,6 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DisunityVersions",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    URL = table.Column<string>(nullable: true),
-                    Version = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DisunityVersions", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orgs",
                 columns: table => new
                 {
@@ -82,16 +68,19 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UnityVersion",
+                name: "VersionNumbers",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Version = table.Column<string>(nullable: false)
+                    Major = table.Column<int>(nullable: false),
+                    Minor = table.Column<int>(nullable: false),
+                    Patch = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UnityVersion", x => x.ID);
+                    table.PrimaryKey("PK_VersionNumbers", x => x.ID);
+                    table.UniqueConstraint("AK_VersionNumbers_Major_Minor_Patch", x => new { x.Major, x.Minor, x.Patch });
                 });
 
             migrationBuilder.CreateTable(
@@ -226,6 +215,45 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DisunityVersions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    URL = table.Column<string>(nullable: true),
+                    VersionNumberId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DisunityVersions", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_DisunityVersions_VersionNumbers_VersionNumberId",
+                        column: x => x.VersionNumberId,
+                        principalTable: "VersionNumbers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnityVersion",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    VersionNumberId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnityVersion", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_UnityVersion_VersionNumbers_VersionNumberId",
+                        column: x => x.VersionNumberId,
+                        principalTable: "VersionNumbers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DisunityVersionCompatibilities",
                 columns: table => new
                 {
@@ -291,6 +319,7 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     DependantId = table.Column<int>(nullable: false),
                     DependencyId = table.Column<int>(nullable: false),
+                    DependencyType = table.Column<int>(nullable: false),
                     MinVersionId = table.Column<int>(nullable: true),
                     MaxVersionId = table.Column<int>(nullable: true)
                 },
@@ -309,7 +338,7 @@ namespace Disunity.Store.Entities.Migrations
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     IsActive = table.Column<bool>(nullable: true, defaultValue: true),
                     Downloads = table.Column<int>(nullable: true, defaultValue: 0),
-                    VersionNumber = table.Column<string>(maxLength: 16, nullable: false),
+                    VersionNumberId = table.Column<int>(nullable: false),
                     WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     Description = table.Column<string>(maxLength: 256, nullable: false),
                     Readme = table.Column<string>(nullable: false),
@@ -320,7 +349,13 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ModVersions", x => x.Id);
-                    table.UniqueConstraint("AK_ModVersions_ModId_VersionNumber", x => new { x.ModId, x.VersionNumber });
+                    table.UniqueConstraint("AK_ModVersions_ModId_VersionNumberId", x => new { x.ModId, x.VersionNumberId });
+                    table.ForeignKey(
+                        name: "FK_ModVersions_VersionNumbers_VersionNumberId",
+                        column: x => x.VersionNumberId,
+                        principalTable: "VersionNumbers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -534,9 +569,9 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DisunityVersions_Version",
+                name: "IX_DisunityVersions_VersionNumberId",
                 table: "DisunityVersions",
-                column: "Version",
+                column: "VersionNumberId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -596,6 +631,11 @@ namespace Disunity.Store.Entities.Migrations
                 column: "ModVersionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ModVersions_VersionNumberId",
+                table: "ModVersions",
+                column: "VersionNumberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrgMembers_OrgId",
                 table: "OrgMembers",
                 column: "OrgId");
@@ -629,9 +669,9 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UnityVersion_Version",
+                name: "IX_UnityVersion_VersionNumberId",
                 table: "UnityVersion",
-                column: "Version",
+                column: "VersionNumberId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
@@ -718,6 +758,10 @@ namespace Disunity.Store.Entities.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_ModVersions_VersionNumbers_VersionNumberId",
+                table: "ModVersions");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Mods_ModVersions_LatestId",
                 table: "Mods");
 
@@ -772,6 +816,9 @@ namespace Disunity.Store.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "UnityVersion");
+
+            migrationBuilder.DropTable(
+                name: "VersionNumbers");
 
             migrationBuilder.DropTable(
                 name: "ModVersions");

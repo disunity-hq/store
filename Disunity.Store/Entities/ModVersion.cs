@@ -4,13 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
+using Disunity.Store.Shared.Data;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
 namespace Disunity.Store.Entities {
 
-    public class ModVersion : ICreatedAt {
+    public class ModVersion : ICreatedAt, IVersionModel {
 
         public int Id { get; set; }
 
@@ -22,7 +24,8 @@ namespace Disunity.Store.Entities {
         public bool? IsActive { get; set; }
         public int? Downloads { get; set; }
 
-        [Required] [MaxLength(16)] public string VersionNumber { get; set; }
+        [Required] public int VersionNumberId { get; set; }
+        public VersionNumber VersionNumber { get; set; }
 
         [Required] [MaxLength(1024)] public string WebsiteUrl { get; set; }
 
@@ -53,7 +56,7 @@ namespace Disunity.Store.Entities {
                 builder.Property(v => v.IsActive).HasDefaultValue(true);
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
 
-                builder.HasAlternateKey(v => new {v.ModId, v.VersionNumber});
+                builder.HasAlternateKey(v => new {v.ModId, v.VersionNumberId});
 
                 builder.HasMany(v => v.ModDependencies).WithOne(d => d.Dependant);
                 builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);

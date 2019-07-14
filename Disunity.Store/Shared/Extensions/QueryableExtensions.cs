@@ -1,4 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
+
+using Disunity.Store.Entities;
+using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.ResponseCaching.Internal;
 
@@ -27,6 +31,36 @@ namespace Disunity.Store.Shared.Extensions {
             return query;
         }
 
+        public static IQueryable<T> AtLeast<T>(this IQueryable<T> query, VersionNumber version)
+            where T : class, IVersionModel {
+            if (version != null) {
+                query = query.Where(m => m.VersionNumber.Major >= version.Minor)
+                             .Where(m => m.VersionNumber.Minor >= version.Minor)
+                             .Where(m => m.VersionNumber.Patch >= version.Patch);
+            }
+
+            return query;
+        }
+        
+        public static IQueryable<T> AtMost<T>(this IQueryable<T> query, VersionNumber version)
+            where T : class, IVersionModel {
+            if (version != null) {
+                query = query.Where(m => m.VersionNumber.Major <= version.Minor)
+                             .Where(m => m.VersionNumber.Minor <= version.Minor)
+                             .Where(m => m.VersionNumber.Patch <= version.Patch);
+            }
+
+            return query;
+        }
+        
+        public static IOrderedQueryable<T> OrderByVersion<T>(this IQueryable<T> query) where T : class, IVersionModel {
+            return query.OrderBy(m => m.VersionNumber);
+        }
+        
+        public static IOrderedQueryable<T> OrderByVersionDescending<T>(this IQueryable<T> query) where T : class, IVersionModel {
+            return query.OrderByDescending(m => m.VersionNumber);
+        }
+        
     }
 
 }

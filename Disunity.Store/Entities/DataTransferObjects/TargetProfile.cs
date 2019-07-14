@@ -13,11 +13,11 @@ namespace Disunity.Store.Entities.DataTransferObjects {
                 .ForMember(
                     v => v.MaxCompatibleVersion,
                     m => m.MapFrom(
-                        s => s.DisunityCompatibility.MaxCompatibleVersion.Version))
+                        s => s.DisunityCompatibility.MaxCompatibleVersion.VersionNumber))
                 .ForMember(
                     v => v.MinCompatibleVersion,
                     m => m.MapFrom(
-                        s => s.DisunityCompatibility.MinCompatibleVersion.Version));
+                        s => s.DisunityCompatibility.MinCompatibleVersion.VersionNumber));
         }
 
     }

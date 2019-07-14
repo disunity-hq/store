@@ -1,21 +1,26 @@
 using System.ComponentModel.DataAnnotations;
 
+using Disunity.Store.Shared.Data;
+using Disunity.Store.Shared.Extensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
 namespace Disunity.Store.Entities {
 
-    public class UnityVersion {
+    public class UnityVersion: IVersionModel {
 
         public int ID { get; set; }
 
-        [Required] public string Version { get; set; }
+
+        public int VersionNumberId { get; set; }
+        public VersionNumber VersionNumber { get; set; }
 
         public class UnityVersionConfiguration : IEntityTypeConfiguration<UnityVersion> {
 
             public void Configure(EntityTypeBuilder<UnityVersion> builder) {
-                builder.HasIndex(v => v.Version).IsUnique();
+                builder.HasVersionIndex().IsUnique();
             }
 
         }

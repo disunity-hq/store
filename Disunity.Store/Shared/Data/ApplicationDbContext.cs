@@ -54,6 +54,8 @@ namespace Disunity.Store.Shared.Data {
         public DbSet<DisunityVersion> DisunityVersions { get; set; }
         public DbSet<DisunityVersionCompatibility> DisunityVersionCompatibilities { get; set; }
 
+        public DbSet<VersionNumber> VersionNumbers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);

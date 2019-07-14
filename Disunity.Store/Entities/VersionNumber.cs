@@ -1,0 +1,84 @@
+using System;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+
+namespace Disunity.Store.Entities {
+
+    public class VersionNumber : IComparable<VersionNumber> {
+
+        public int ID { get; set; }
+
+        public int Major { get; set; }
+        public int Minor { get; set; }
+        public int Patch { get; set; }
+
+        public VersionNumber() : this(1) { }
+
+        public VersionNumber(int major, int minor = 0, int patch = 0) {
+            Major = major;
+            Minor = minor;
+            Patch = patch;
+        }
+
+        public VersionNumber(string versionNumber) {
+            var segments = versionNumber.Split('.');
+
+            if (segments.Length != 3) {
+                throw new InvalidOperationException(
+                    $"versionNumber must be of format MAJOR.MINOR.PATCH instead {versionNumber} was provided");
+            }
+
+            Major = int.Parse(segments[0]);
+            Minor = int.Parse(segments[1]);
+            Patch = int.Parse(segments[2]);
+        }
+
+        public static implicit operator string(VersionNumber v) {
+            return v.ToString();
+        }
+
+        public static explicit operator VersionNumber(string s) {
+            return new VersionNumber(s);
+        }
+
+        public override string ToString() {
+            return $"{Major}.{Minor}.{Patch}";
+        }
+
+        public int CompareTo(VersionNumber other) {
+            if (ReferenceEquals(this, other)) {
+                return 0;
+            }
+
+            if (ReferenceEquals(null, other)) {
+                return 1;
+            }
+
+            var majorComparison = Major.CompareTo(other.Major);
+
+            if (majorComparison != 0) {
+                return majorComparison;
+            }
+
+            var minorComparison = Minor.CompareTo(other.Minor);
+
+            if (minorComparison != 0) {
+                return minorComparison;
+            }
+
+            return Patch.CompareTo(other.Patch);
+        }
+
+        public class VersionNumberConfiguration : IEntityTypeConfiguration<VersionNumber> {
+
+            public void Configure(EntityTypeBuilder<VersionNumber> builder) {
+                builder.HasAlternateKey(v => new {v.Major, v.Minor, v.Patch});
+            }
+
+        }
+
+    }
+
+}
