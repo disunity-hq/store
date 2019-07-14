@@ -31,11 +31,6 @@ namespace Disunity.Store.Pages.Targets {
 
         public async Task OnGet() {
             Targets = await _context.Targets.Include(t => t.Latest).ToListAsync();
-
-            _logger.LogInformation(
-                $"Found Targets {Targets.Count} with {Targets.Count(t => t.Latest != null)} Latest Versions");
-
-            _logger.LogInformation($"Icon URL: {Targets.FirstOrDefault()?.Latest.IconUrl}");
         }
 
     }

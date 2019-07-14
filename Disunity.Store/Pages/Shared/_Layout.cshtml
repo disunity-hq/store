@@ -11,7 +11,7 @@
 
     <div class="container" id="content">
         <div id="gutter">
-            @if(ViewData["ShowBreadcrumbs"] is bool showBreadcrumbs && showBreadcrumbs) {
+            @if (ViewData["ShowBreadcrumbs"] is bool showBreadcrumbs && showBreadcrumbs) {
                 <breadcrumb></breadcrumb>
             }
         </div>
@@ -20,7 +20,7 @@
             <partial name="_CookieConsentPartial"/>
         </div>
 
-        <main role="main">
+        <main role="main" class="mb-5">
             @RenderBody()
         </main>
     </div>

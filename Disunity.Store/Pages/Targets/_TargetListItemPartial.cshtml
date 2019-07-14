@@ -2,21 +2,21 @@
 
 @addTagHelper *, Syncfusion.EJ2
 
-<div class="col-xs-12">
+<div class="col-xs-12 my-3">
     <div class="e-card e-card-horizontal e-card-stacked target-list-row">
         <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
-        <div class="e-card-stacked">
+        <div class="e-card-stacked justify-content-start">
             <div class="e-card-header">
                 <div class="e-card-header-caption">
-                    <div class="e-card-header-title">@Model.DisplayName</div>
+                    <div class="e-card-header-title target-list-row-title">
+                        @Model.DisplayName
+                        <ejs-chiplist id="target-version-@Model.ID" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
+                        @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+                    </div>
                 </div>
             </div>
             <div class="e-card-content">
-                <p>
-
-                    @Model?.Latest.Description
-                </p>
-                <p>@Model?.Latest.IconUrl</p>
+                @Model?.Latest.Description
             </div>
         </div>
     </div>
