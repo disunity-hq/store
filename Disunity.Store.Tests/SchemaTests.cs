@@ -29,9 +29,9 @@ namespace Disunity.Store.Tests {
             Assert.False(manifest.IsValid(schema, out IList<ValidationError> errors));
 
             foreach (var error in errors) {
+                this.log.WriteLine(error.Message);
                 Assert.Equal("ModID", error.Path);
-
-                Assert.Equal("String 'example mod' does not match regex pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'.",
+                Assert.Equal("String 'fake mod' does not match regex pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'.",
                              error.Message);
             }
         }

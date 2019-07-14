@@ -89,11 +89,11 @@ namespace Disunity.Store.Tests {
                 log.WriteLine($"Dependency: {key} - {target.MinVersion} to {target.MaxVersion}");
             }
 
-            Assert.Equal("fakeuser", manifest.OrgID);
+            Assert.Equal("fake-user", manifest.OrgID);
             Assert.Equal("fake-mod", manifest.ModID);
             Assert.Equal("0.0.1", manifest.Version);
-            Assert.Equal("Fake Mod", manifest.Name);
-            Assert.Equal("http://github.com/disunity-hq/fake-mod", manifest.Url);
+            Assert.Equal("Fake Mod", manifest.DisplayName);
+            Assert.Equal("http://github.com/disunity-hq/fake-mod", manifest.URL);
             Assert.Equal("An imaginary Disunity mod", manifest.Description);
             Assert.Equal(14, manifest.ContentTypes);
 

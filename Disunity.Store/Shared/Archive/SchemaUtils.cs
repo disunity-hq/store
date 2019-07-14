@@ -1,3 +1,4 @@
+using System;
 using System.Dynamic;
 
 
@@ -7,6 +8,28 @@ namespace Disunity.Store.Shared.Archive {
 
         public static ExpandoObject EO() {
             return new ExpandoObject();
+        }
+
+        public static object Integer(int? min = null, int? max = null, 
+                                     int? exclusiveMin = null, 
+                                     int? exclusiveMax = null) {
+            dynamic eo = EO();
+            eo.type = "integer";
+
+            if (min != null) {
+                eo.minimum = min;
+            }
+            if (max != null) {
+                eo.maximum = max;
+            }
+            if (exclusiveMin != null) {
+                eo.exclusiveMinimum = exclusiveMin;
+            }
+            if (exclusiveMax != null) {
+                eo.exclusiveMax = exclusiveMax;
+            }
+
+            return eo;
         }
 
         public static object String(string pattern = null, string format = null, int maxLength = 128) {

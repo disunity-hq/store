@@ -68,28 +68,37 @@ namespace Disunity.Store.Shared.Archive {
 
     public partial class Manifest {
 
-        public int ContentTypes;
-        public Dictionary<string, VersionRange> Dependencies;
-        public string Description;
-        public string ModID;
-
-        public string Name;
-
         public string OrgID;
+        public string ModID;
+        public string Version;
+
+        public string DisplayName;
+        public string URL;
+        public string Description;
+        public List<string> Tags;
+        public int ContentTypes;
+
+        public VersionRange UnityVersions;
+        public Dictionary<string, VersionRange> Targets;
+        public Dictionary<string, VersionRange> Dependencies;
+        public Dictionary<string, VersionRange> OptionalDependencies;
+        public Dictionary<string, VersionRange> Incompatibilities;
+
+        public string Icon;
+        public string Readme;
+        public List<string> Artifacts;
+        public List<string> PrefabBundles;
+        public List<string> SceneBundles;
 
         public List<string> PreloadAssemblies;
-
         public string PreloadAssembly;
         public string PreloadClass;
-        public List<string> RuntimeAssemblies;
 
+        public List<string> RuntimeAssemblies;
         public string RuntimeAssembly;
         public string RuntimeClass;
 
-        public Dictionary<string, VersionRange> Targets;
-        public string Url;
-        public string Version;
-
+        public object ExtraData;
     }
 
 

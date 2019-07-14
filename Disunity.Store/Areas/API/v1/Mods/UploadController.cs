@@ -54,7 +54,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
             try {
                 var archive = _archiveFactory(ArchiveUpload);
-                return new JsonResult(new {archive.Manifest.Name});
+                return new JsonResult(new {archive.Manifest.DisplayName});
             }
             catch (ManifestSchemaException e) {
                 return BadRequest(new {

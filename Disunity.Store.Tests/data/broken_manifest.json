@@ -1,12 +1,18 @@
 {
-  "OrgID": "ldlework",
-  "ModID": "example mod",
+  "OrgID": "fake-user",
+  "ModID": "fake mod",
   "Version": "0.0.1",
 
-  "Name": "Example Mod",
-  "Url": "http://github.com/disunity-hq/core",
-  "Description": "An example Disunity mod.",
+  "DisplayName": "Fake Mod",
+  "URL": "http://github.com/disunity-hq/fake-mod",
+  "Description": "An imaginary Disunity mod",
+  "Tags": ["so-awesome", "elder-scrolls"],
   "ContentTypes": 14,
+
+  "UnityVersions": {
+    "MinVersion": "3.4.0",
+    "MaxVersion": "2019.1.10"
+  },
 
   "Targets": {
     "risk-of-rain-2": {
@@ -14,20 +20,57 @@
       "MaxVersion": "3830297"
     }
   },
+
   "Dependencies": {
-    "foo/bepinexpack": {
+    "foo/bar": {
       "MinVersion": "2.0.0"
     }
   },
 
+  "OptionalDependencies": {
+    "foo/baz": {
+      "MaxVersion": "2.0.0"
+    }
+  },
+
+  "Incompatibilities": {
+    "foo/boz": {
+      "MinVersion": "1.0.0",
+      "MaxVersion": "2.0.0"
+    }
+  },
+
+  "Icon": "icon.png",
+  "Readme": "README.md",
+  "Artifacts": [
+    "icon.png",
+    "README.md",
+    "sounds/wow.wav"
+  ],
+
+  "PrefabBundles": [
+    "weapons.assetbundle"
+  ],
+
+  "SceneBundles": [
+    "scenes.assetbundle"
+  ],
+
   "PreloadAssemblies": [
-    "preloadExamplePreloader.dll"
+    "FakePreload.dll"
   ],
   "RuntimeAssemblies": [
-    "runtimeExampleRuntime.dll"
+    "FakeRuntime.dll"
   ],
-  "RuntimeClass": "ExampleRuntime",
-  "RuntimeAssembly": "ExampleRuntime",
-  "PreloadClass": "ExamplePreloader",
-  "PreloadAssembly": "ExamplePreloader"
+  "RuntimeClass": "FakeRuntime",
+  "RuntimeAssembly": "FakeRuntime",
+  "PreloadClass": "FakePreload",
+  "PreloadAssembly": "FakePreload",
+
+  "ExtraData": {
+    "answer": 42,
+    "names": [
+      "bob", "mary"
+    ]
+  }
 }
