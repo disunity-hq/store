@@ -42,7 +42,6 @@ namespace Disunity.Store.Entities {
         public class OrgConfiguration : IEntityTypeConfiguration<Org> {
 
             public void Configure(EntityTypeBuilder<Org> builder) {
-                builder.HasAlternateKey(o => o.DisplayName);
                 builder.HasIndex(o => o.Slug).IsUnique();
 
                 builder.HasMany(o => o.Mods)

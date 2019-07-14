@@ -38,8 +38,7 @@ namespace Disunity.Store.Entities {
         public class TargetVersionConfiguration : IEntityTypeConfiguration<TargetVersion> {
 
             public void Configure(EntityTypeBuilder<TargetVersion> builder) {
-                builder.HasAlternateKey(v => v.DisplayName);
-                builder.HasAlternateKey(v => v.VersionNumber);
+                builder.HasAlternateKey(v => new {v.TargetId, v.VersionNumber});
             }
 
         }

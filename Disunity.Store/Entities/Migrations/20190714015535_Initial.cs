@@ -79,7 +79,6 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orgs", x => x.Id);
-                    table.UniqueConstraint("AK_Orgs_DisplayName", x => x.DisplayName);
                 });
 
             migrationBuilder.CreateTable(
@@ -321,8 +320,7 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ModVersions", x => x.Id);
-                    table.UniqueConstraint("AK_ModVersions_DisplayName", x => x.DisplayName);
-                    table.UniqueConstraint("AK_ModVersions_VersionNumber", x => x.VersionNumber);
+                    table.UniqueConstraint("AK_ModVersions_ModId_VersionNumber", x => new { x.ModId, x.VersionNumber });
                 });
 
             migrationBuilder.CreateTable(
@@ -419,8 +417,7 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TargetVersions", x => x.ID);
-                    table.UniqueConstraint("AK_TargetVersions_DisplayName", x => x.DisplayName);
-                    table.UniqueConstraint("AK_TargetVersions_VersionNumber", x => x.VersionNumber);
+                    table.UniqueConstraint("AK_TargetVersions_TargetId_VersionNumber", x => new { x.TargetId, x.VersionNumber });
                 });
 
             migrationBuilder.CreateTable(
@@ -436,7 +433,6 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Targets", x => x.ID);
-                    table.UniqueConstraint("AK_Targets_DisplayName", x => x.DisplayName);
                     table.ForeignKey(
                         name: "FK_Targets_TargetVersions_LatestId",
                         column: x => x.LatestId,
@@ -600,11 +596,6 @@ namespace Disunity.Store.Entities.Migrations
                 column: "ModVersionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ModVersions_ModId",
-                table: "ModVersions",
-                column: "ModId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrgMembers_OrgId",
                 table: "OrgMembers",
                 column: "OrgId");
@@ -636,11 +627,6 @@ namespace Disunity.Store.Entities.Migrations
                 table: "TargetVersionCompatibilities",
                 column: "VersionId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TargetVersions_TargetId",
-                table: "TargetVersions",
-                column: "TargetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UnityVersion_Version",

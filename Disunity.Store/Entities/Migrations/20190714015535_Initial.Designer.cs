@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190713043934_Initial")]
+    [Migration("20190714015535_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,11 +218,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("DisplayName");
-
-                    b.HasAlternateKey("VersionNumber");
-
-                    b.HasIndex("ModId");
+                    b.HasAlternateKey("ModId", "VersionNumber");
 
                     b.ToTable("ModVersions");
                 });
@@ -269,8 +265,6 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("DisplayName");
-
                     b.HasIndex("Slug")
                         .IsUnique();
 
@@ -308,8 +302,6 @@ namespace Disunity.Store.Entities.Migrations
                         .HasMaxLength(128);
 
                     b.HasKey("ID");
-
-                    b.HasAlternateKey("DisplayName");
 
                     b.HasIndex("LatestId")
                         .IsUnique();
@@ -349,11 +341,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasAlternateKey("DisplayName");
-
-                    b.HasAlternateKey("VersionNumber");
-
-                    b.HasIndex("TargetId");
+                    b.HasAlternateKey("TargetId", "VersionNumber");
 
                     b.ToTable("TargetVersions");
                 });

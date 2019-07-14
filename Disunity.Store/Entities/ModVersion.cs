@@ -48,8 +48,7 @@ namespace Disunity.Store.Entities {
                 builder.Property(v => v.IsActive).HasDefaultValue(true);
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
 
-                builder.HasAlternateKey(v => v.VersionNumber);
-                builder.HasAlternateKey(v => v.DisplayName);
+                builder.HasAlternateKey(v => new {v.ModId, v.VersionNumber});
 
                 builder.HasMany(v => v.Dependencies).WithOne(d => d.Dependant);
                 builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);

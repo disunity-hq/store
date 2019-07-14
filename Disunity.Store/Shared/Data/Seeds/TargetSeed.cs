@@ -27,47 +27,34 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public Task Seed() {
-            var targetVersion = new TargetVersion() {
-                Description = "Foo Bar the Game",
-                Hash = "0123456789abcdef",
-                DisplayName = "Foo Bar",
-                IconUrl = "",
-                WebsiteUrl = "",
-                VersionNumber = "1",
-                DisunityCompatibility = new TargetVersionCompatibility() {
-                    MaxCompatibleVersion = new UnityVersion() {Version = "2018"},
-                    MinCompatibleVersion = new UnityVersion() {Version = "2015"}
-                }
-            };
+            var unity2015 = new UnityVersion() {Version = "2015"};
+            var unity2018 = new UnityVersion() {Version = "2018"};
+            
+            for (var i = 0; i < 10; i++) {
+                var targetVersion = new TargetVersion() {
+                    Description = "Foo Bar the Game",
+                    Hash = $"0123456789abcdef-{i}",
+                    DisplayName = $"Foo Bar - {i}",
+                    IconUrl = "/assets/logo_512x512.png",
+                    WebsiteUrl = "",
+                    VersionNumber = "1",
+                    DisunityCompatibility = new TargetVersionCompatibility() {
+                        MinCompatibleVersion = unity2015,
+                        MaxCompatibleVersion = unity2018
+                    }
+                };
 
-            var target = new Target() {
-                Slug = "/foobar",
-                DisplayName = "Foo bar",
-                Versions = new List<TargetVersion>() {
-                    targetVersion
-                }
-            };
+                var target = new Target() {
+                    Slug = $"foobar-{i}",
+                    DisplayName = $"Foo bar - {i}",
+                    Versions = new List<TargetVersion>() {
+                        targetVersion
+                    }
+                };
 
-            var modVersion = new ModVersion() {
-                Description = "This is a mod for foobar",
-                Readme = "# Markdown!",
-                DisplayName = "test-org-mod",
-                FileUrl = "",
-                IconUrl = "",
-                VersionNumber = "",
-                WebsiteUrl = "",
-                TargetCompatibilities = new List<ModTargetCompatibility>()
-                    {new ModTargetCompatibility() {Target = target}}
-            };
+                _context.Targets.Add(target);
+            }
 
-            var mod = new Mod() {
-                Owner = new Org() {Slug = "/test_org", DisplayName = "Test Org"},
-                Slug = "/test_org-mod",
-                Versions = new List<ModVersion>() {modVersion},
-                DisplayName = "asdf"
-            };
-
-            _context.Add(mod);
 
             return _context.SaveChangesAsync();
         }

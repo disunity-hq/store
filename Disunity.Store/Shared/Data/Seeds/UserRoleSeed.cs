@@ -32,7 +32,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public bool ShouldSeed() {
-            return _dbContext.UserRoles.Count() == Enum.GetValues(typeof(UserRoles)).Length;
+            return _dbContext.UserRoles.Count() != Enum.GetValues(typeof(UserRoles)).Length;
         }
 
         public async Task Seed() {

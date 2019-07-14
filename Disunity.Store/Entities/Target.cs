@@ -53,8 +53,6 @@ namespace Disunity.Store.Entities {
                        .WithOne(v => v.Target);
 
                 builder.HasMany(t => t.Versions);
-
-                builder.HasAlternateKey(t => t.DisplayName);
             }
 
         }

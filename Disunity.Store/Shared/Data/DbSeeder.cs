@@ -26,9 +26,12 @@ namespace Disunity.Store.Shared.Data {
     [AsScoped]
     public class DbSeeder {
 
+        private readonly ILogger<DbSeeder> _logger;
+
         private readonly IEnumerable<ISeeder> _seeds;
 
-        public DbSeeder(IEnumerable<ISeeder> seeds) {
+        public DbSeeder(IEnumerable<ISeeder> seeds, ILogger<DbSeeder> logger) {
+            _logger = logger;
             _seeds = seeds.TopoSort();
         }
 
@@ -36,7 +39,9 @@ namespace Disunity.Store.Shared.Data {
 
 
             foreach (var seed in _seeds) {
+                _logger.LogDebug($"Checking if {seed.GetType().Name} can run");
                 if (seed.ShouldSeed()) {
+                    _logger.LogInformation($"Running seed {seed.GetType().Name}");
                     await seed.Seed();
                 }
             }
