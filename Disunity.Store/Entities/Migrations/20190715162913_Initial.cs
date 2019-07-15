@@ -235,7 +235,7 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UnityVersion",
+                name: "UnityVersions",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -244,9 +244,9 @@ namespace Disunity.Store.Entities.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UnityVersion", x => x.ID);
+                    table.PrimaryKey("PK_UnityVersions", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_UnityVersion_VersionNumbers_VersionNumberId",
+                        name: "FK_UnityVersions_VersionNumbers_VersionNumberId",
                         column: x => x.VersionNumberId,
                         principalTable: "VersionNumbers",
                         principalColumn: "ID",
@@ -267,15 +267,15 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     table.PrimaryKey("PK_DisunityVersionCompatibilities", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_DisunityVersionCompatibilities_UnityVersion_MaxCompatibleVe~",
+                        name: "FK_DisunityVersionCompatibilities_UnityVersions_MaxCompatibleV~",
                         column: x => x.MaxCompatibleVersionId,
-                        principalTable: "UnityVersion",
+                        principalTable: "UnityVersions",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DisunityVersionCompatibilities_UnityVersion_MinCompatibleVe~",
+                        name: "FK_DisunityVersionCompatibilities_UnityVersions_MinCompatibleV~",
                         column: x => x.MinCompatibleVersionId,
-                        principalTable: "UnityVersion",
+                        principalTable: "UnityVersions",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -349,7 +349,6 @@ namespace Disunity.Store.Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ModVersions", x => x.Id);
-                    table.UniqueConstraint("AK_ModVersions_ModId_VersionNumberId", x => new { x.ModId, x.VersionNumberId });
                     table.ForeignKey(
                         name: "FK_ModVersions_VersionNumbers_VersionNumberId",
                         column: x => x.VersionNumberId,
@@ -490,15 +489,15 @@ namespace Disunity.Store.Entities.Migrations
                 {
                     table.PrimaryKey("PK_TargetVersionCompatibilities", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_TargetVersionCompatibilities_UnityVersion_MaxCompatibleVers~",
+                        name: "FK_TargetVersionCompatibilities_UnityVersions_MaxCompatibleVer~",
                         column: x => x.MaxCompatibleVersionId,
-                        principalTable: "UnityVersion",
+                        principalTable: "UnityVersions",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TargetVersionCompatibilities_UnityVersion_MinCompatibleVers~",
+                        name: "FK_TargetVersionCompatibilities_UnityVersions_MinCompatibleVer~",
                         column: x => x.MinCompatibleVersionId,
-                        principalTable: "UnityVersion",
+                        principalTable: "UnityVersions",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -636,6 +635,12 @@ namespace Disunity.Store.Entities.Migrations
                 column: "VersionNumberId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ModVersions_ModId_VersionNumberId",
+                table: "ModVersions",
+                columns: new[] { "ModId", "VersionNumberId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrgMembers_OrgId",
                 table: "OrgMembers",
                 column: "OrgId");
@@ -669,8 +674,8 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UnityVersion_VersionNumberId",
-                table: "UnityVersion",
+                name: "IX_UnityVersions_VersionNumberId",
+                table: "UnityVersions",
                 column: "VersionNumberId",
                 unique: true);
 
@@ -815,7 +820,7 @@ namespace Disunity.Store.Entities.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "UnityVersion");
+                name: "UnityVersions");
 
             migrationBuilder.DropTable(
                 name: "VersionNumbers");

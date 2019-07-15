@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190714234123_Initial")]
+    [Migration("20190715162913_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,9 +217,10 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ModId", "VersionNumberId");
-
                     b.HasIndex("VersionNumberId");
+
+                    b.HasIndex("ModId", "VersionNumberId")
+                        .IsUnique();
 
                     b.ToTable("ModVersions");
                 });
@@ -382,7 +383,7 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasIndex("VersionNumberId")
                         .IsUnique();
 
-                    b.ToTable("UnityVersion");
+                    b.ToTable("UnityVersions");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.UserIdentity", b =>

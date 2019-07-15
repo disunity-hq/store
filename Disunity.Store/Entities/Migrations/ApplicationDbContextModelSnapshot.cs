@@ -215,9 +215,10 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ModId", "VersionNumberId");
-
                     b.HasIndex("VersionNumberId");
+
+                    b.HasIndex("ModId", "VersionNumberId")
+                        .IsUnique();
 
                     b.ToTable("ModVersions");
                 });
@@ -380,7 +381,7 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasIndex("VersionNumberId")
                         .IsUnique();
 
-                    b.ToTable("UnityVersion");
+                    b.ToTable("UnityVersions");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.UserIdentity", b =>
