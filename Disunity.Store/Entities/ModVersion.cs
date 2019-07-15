@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
+using Disunity.Store.Shared.Archive;
 using Disunity.Store.Shared.Data;
+using Disunity.Store.Shared.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Disunity.Store.Entities {
 
-    public class ModVersion : ICreatedAt, IVersionModel {
+    public partial class ModVersion : ICreatedAt, IVersionModel {
 
         public int Id { get; set; }
 
@@ -24,7 +26,7 @@ namespace Disunity.Store.Entities {
         public bool? IsActive { get; set; }
         public int? Downloads { get; set; }
 
-        [Required] public int VersionNumberId { get; set; }
+        public int VersionNumberId { get; set; }
         public VersionNumber VersionNumber { get; set; }
 
         [Required] [MaxLength(1024)] public string WebsiteUrl { get; set; }
@@ -46,9 +48,24 @@ namespace Disunity.Store.Entities {
         [InverseProperty("Dependant")] public List<ModDependency> ModDependencies { get; set; }
         [InverseProperty("Version")] public List<ModTargetCompatibility> TargetCompatibilities { get; set; }
 
-        [NotMapped] public List<ModDependency> Dependencies => ModDependencies.Where(d => d.DependencyType == ModDependencyType.Dependency).ToList();
-        [NotMapped] public List<ModDependency> OptionalDependencies => ModDependencies.Where(d => d.DependencyType == ModDependencyType.OptionalDependency).ToList();
-        [NotMapped] public List<ModDependency> Incompatibilities => ModDependencies.Where(d => d.DependencyType == ModDependencyType.Incompatible).ToList();
+        [NotMapped]
+        public List<ModDependency> Dependencies =>
+            ModDependencies.Where(d => d.DependencyType == ModDependencyType.Dependency).ToList();
+
+        [NotMapped]
+        public List<ModDependency> OptionalDependencies => ModDependencies
+                                                           .Where(d => d.DependencyType ==
+                                                                       ModDependencyType.OptionalDependency).ToList();
+
+        [NotMapped]
+        public List<ModDependency> Incompatibilities =>
+            ModDependencies.Where(d => d.DependencyType == ModDependencyType.Incompatible).ToList();
+
+        public DateTime CreatedAt { get; set; }
+
+    }
+
+    public partial class ModVersion {
 
         public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
 
@@ -56,15 +73,14 @@ namespace Disunity.Store.Entities {
                 builder.Property(v => v.IsActive).HasDefaultValue(true);
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
 
-                builder.HasAlternateKey(v => new {v.ModId, v.VersionNumberId});
+                builder.HasIndex(v => new {v.ModId, v.VersionNumberId}).IsUnique();
 
                 builder.HasMany(v => v.ModDependencies).WithOne(d => d.Dependant);
                 builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);
+
             }
 
         }
-
-        public DateTime CreatedAt { get; set; }
 
     }
 

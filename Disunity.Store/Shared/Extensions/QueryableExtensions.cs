@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.ResponseCaching.Internal;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Disunity.Store.Shared.Extensions {
@@ -41,7 +43,7 @@ namespace Disunity.Store.Shared.Extensions {
 
             return query;
         }
-        
+
         public static IQueryable<T> AtMost<T>(this IQueryable<T> query, VersionNumber version)
             where T : class, IVersionModel {
             if (version != null) {
@@ -52,15 +54,39 @@ namespace Disunity.Store.Shared.Extensions {
 
             return query;
         }
-        
+
         public static IOrderedQueryable<T> OrderByVersion<T>(this IQueryable<T> query) where T : class, IVersionModel {
             return query.OrderBy(m => m.VersionNumber);
         }
-        
-        public static IOrderedQueryable<T> OrderByVersionDescending<T>(this IQueryable<T> query) where T : class, IVersionModel {
+
+        public static IOrderedQueryable<T> OrderByVersionDescending<T>(this IQueryable<T> query)
+            where T : class, IVersionModel {
             return query.OrderByDescending(m => m.VersionNumber);
         }
+
+        public static Task<ModVersion> FindModVersionByDepString(this IQueryable<ModVersion> modVersions,
+                                                                 string depString, string versionString) {
+            var segments = depString.Split('/');
+            var orgSlug = segments[0];
+            var modSlug = segments[1];
+
+            return modVersions
+                   .Where(v => v.Mod.Slug == modSlug)
+                   .Where(v => v.Mod.Owner.Slug == orgSlug)
+                   .SingleAsync(v => v.VersionNumber == versionString);
+        }
         
+        public static Task<Mod> FindModByDepString(this IQueryable<Mod> mods,
+                                                                 string depString) {
+            var segments = depString.Split('/');
+            var orgSlug = segments[0];
+            var modSlug = segments[1];
+
+            return mods
+                   .Where(m => m.Slug == modSlug)
+                   .SingleAsync(m => m.Owner.Slug == orgSlug);
+        }
+
     }
 
 }
