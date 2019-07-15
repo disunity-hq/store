@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Archive;
 using Disunity.Store.Shared.Extensions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Shared.Data.Factories {
@@ -21,6 +24,16 @@ namespace Disunity.Store.Shared.Data.Factories {
             _context = context;
             _versionNumberFactory = versionNumberFactory;
 
+        }
+
+        [Factory]
+        public static Func<Archive.Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+
+            var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
+            var factory = new ModVersionFactory(context, versionFactory);
+
+            return factory.FromArchiveAsync;
         }
 
         public async Task<ModVersion> FromArchiveAsync(Archive.Archive archive) {

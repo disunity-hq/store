@@ -6,6 +6,7 @@ using BindingAttributes;
 using Disunity.Store.Entities;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Shared.Data.Factories {
@@ -18,6 +19,22 @@ namespace Disunity.Store.Shared.Data.Factories {
         public VersionNumberFactory(ApplicationDbContext context) {
             _context = context;
 
+        }
+
+        [Factory]
+        public static Func<string, Task<VersionNumber>> FindOrCreateVersionNumberFromString(IServiceProvider services) {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            var factory = new VersionNumberFactory(context);
+
+            return factory.FindOrCreateVersionNumber;
+        }
+
+        [Factory]
+        public static Func<VersionNumber, Task<VersionNumber>> FindOrCreateVersionNumber(IServiceProvider services) {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            var factory = new VersionNumberFactory(context);
+
+            return factory.FindOrCreateVersionNumber;
         }
 
         public Task<VersionNumber> FindOrCreateVersionNumber(string versionString) {
