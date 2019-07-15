@@ -6,7 +6,7 @@ nuget AutoBogus >= 2.5.0
 nuget AutoMapper
 nuget AutoMapper.Extensions.Microsoft.DependencyInjection
 nuget Bogus >= 28.0.2
-nuget Microsoft.AspNetCore.App
+nuget Microsoft.AspNetCore.App == 2.2.4
 nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
 nuget Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
 nuget Microsoft.AspNetCore.Razor.Design >= 2.2.0

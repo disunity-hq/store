@@ -59,7 +59,7 @@ NUGET
       Microsoft.AspNetCore.Http.Extensions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.WebUtilities (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.ObjectPool (>= 2.2) - restriction: >= netstandard2.0
-    Microsoft.AspNetCore.App (2.2.6)
+    Microsoft.AspNetCore.App (2.2.4)
       Microsoft.AspNet.WebApi.Client (>= 5.2.6 < 5.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Antiforgery (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -104,7 +104,7 @@ NUGET
       Microsoft.AspNetCore.HttpsPolicy (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Identity (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Identity.EntityFrameworkCore (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.AspNetCore.Identity.UI (>= 2.2.5 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.AspNetCore.Identity.UI (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.JsonPatch (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Localization (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Localization.Routing (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -113,7 +113,7 @@ NUGET
       Microsoft.AspNetCore.Mvc.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.Analyzers (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.ApiExplorer (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.AspNetCore.Mvc.Core (>= 2.2.5 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.AspNetCore.Mvc.Core (>= 2.2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.Cors (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.DataAnnotations (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.Formatters.Json (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -122,7 +122,7 @@ NUGET
       Microsoft.AspNetCore.Mvc.Razor (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.Razor.Extensions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.Razor.ViewCompilation (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.AspNetCore.Mvc.RazorPages (>= 2.2.5 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.AspNetCore.Mvc.RazorPages (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.TagHelpers (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Mvc.ViewFeatures (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.NodeServices (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -137,8 +137,8 @@ NUGET
       Microsoft.AspNetCore.Rewrite (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Routing (>= 2.2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Routing.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.AspNetCore.Server.HttpSys (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.AspNetCore.Server.IIS (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.AspNetCore.Server.HttpSys (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.AspNetCore.Server.IIS (>= 2.2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Server.IISIntegration (>= 2.2.1 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Server.Kestrel (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Server.Kestrel.Core (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -156,14 +156,14 @@ NUGET
       Microsoft.AspNetCore.WebSockets (>= 2.2.1 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.WebUtilities (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.CodeAnalysis.Razor (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.Abstractions (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.Analyzers (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.Design (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.InMemory (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.Relational (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.SqlServer (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.EntityFrameworkCore.Tools (>= 2.2.6 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.Abstractions (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.Analyzers (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.Design (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.InMemory (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.Relational (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.SqlServer (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.EntityFrameworkCore.Tools (>= 2.2.4 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.Caching.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.Caching.Memory (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.Caching.SqlServer (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -181,7 +181,7 @@ NUGET
       Microsoft.Extensions.DependencyInjection (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.DependencyInjection.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.DiagnosticAdapter (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      Microsoft.Extensions.Diagnostics.HealthChecks (>= 2.2.5 < 2.3) - restriction: >= netcoreapp2.2
+      Microsoft.Extensions.Diagnostics.HealthChecks (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.FileProviders.Abstractions (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.FileProviders.Composite (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
@@ -209,7 +209,7 @@ NUGET
       Microsoft.Extensions.Primitives (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.WebEncoders (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
       Microsoft.Net.Http.Headers (>= 2.2 < 2.3) - restriction: >= netcoreapp2.2
-      System.IO.Pipelines (>= 4.5.3) - restriction: >= netcoreapp2.2
+      System.IO.Pipelines (>= 4.5.2) - restriction: >= netcoreapp2.2
     Microsoft.AspNetCore.Authentication (2.2) - restriction: >= netcoreapp2.2
       Microsoft.AspNetCore.Authentication.Core (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.DataProtection (>= 2.2) - restriction: >= netstandard2.0
@@ -1809,11 +1809,11 @@ GIT
       path: /EFCoreHooks/nupkg
       os: windows
   remote: https://github.com/dustinlacewell/BindingAttributes.git
-     (27f8c05df653bf41f431f22c12bba5f68dd89c5e)
+     (b65822e6ff0b40bed5ee9f6e47df4103bdc87fd6)
       build: build.sh
       path: /BindingAttributes/nupkg
       os: mono
-     (27f8c05df653bf41f431f22c12bba5f68dd89c5e)
+     (b65822e6ff0b40bed5ee9f6e47df4103bdc87fd6)
       build: build.bat
       path: /BindingAttributes/nupkg
       os: windows
