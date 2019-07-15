@@ -47,6 +47,8 @@ namespace Disunity.Store.Shared.Data {
         public DbSet<ModTargetCompatibility> ModTargetCompatibilities { get; set; }
         public DbSet<ModDisunityCompatibility> ModDisunityCompatibilities { get; set; }
 
+        public DbSet<UnityVersion> UnityVersions { get; set; }
+        
         public DbSet<Target> Targets { get; set; }
         public DbSet<TargetVersion> TargetVersions { get; set; }
         public DbSet<TargetVersionCompatibility> TargetVersionCompatibilities { get; set; }
