@@ -57,23 +57,6 @@ namespace Disunity.Store.Shared.Data.Seeds {
                     }
 
                     var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
-//
-//                    var attachedVersion = await _context.VersionNumbers.FirstOrDefaultAsync(
-//                        v => v.Major == version.Major &&
-//                             v.Minor == version.Minor &&
-//                             v.Patch == version.Patch);
-//
-//                    if (attachedVersion == null) {
-//                        attachedVersion = version;
-//
-//                        _logger.LogInformation(
-//                            $"Creating new VersionNumber {attachedVersion.Major}.{attachedVersion.Minor}.{attachedVersion.Patch}");
-//
-//                        _context.VersionNumbers.Add(attachedVersion);
-//                        await _context.SaveChangesAsync();
-//
-//
-//                    }
 
                     var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
 
