@@ -18,9 +18,9 @@ namespace Disunity.Store.Shared.Data.Factories {
     public class ModVersionFactory : IModVersionFactory {
 
         private readonly ApplicationDbContext _context;
-        private readonly Func<string, Task<VersionNumber>> _versionNumberFactory;
+        private readonly IVersionNumberFactory _versionNumberFactory;
 
-        public ModVersionFactory(ApplicationDbContext context, Func<string, Task<VersionNumber>> versionNumberFactory) {
+        public ModVersionFactory(ApplicationDbContext context, IVersionNumberFactory versionNumberFactory) {
             _context = context;
             _versionNumberFactory = versionNumberFactory;
 
@@ -30,7 +30,7 @@ namespace Disunity.Store.Shared.Data.Factories {
         public static Func<Archive.Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
             var context = services.GetRequiredService<ApplicationDbContext>();
 
-            var versionFactory = services.GetRequiredService<Func<string, Task<VersionNumber>>>();
+            var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
             var factory = new ModVersionFactory(context, versionFactory);
 
             return factory.FromArchiveAsync;
@@ -46,7 +46,7 @@ namespace Disunity.Store.Shared.Data.Factories {
                 FileUrl = "",
                 IconUrl = "",
                 WebsiteUrl = manifest.URL,
-                VersionNumber = await _versionNumberFactory(manifest.Version)
+                VersionNumber = await _versionNumberFactory.FindOrCreateVersionNumber(manifest.Version)
             };
 
             modVersion.ModDependencies = manifest.Dependencies

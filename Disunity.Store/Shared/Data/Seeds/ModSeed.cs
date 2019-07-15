@@ -25,10 +25,10 @@ namespace Disunity.Store.Shared.Data.Seeds {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ModSeed> _logger;
         private readonly IHostingEnvironment _env;
-        private readonly Func<VersionNumber, Task<VersionNumber>> _versionNumberFactory;
+        private readonly IVersionNumberFactory _versionNumberFactory;
 
         public ModSeed(ApplicationDbContext context, ILogger<ModSeed> logger, IHostingEnvironment env,
-                       Func<VersionNumber, Task<VersionNumber>> versionNumberFactory) {
+                       IVersionNumberFactory versionNumberFactory) {
             _context = context;
             _logger = logger;
             _env = env;
@@ -58,7 +58,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
 
                     var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
 
-                    var attachedVersion = await _versionNumberFactory(version);
+                    var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
 
                     var modVersion = new ModVersion() {
                         Description = "This is a mod!",
