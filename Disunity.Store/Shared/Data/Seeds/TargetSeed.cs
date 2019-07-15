@@ -29,8 +29,8 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public Task Seed() {
-            var unity2015 = new UnityVersion() {VersionNumber = (VersionNumber)"2015.1.0"};
-            var unity2018 = new UnityVersion() {VersionNumber = (VersionNumber) "2018.0.1"};
+            var unity2018Min = _context.UnityVersions.First(v => v.VersionNumber == (VersionNumber)"2018.1.0");
+            var unity2018Max = _context.UnityVersions.First(v => v.VersionNumber == (VersionNumber)"2018.4.4");
             
             for (var i = 0; i < 10; i++) {
                 var targetVersion = new TargetVersion() {
@@ -41,8 +41,8 @@ namespace Disunity.Store.Shared.Data.Seeds {
                     WebsiteUrl = "",
                     VersionNumber = "1",
                     DisunityCompatibility = new TargetVersionCompatibility() {
-                        MinCompatibleVersion = unity2015,
-                        MaxCompatibleVersion = unity2018
+                        MinCompatibleVersion = unity2018Min,
+                        MaxCompatibleVersion = unity2018Max
                     }
                 };
 
