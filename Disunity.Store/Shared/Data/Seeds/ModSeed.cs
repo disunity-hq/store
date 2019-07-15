@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Shared.Data.Factories;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,14 @@ namespace Disunity.Store.Shared.Data.Seeds {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ModSeed> _logger;
         private readonly IHostingEnvironment _env;
+        private readonly IVersionNumberFactory _versionNumberFactory;
 
-        public ModSeed(ApplicationDbContext context, ILogger<ModSeed> logger, IHostingEnvironment env) {
+        public ModSeed(ApplicationDbContext context, ILogger<ModSeed> logger, IHostingEnvironment env,
+                       IVersionNumberFactory versionNumberFactory) {
             _context = context;
             _logger = logger;
             _env = env;
+            _versionNumberFactory = versionNumberFactory;
 
         }
 
@@ -53,23 +57,25 @@ namespace Disunity.Store.Shared.Data.Seeds {
                     }
 
                     var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
+//
+//                    var attachedVersion = await _context.VersionNumbers.FirstOrDefaultAsync(
+//                        v => v.Major == version.Major &&
+//                             v.Minor == version.Minor &&
+//                             v.Patch == version.Patch);
+//
+//                    if (attachedVersion == null) {
+//                        attachedVersion = version;
+//
+//                        _logger.LogInformation(
+//                            $"Creating new VersionNumber {attachedVersion.Major}.{attachedVersion.Minor}.{attachedVersion.Patch}");
+//
+//                        _context.VersionNumbers.Add(attachedVersion);
+//                        await _context.SaveChangesAsync();
+//
+//
+//                    }
 
-                    var attachedVersion = await _context.VersionNumbers.FirstOrDefaultAsync(
-                        v => v.Major == version.Major &&
-                             v.Minor == version.Minor &&
-                             v.Patch == version.Patch);
-
-                    if (attachedVersion == null) {
-                        attachedVersion = version;
-
-                        _logger.LogInformation(
-                            $"Creating new VersionNumber {attachedVersion.Major}.{attachedVersion.Minor}.{attachedVersion.Patch}");
-
-                        _context.VersionNumbers.Add(attachedVersion);
-                        await _context.SaveChangesAsync();
-
-
-                    }
+                    var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
 
                     var modVersion = new ModVersion() {
                         Description = "This is a mod!",
