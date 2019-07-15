@@ -55,6 +55,14 @@ namespace Disunity.Store.Shared.Extensions {
             return query;
         }
 
+        public static IQueryable<T> FindExactVersion<T>(this IQueryable<T> query, VersionNumber versionNumber)
+            where T : class, IVersionModel {
+            return query.Include(v => v.VersionNumber)
+                        .Where(v => v.VersionNumber.Major == versionNumber.Major &&
+                                    v.VersionNumber.Minor == versionNumber.Minor &&
+                                    v.VersionNumber.Patch == versionNumber.Patch);
+        }
+
         public static IOrderedQueryable<T> OrderByVersion<T>(this IQueryable<T> query) where T : class, IVersionModel {
             return query.OrderBy(m => m.VersionNumber);
         }
@@ -75,9 +83,9 @@ namespace Disunity.Store.Shared.Extensions {
                    .Where(v => v.Mod.Owner.Slug == orgSlug)
                    .SingleAsync(v => v.VersionNumber == versionString);
         }
-        
+
         public static Task<Mod> FindModByDepString(this IQueryable<Mod> mods,
-                                                                 string depString) {
+                                                   string depString) {
             var segments = depString.Split('/');
             var orgSlug = segments[0];
             var modSlug = segments[1];

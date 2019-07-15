@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Shared.Data.Factories;
+using Disunity.Store.Shared.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 
@@ -19,10 +21,13 @@ namespace Disunity.Store.Shared.Data.Seeds {
 
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _env;
+        private readonly IVersionNumberFactory _versionNumberFactory;
 
-        public TargetSeed(ApplicationDbContext context, IHostingEnvironment env) {
+        public TargetSeed(ApplicationDbContext context, IHostingEnvironment env,
+                          IVersionNumberFactory versionNumberFactory) {
             _context = context;
             _env = env;
+            _versionNumberFactory = versionNumberFactory;
         }
 
         public bool ShouldSeed() {
@@ -30,9 +35,12 @@ namespace Disunity.Store.Shared.Data.Seeds {
         }
 
         public Task Seed() {
-            var unity2018Min = _context.UnityVersions.First(v => v.VersionNumber == (VersionNumber)"2018.1.0");
-            var unity2018Max = _context.UnityVersions.First(v => v.VersionNumber == (VersionNumber)"2018.4.4");
-            
+            var unity2018Min =
+                _context.UnityVersions.FindExactVersion((VersionNumber) "2018.1.0").Single();
+
+            var unity2018Max =
+                _context.UnityVersions.FindExactVersion((VersionNumber) "2018.4.4").Single();
+
             for (var i = 0; i < 10; i++) {
                 var targetVersion = new TargetVersion() {
                     Description = "Foo Bar the Game",

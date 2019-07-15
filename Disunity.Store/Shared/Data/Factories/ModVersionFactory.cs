@@ -29,8 +29,8 @@ namespace Disunity.Store.Shared.Data.Factories {
         [Factory]
         public static Func<Archive.Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
             var context = services.GetRequiredService<ApplicationDbContext>();
-
             var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
+            
             var factory = new ModVersionFactory(context, versionFactory);
 
             return factory.FromArchiveAsync;

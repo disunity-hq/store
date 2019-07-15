@@ -57,7 +57,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
 
         public Task Seed() {
             foreach (var version in _versions) {
-                new UnityVersion() {VersionNumber = (VersionNumber)version};
+                _context.Attach(new UnityVersion() {VersionNumber = (VersionNumber)version});
             }
             return _context.SaveChangesAsync();
         }

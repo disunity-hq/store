@@ -47,6 +47,23 @@ namespace Disunity.Store.Entities {
             return $"{Major}.{Minor}.{Patch}";
         }
 
+        public override bool Equals(object obj) {
+            return CompareTo(obj as VersionNumber)==0;
+        }
+
+        protected bool Equals(VersionNumber other) {
+            return Major == other.Major && Minor == other.Minor && Patch == other.Patch;
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                var hashCode = Major;
+                hashCode = (hashCode * 397) ^ Minor;
+                hashCode = (hashCode * 397) ^ Patch;
+                return hashCode;
+            }
+        }
+
         public int CompareTo(VersionNumber other) {
             if (ReferenceEquals(this, other)) {
                 return 0;
