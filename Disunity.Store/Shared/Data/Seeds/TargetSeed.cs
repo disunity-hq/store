@@ -14,6 +14,7 @@ using TopoSort;
 namespace Disunity.Store.Shared.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
+    [DependsOn(typeof(UnityVersionSeed))]
     public class TargetSeed : ISeeder {
 
         private readonly ApplicationDbContext _context;
