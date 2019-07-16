@@ -1,0 +1,23 @@
+@page
+@model Disunity.Store.Pages.Mods.Index
+
+@addTagHelper *, Syncfusion.EJ2
+
+@{
+    ViewData["Title"] = "Mods";
+    IDictionary<string, object> submit = new Dictionary<string, object>();
+    submit.Add("type", "submit");
+}
+
+<h1>Mods</h1>
+
+<form>
+    <input hidden asp-for="Target"/>
+    <p>
+        Title:
+        <ejs-textbox id="title" placeholder="Search by Mod Title" value="@Model.Title"></ejs-textbox>
+        <ejs-button id="filter" content="Filter" htmlAttributes="submit"></ejs-button>
+    </p>
+</form>
+
+<partial name="_ModListPartial" for="Mods"/>

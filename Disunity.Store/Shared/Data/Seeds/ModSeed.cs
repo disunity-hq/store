@@ -65,7 +65,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
                         Readme = "# Markdown!",
                         DisplayName = $"test-org-mod-{i}",
                         FileUrl = "",
-                        IconUrl = "/assets/logoc_512x512.png",
+                        IconUrl = "/assets/logo_512x512.png",
                         VersionNumber = attachedVersion,
                         WebsiteUrl = "",
                         TargetCompatibilities = new List<ModTargetCompatibility>()

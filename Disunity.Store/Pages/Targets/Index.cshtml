@@ -3,13 +3,19 @@
 
 @{
     ViewData["Title"] = "All Targets";
+    IDictionary<string, object> submit = new Dictionary<string, object>();
+    submit.Add("type", "submit");
 }
 
 <h1>All Targets</h1>
 
 
-<div>
-    @* TODO put the search bar and order stuff here *@
-</div>
+<form>
+    <p>
+        Title:
+        <ejs-textbox id="title" placeholder="Search by Target Title" value="@Model.Title"></ejs-textbox>
+        <ejs-button id="filter" content="Filter" htmlAttributes="submit"></ejs-button>
+    </p>
+</form>
 
 <partial name="_TargetListPartial" for="Targets"/>

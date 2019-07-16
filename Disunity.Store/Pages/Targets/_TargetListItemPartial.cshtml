@@ -2,25 +2,31 @@
 
 @addTagHelper *, Syncfusion.EJ2
 
+@{
+    var modPageParams = new Dictionary<string, string> {{"target", Model.Slug}};
+}
+
 <div class="col-xs-12 my-3">
-    <div class="e-card e-card-horizontal e-card-stacked target-list-row">
-        <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
-        <div class="e-card-stacked justify-content-start">
-            <div class="e-card-header">
-                <div class="e-card-header-caption">
-                    <div class="e-card-header-title target-list-row-title">
-                        @Model?.Latest.DisplayName
-                        <ejs-chiplist id="target-version-@Model?.ID" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
-                        @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+    <a class="nav-link p-0" asp-page="/Mods/Index" asp-all-route-data="@modPageParams">
+        <div class="e-card e-card-horizontal e-card-stacked target-list-row">
+            <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
+            <div class="e-card-stacked justify-content-start">
+                <div class="e-card-header">
+                    <div class="e-card-header-caption">
+                        <div class="e-card-header-title target-list-row-title">
+                            @Model?.Latest.DisplayName
+                            <ejs-chiplist id="target-version-@Model?.ID" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
+                            @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="e-card-content">
-                @Model?.Latest.Description
-            </div>
-            <div class="e-card-actions">
-                Compatible Mods: @Model?.Compatibilities.Count()
+                <div class="e-card-content">
+                    @Model?.Latest.Description
+                </div>
+                <div class="e-card-actions">
+                    Compatible Mods: @Model?.Compatibilities.Count()
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
