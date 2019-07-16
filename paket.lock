@@ -1798,6 +1798,9 @@ NUGET
       Microsoft.Extensions.DependencyInjection (>= 2.2) - restriction: >= netcoreapp2.1
   remote: paket-files/github.com/dustinlacewell/TopoSort/TopoSort/nupkg
     TopoSort (0.1.0)
+  remote: paket-files/github.com/dustinlacewell/Tracery/Tracery/nupkg
+    Tracery (0.1.0)
+      Newtonsoft.Json (>= 12.0.2) - restriction: >= netstandard2.0
 GIT
   remote: https://github.com/scottbot95/EFCoreHooks.git
      (0a18ee267ccf14031d1a18c5e6d63e88ae8a8e97)
@@ -1825,4 +1828,13 @@ GIT
      (483ed7adcd4c64e54fb32ba51971f21688c67889)
       build: build.bat
       path: /TopoSort/nupkg
+      os: windows
+  remote: https://github.com/dustinlacewell/Tracery.git
+     (06c17e1af97d8f2be101264c15d2c57e77521296)
+      build: build.sh
+      path: /Tracery/nupkg
+      os: mono
+     (06c17e1af97d8f2be101264c15d2c57e77521296)
+      build: build.bat
+      path: /Tracery/nupkg
       os: windows
