@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190715162913_Initial")]
+    [Migration("20190716191507_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,8 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
+                    b.Property<int?>("TargetID");
+
                     b.HasKey("Id");
 
                     b.HasAlternateKey("OwnerId", "DisplayName");
@@ -102,6 +104,8 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasAlternateKey("OwnerId", "Slug");
 
                     b.HasIndex("LatestId");
+
+                    b.HasIndex("TargetID");
 
                     b.ToTable("Mods");
                 });
@@ -604,6 +608,10 @@ namespace Disunity.Store.Entities.Migrations
                         .WithMany("Mods")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Disunity.Store.Entities.Target")
+                        .WithMany("CompatibleMods")
+                        .HasForeignKey("TargetID");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
@@ -654,7 +662,7 @@ namespace Disunity.Store.Entities.Migrations
                         .HasForeignKey("MinCompatibleVersionId");
 
                     b.HasOne("Disunity.Store.Entities.Target", "Target")
-                        .WithMany()
+                        .WithMany("Compatibilities")
                         .HasForeignKey("TargetId")
                         .OnDelete(DeleteBehavior.Cascade);
 

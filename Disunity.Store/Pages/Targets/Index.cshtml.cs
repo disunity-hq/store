@@ -30,7 +30,10 @@ namespace Disunity.Store.Pages.Targets {
         }
 
         public async Task OnGet() {
-            Targets = await _context.Targets.Include(t => t.Latest).ToListAsync();
+            Targets = await _context.Targets
+                                    .Include(t => t.Latest)
+                                    .Include(t => t.Compatibilities)
+                                    .ToListAsync();
         }
 
     }

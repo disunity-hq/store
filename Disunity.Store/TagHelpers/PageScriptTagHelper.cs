@@ -49,7 +49,8 @@ namespace Disunity.Store.TagHelpers {
                 InitPageScript();
             }}
             catch (error) {{
-                console.error('Page script failed to initialize for {route}',error);
+                console.error('Page script failed to initialize for {route}');
+                console.error(error);
             }}
 
             </script>";

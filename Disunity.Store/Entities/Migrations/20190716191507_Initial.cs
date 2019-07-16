@@ -358,40 +358,6 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Mods",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    OwnerId = table.Column<int>(nullable: false),
-                    DisplayName = table.Column<string>(maxLength: 128, nullable: false),
-                    Slug = table.Column<string>(maxLength: 128, nullable: false),
-                    IsActive = table.Column<bool>(nullable: true, defaultValue: true),
-                    IsDeprecated = table.Column<bool>(nullable: true, defaultValue: false),
-                    IsPinned = table.Column<bool>(nullable: true, defaultValue: false),
-                    LatestId = table.Column<int>(nullable: true),
-                    CreatedAt = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mods", x => x.Id);
-                    table.UniqueConstraint("AK_Mods_OwnerId_DisplayName", x => new { x.OwnerId, x.DisplayName });
-                    table.UniqueConstraint("AK_Mods_OwnerId_Slug", x => new { x.OwnerId, x.Slug });
-                    table.ForeignKey(
-                        name: "FK_Mods_ModVersions_LatestId",
-                        column: x => x.LatestId,
-                        principalTable: "ModVersions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Mods_Orgs_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Orgs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ModVersionDownloadEvents",
                 columns: table => new
                 {
@@ -412,6 +378,41 @@ namespace Disunity.Store.Entities.Migrations
                         principalTable: "ModVersions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    DisplayName = table.Column<string>(maxLength: 128, nullable: false),
+                    Slug = table.Column<string>(maxLength: 128, nullable: false),
+                    IsActive = table.Column<bool>(nullable: true, defaultValue: true),
+                    IsDeprecated = table.Column<bool>(nullable: true, defaultValue: false),
+                    IsPinned = table.Column<bool>(nullable: true, defaultValue: false),
+                    LatestId = table.Column<int>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    TargetID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mods", x => x.Id);
+                    table.UniqueConstraint("AK_Mods_OwnerId_DisplayName", x => new { x.OwnerId, x.DisplayName });
+                    table.UniqueConstraint("AK_Mods_OwnerId_Slug", x => new { x.OwnerId, x.Slug });
+                    table.ForeignKey(
+                        name: "FK_Mods_ModVersions_LatestId",
+                        column: x => x.LatestId,
+                        principalTable: "ModVersions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Mods_Orgs_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Orgs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -610,6 +611,11 @@ namespace Disunity.Store.Entities.Migrations
                 column: "LatestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Mods_TargetID",
+                table: "Mods",
+                column: "TargetID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ModTargetCompatibilities_MaxCompatibleVersionId",
                 table: "ModTargetCompatibilities",
                 column: "MaxCompatibleVersionId");
@@ -728,6 +734,22 @@ namespace Disunity.Store.Entities.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Mods_Targets_TargetID",
+                table: "Mods",
+                column: "TargetID",
+                principalTable: "Targets",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ModTargetCompatibilities_Targets_TargetId",
+                table: "ModTargetCompatibilities",
+                column: "TargetId",
+                principalTable: "Targets",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_ModTargetCompatibilities_TargetVersions_MaxCompatibleVersio~",
                 table: "ModTargetCompatibilities",
                 column: "MaxCompatibleVersionId",
@@ -742,14 +764,6 @@ namespace Disunity.Store.Entities.Migrations
                 principalTable: "TargetVersions",
                 principalColumn: "ID",
                 onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ModTargetCompatibilities_Targets_TargetId",
-                table: "ModTargetCompatibilities",
-                column: "TargetId",
-                principalTable: "Targets",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_TargetVersions_Targets_TargetId",
@@ -771,8 +785,8 @@ namespace Disunity.Store.Entities.Migrations
                 table: "Mods");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Targets_TargetVersions_LatestId",
-                table: "Targets");
+                name: "FK_TargetVersions_Targets_TargetId",
+                table: "TargetVersions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -835,10 +849,10 @@ namespace Disunity.Store.Entities.Migrations
                 name: "Orgs");
 
             migrationBuilder.DropTable(
-                name: "TargetVersions");
+                name: "Targets");
 
             migrationBuilder.DropTable(
-                name: "Targets");
+                name: "TargetVersions");
         }
     }
 }

@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 namespace Disunity.Store.Entities {
 
     public class Target {
-
+        
         public int ID { get; set; }
 
         public int? LatestId { get; set; }
@@ -30,6 +30,10 @@ namespace Disunity.Store.Entities {
         [Required] [MaxLength(128)] public string Slug { get; set; }
 
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }
+
+        public List<ModTargetCompatibility> Compatibilities { get; set; }
+
+        public List<Mod> CompatibleMods => Compatibilities?.Select(c => c.Version.Mod).Distinct().ToList();
 
 
         [OnAfterCreate(typeof(TargetVersion))]

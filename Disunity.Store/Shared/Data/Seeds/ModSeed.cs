@@ -48,7 +48,7 @@ namespace Disunity.Store.Shared.Data.Seeds {
             foreach (var target in targets) {
                 Org testOrg = new Org();
 
-                for (var i = 0; i < 10; i++) {
+                for (var i = 0; i < random.Next(6, 12); i++) {
                     if (i % 3 == 0) {
                         testOrg = new Org() {
                             Slug = $"test_org_{target.Slug} {i / 3}",
