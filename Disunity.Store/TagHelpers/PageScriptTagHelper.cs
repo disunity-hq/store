@@ -43,13 +43,13 @@ namespace Disunity.Store.TagHelpers {
         }
 
         private string GetAddendum(string route) {
-            var template = $@"\n<script>
+            var template = $@"<script>
 
             try {{
                 InitPageScript();
             }}
             catch (error) {{
-                console.error('Page script failed to initialize for {route}\n' + error);
+                console.error('Page script failed to initialize for {route}',error);
             }}
 
             </script>";
