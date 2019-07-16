@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Entities.Extensions;
 using Disunity.Store.Shared.Archive;
 using Disunity.Store.Shared.Extensions;
 
