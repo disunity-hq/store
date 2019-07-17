@@ -15,6 +15,7 @@ Npgsql.EntityFrameworkCore.PostgreSQL
 Npgsql.EntityFrameworkCore.PostgreSQL.Design
 Overby.Extensions.AsyncBinaryReaderWriter
 SemanticVersion
+Slugify
 SmartBreadcrumbs
 Swashbuckle.AspNetCore
 Syncfusion.EJ2.AspNet.Core

@@ -4,8 +4,8 @@ NUGET
       Microsoft.AspNetCore.Authentication.OAuth (>= 2.0) - restriction: >= netstandard2.0
     AspNet.Security.OAuth.GitHub (2.1)
       Microsoft.AspNetCore.Authentication.OAuth (>= 2.0) - restriction: >= netstandard2.0
-    AutoBogus (2.5)
-      Bogus (>= 24.3) - restriction: || (>= net40) (>= netstandard1.3)
+    AutoBogus (2.6)
+      Bogus (>= 28.0.2) - restriction: || (>= net40) (>= netstandard1.3)
       NETStandard.Library (>= 1.6.1) - restriction: && (< net40) (>= netstandard1.3) (< netstandard2.0)
     AutoMapper (8.1.1)
       Microsoft.CSharp (>= 4.5) - restriction: && (< net461) (>= netstandard2.0)
@@ -1071,6 +1071,7 @@ NUGET
     runtime.win-x86.runtime.native.System.Data.SqlClient.sni (4.4) - restriction: >= netcoreapp2.2
     SemanticVersion (2.0)
       NETStandard.Library (>= 1.6.1) - restriction: || (&& (< net452) (>= netstandard1.2) (< netstandard1.3)) (&& (< net452) (>= netstandard1.3) (< netstandard1.4)) (&& (< net452) (>= netstandard1.4) (< netstandard1.5)) (&& (< net452) (>= netstandard1.5) (< netstandard1.6)) (&& (< net452) (>= netstandard1.6) (< netstandard2.0))
+    Slugify (0.1.0.20570)
     SmartBreadcrumbs (2.1)
       Microsoft.AspNetCore.Mvc.Abstractions (>= 2.1) - restriction: >= netstandard2.0
       Microsoft.AspNetCore.Mvc.Core (>= 2.1) - restriction: >= netstandard2.0
@@ -1830,11 +1831,11 @@ GIT
       path: /TopoSort/nupkg
       os: windows
   remote: https://github.com/dustinlacewell/Tracery.git
-     (06c17e1af97d8f2be101264c15d2c57e77521296)
+     (88b07a6aa6c9a7972badc8e454c16d3a6e9c8742)
       build: build.sh
       path: /Tracery/nupkg
       os: mono
-     (06c17e1af97d8f2be101264c15d2c57e77521296)
+     (88b07a6aa6c9a7972badc8e454c16d3a6e9c8742)
       build: build.bat
       path: /Tracery/nupkg
       os: windows

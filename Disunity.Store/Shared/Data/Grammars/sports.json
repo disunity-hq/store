@@ -1,0 +1,34 @@
+{
+  "sports-race-type": [
+    "dirt-bike",
+    "bike",
+    "jetski",
+    "rally",
+    "motorcross",
+    "stock",
+    "off-road",
+    "auto",
+    "cross-country",
+    "ski",
+    "canoe",
+    "swim",
+    "marathon",
+    "BMX",
+    "mountain-bike",
+    "snowboard",
+    "sled"
+  ],
+  "sports-race": ["#sports-race-type# race", "#sports-race-type# racing"],
+  "sport": [
+    "soccer",
+    "football",
+    "volleyball",
+    "#sports-race#",
+    "cheerleading",
+    "dancing",
+    "gymnastics",
+    "aerobatics",
+    "hang-gliding",
+    "parachuting"
+  ]
+}

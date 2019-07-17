@@ -1,0 +1,9 @@
+{
+  "@import": ["../all.json"],
+  "name": ["#male-name#", "#female-name#"],
+  "year": ["2008", "2010", "2016", "2018", "2019"],
+  "display-name": [
+    "#name#'s #ultimate.alt# #sport#",
+    "#sport# #year#"
+  ] 
+}

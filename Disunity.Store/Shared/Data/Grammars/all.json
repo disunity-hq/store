@@ -1,0 +1,7 @@
+{
+  "@import": [
+    "sports.json",
+    "male-names.json",
+    "female-names.json"
+  ]
+}

@@ -6,6 +6,7 @@ using BindingAttributes;
 
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data.Factories;
+using Disunity.Store.Shared.Data.Services;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,6 @@ namespace Disunity.Store.Shared.Data.Seeds {
             _logger = logger;
             _env = env;
             _versionNumberFactory = versionNumberFactory;
-
         }
 
         public bool ShouldSeed() {
