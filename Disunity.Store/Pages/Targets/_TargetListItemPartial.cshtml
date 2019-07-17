@@ -3,13 +3,15 @@
 @addTagHelper *, Syncfusion.EJ2
 
 @{
-    var modPageParams = new Dictionary<string, string> {{"target", Model.Slug}};
+    var modPageParams = new Dictionary<string, string> { { "target", Model.Slug } };
 }
 
 <div class="col-xs-12 my-3">
     <a class="nav-link p-0" asp-page="/Mods/Index" asp-all-route-data="@modPageParams">
         <div class="e-card e-card-horizontal e-card-stacked target-list-row">
-            <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
+            <div class="target-list-row-icon">
+                <img class="p-1" src="@Model?.Latest.IconUrl" />
+            </div>
             <div class="e-card-stacked justify-content-start">
                 <div class="e-card-header">
                     <div class="e-card-header-caption">

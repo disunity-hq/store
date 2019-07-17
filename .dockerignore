@@ -5,3 +5,7 @@
 **/dist
 packages/
 paket-files/
+
+**/.vs/
+**/.idea/
+**/.code/

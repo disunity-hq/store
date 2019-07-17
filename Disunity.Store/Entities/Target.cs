@@ -15,10 +15,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace Disunity.Store.Entities {
+namespace Disunity.Store.Entities
+{
 
-    public class Target {
-        
+    public class Target
+    {
+
         public int ID { get; set; }
 
         public int? LatestId { get; set; }
@@ -38,10 +40,12 @@ namespace Disunity.Store.Entities {
 
         [OnAfterCreate(typeof(TargetVersion))]
         public static void UpdateLatestVersion(TargetVersion newVersion, ApplicationDbContext context,
-                                               IServiceProvider services) {
+                                               IServiceProvider services)
+        {
             var target = context.Targets.FirstOrDefault(t => t.ID == newVersion.TargetId);
 
-            if (target == null) {
+            if (target == null)
+            {
                 return;
             }
 
@@ -50,13 +54,17 @@ namespace Disunity.Store.Entities {
 
         }
 
-        public class TargetConfiguration : IEntityTypeConfiguration<Target> {
+        public class TargetConfiguration : IEntityTypeConfiguration<Target>
+        {
 
-            public void Configure(EntityTypeBuilder<Target> builder) {
+            public void Configure(EntityTypeBuilder<Target> builder)
+            {
                 builder.HasOne(t => t.Latest)
                        .WithOne(v => v.Target);
 
                 builder.HasMany(t => t.Versions);
+
+                builder.HasIndex(t => t.Slug).IsUnique();
             }
 
         }

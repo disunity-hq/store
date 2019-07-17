@@ -1131,10 +1131,10 @@ NUGET
       Microsoft.AspNetCore.StaticFiles (>= 2.0) - restriction: >= netstandard2.0
       Microsoft.Extensions.FileProviders.Embedded (>= 2.0) - restriction: >= netstandard2.0
       Newtonsoft.Json (>= 9.0.1) - restriction: >= netstandard2.0
-    Syncfusion.EJ2.AspNet.Core (17.2.0.34)
+    Syncfusion.EJ2.AspNet.Core (17.2.0.35)
       Newtonsoft.Json (>= 9.0.1 < 13.0)
-      Syncfusion.Licensing (>= 17.2.0.34)
-    Syncfusion.Licensing (17.2.0.34)
+      Syncfusion.Licensing (>= 17.2.0.35)
+    Syncfusion.Licensing (17.2.0.35)
     System.AppContext (4.3) - restriction: || (&& (< net40) (>= net46) (< netstandard1.4)) (&& (< net40) (>= netstandard1.3) (< netstandard1.4) (< win8) (< wpa81)) (&& (< net40) (>= netstandard1.4) (< netstandard1.5) (< win8) (< wpa81)) (&& (< net40) (>= netstandard1.5) (< netstandard1.6) (< win8) (< wpa81)) (&& (< net40) (>= netstandard1.6) (< netstandard2.0) (< win8) (< wpa81)) (>= netcoreapp2.2) (&& (< netstandard2.0) (>= uap10.0) (< uap10.1))
       System.Runtime (>= 4.3) - restriction: || (&& (< monoandroid) (< monotouch) (< net46) (>= netstandard1.6) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net46) (>= netstandard1.3) (< netstandard1.6))
     System.Buffers (4.5) - restriction: || (&& (< monoandroid) (< monotouch) (< net40) (>= netstandard1.6) (< netstandard2.0) (< win8) (< wpa81) (< xamarintvos) (< xamarinwatchos)) (&& (< monoandroid) (< net40) (< netstandard1.2) (>= netstandard1.3) (< win8)) (&& (< monoandroid) (< net40) (>= netstandard1.3) (< netstandard1.4) (< win8) (< wpa81)) (&& (< monoandroid) (< net40) (>= netstandard1.4) (< netstandard1.5) (< win8) (< wpa81)) (&& (< monoandroid) (< net40) (>= netstandard1.5) (< netstandard1.6) (< win8) (< wpa81)) (&& (< monoandroid) (< netstandard1.1) (>= netstandard2.0) (< win8)) (&& (>= monotouch) (>= netstandard2.0)) (&& (< net40) (>= net46) (< netstandard1.4)) (&& (< net45) (>= net451) (>= netstandard2.0)) (&& (< net45) (< netcoreapp2.0) (>= netstandard2.0)) (&& (>= net451) (< netstandard1.1) (>= netstandard2.0)) (&& (>= net461) (>= netstandard2.0)) (>= netcoreapp2.2) (&& (< netstandard1.1) (>= netstandard2.0) (>= win8)) (&& (>= netstandard2.0) (>= xamarintvos)) (&& (>= netstandard2.0) (>= xamarinwatchos)) (&& (< netstandard2.0) (>= uap10.0) (< uap10.1)) (&& (< netstandard2.0) (>= uap10.0) (< win8) (< wpa81)) (>= xamarinios) (>= xamarinmac)
