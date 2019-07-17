@@ -10,12 +10,31 @@
 <h1>All Targets</h1>
 
 
-<form>
-    <p>
-        Title:
-        <ejs-textbox id="title" placeholder="Search by Target Title" value="@Model.Title"></ejs-textbox>
-        <ejs-button id="filter" content="Filter" htmlAttributes="submit"></ejs-button>
-    </p>
+<form class="container row-spacing-1">
+    <div class="row align-items-center">
+        <div class="col-12 col-md-8 d-flex flex-row align-items-center my-1">
+            <span>Title:</span>
+            <span class="flex-fill mx-1"><ejs-textbox id="title" placeholder="Search by Target Title" value="@Model.Title"></ejs-textbox></span>
+            <ejs-button id="filter" cssClass="e-primary" content="Filter" htmlAttributes="submit"></ejs-button>
+        </div>
+        <div class="col-12 col-md-4 d-flex flex-row align-items-center my-1">
+            <span class="pr-2">Order By:</span>
+            <div class="e-btn-group d-flex flex-row flex-fill">
+                @foreach (var orderOption in Model.OrderOptions.Keys)
+                {
+                    @if (orderOption == Model.OrderBy)
+                    {
+                        <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" checked onchange="this.form.submit()" />
+                    }
+                    else
+                    {
+                        <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" onchange="this.form.submit()" />
+                    }
+                    <label class="e-btn e-primary flex-grow-1" for="@orderOption">@orderOption</label>
+                }
+            </div>
+        </div>
+    </div>
 </form>
 
-<partial name="_TargetListPartial" for="Targets"/>
+<partial name="_TargetListPartial" for="Targets" />

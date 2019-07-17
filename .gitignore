@@ -2,3 +2,6 @@
 .env
 packages/
 paket-files/
+
+
+.vs/
