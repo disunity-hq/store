@@ -1,6 +1,8 @@
 @page
 @model Disunity.Store.Pages.Targets.Index
 
+@using Store.Shared.Util;
+
 @{
     ViewData["Title"] = "All Targets";
     IDictionary<string, object> submit = new Dictionary<string, object>();
@@ -17,37 +19,7 @@
             <ejs-button id="filter" cssClass="e-primary mx-1" content="Filter" htmlAttributes="submit"></ejs-button>
         </div>
         <div class="col-12 col-md-4 pr-0 d-flex flex-row align-items-center my-1">
-            <div class="e-btn-group d-flex flex-row flex-fill mr-1">
-                @if (Model.Order == Index.Ordering.Desc)
-                {
-                    <input type="radio" id="asc" name="order" value="asc" onchange="this.form.submit()" />
-                    <label class="e-btn e-primary flex-grow-1" for="asc">Asc</label>
-                    <input type="radio" id="desc" name="order" value="desc" onchange="this.form.submit()" checked />
-                    <label class="e-btn e-primary flex-grow-1" for="desc">Desc</label>
-                }
-                else
-                {
-                    <input type="radio" id="asc" name="order" value="asc" onchange="this.form.submit()" checked />
-                    <label class="e-btn e-primary flex-grow-1" for="asc">Asc</label>
-                    <input type="radio" id="desc" name="order" value="desc" onchange="this.form.submit()" />
-                    <label class="e-btn e-primary flex-grow-1" for="desc">Desc</label>
-
-                }
-            </div>
-            <div class="e-btn-group d-flex flex-row flex-fill">
-                @foreach (var orderOption in Model.OrderOptions.Keys)
-                {
-                    @if (orderOption == Model.OrderBy)
-                    {
-                        <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" checked onchange="this.form.submit()" />
-                    }
-                    else
-                    {
-                        <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" onchange="this.form.submit()" />
-                    }
-                    <label class="e-btn e-primary flex-grow-1" for="@orderOption">@orderOption</label>
-                }
-            </div>
+            <partial name="_OrderByPartial" model="@Model" />
         </div>
     </div>
 </form>

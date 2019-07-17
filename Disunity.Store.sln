@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disunity.Store", "Disunity.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disunity.Store.Tests", "Disunity.Store.Tests\Disunity.Store.Tests.csproj", "{2DB2C518-B801-42F9-837A-49E27C9637D9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{9AA8F1E7-034A-451E-8D6E-9253EAF8C1DE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

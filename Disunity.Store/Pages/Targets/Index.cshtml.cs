@@ -1,5 +1,6 @@
 using Disunity.Store.Entities;
 using Disunity.Store.Shared.Data;
+using Disunity.Store.Shared.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -16,28 +17,25 @@ namespace Disunity.Store.Pages.Targets
 {
 
     [Breadcrumb("Targets")]
-    public class Index : PageModel
+    public class Index : PageModel, IOrderableModel
     {
 
-        public enum Ordering
-        {
-            Asc,
-            Desc
-        }
 
         private readonly ApplicationDbContext _context;
         private readonly ILogger<Index> _logger;
 
         public IList<Target> Targets { get; set; }
 
-        [BindProperty(SupportsGet = true)] public string Title { get; set; }
+        [BindProperty(SupportsGet = true, Name = "")] public string Title { get; set; }
         [BindProperty(SupportsGet = true)] public string OrderBy { get; set; } = "Name";
         [BindProperty(SupportsGet = true)] public Ordering? Order { get; set; }
 
-        public Dictionary<string, Expression<Func<Target, IComparable>>> OrderOptions = new Dictionary<string, Expression<Func<Target, IComparable>>>() {
+        public Dictionary<string, Expression<Func<Target, IComparable>>> OrderOptions { get; set; } = new Dictionary<string, Expression<Func<Target, IComparable>>>() {
             {"Name",  t=>t.DisplayName},
             {"Total Mods",  t=>t.CompatibleMods.Count()},
         };
+
+        public IEnumerable<string> OrderByChoices => OrderOptions.Keys;
 
         public Index(ApplicationDbContext context, ILogger<Index> logger)
         {
