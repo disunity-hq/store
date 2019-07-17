@@ -19,6 +19,12 @@ namespace Disunity.Store.Pages.Targets
     public class Index : PageModel
     {
 
+        public enum Ordering
+        {
+            Asc,
+            Desc
+        }
+
         private readonly ApplicationDbContext _context;
         private readonly ILogger<Index> _logger;
 
@@ -26,12 +32,11 @@ namespace Disunity.Store.Pages.Targets
 
         [BindProperty(SupportsGet = true)] public string Title { get; set; }
         [BindProperty(SupportsGet = true)] public string OrderBy { get; set; } = "Name";
+        [BindProperty(SupportsGet = true)] public Ordering? Order { get; set; }
 
         public Dictionary<string, Expression<Func<Target, IComparable>>> OrderOptions = new Dictionary<string, Expression<Func<Target, IComparable>>>() {
-            {"Name",  t=>t.DisplayName
-    },
-            {"Total Mods",  t=>t.CompatibleMods.Count()
-},
+            {"Name",  t=>t.DisplayName},
+            {"Total Mods",  t=>t.CompatibleMods.Count()},
         };
 
         public Index(ApplicationDbContext context, ILogger<Index> logger)
@@ -53,10 +58,19 @@ namespace Disunity.Store.Pages.Targets
 
             if (!string.IsNullOrWhiteSpace(OrderBy))
             {
+
                 var ordering = OrderOptions.GetValueOrDefault(OrderBy);
                 if (ordering != null)
                 {
-                    targets = targets.OrderBy(ordering);
+                    if (Order != null && Order == Ordering.Desc)
+                    {
+                        targets = targets.OrderByDescending(ordering);
+                    }
+                    else
+                    {
+                        targets = targets.OrderBy(ordering);
+                    }
+
                 }
             }
 
