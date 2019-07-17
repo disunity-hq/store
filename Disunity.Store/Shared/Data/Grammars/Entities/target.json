@@ -1,9 +1,14 @@
 {
   "@import": ["../all.json"],
   "name": ["#male-name#", "#female-name#"],
+  "adjective": ["awesome", "mysterious", "challenging", "famous", "infamous", "great", "funny"],
+  "noun": ["trip", "challenge", "success", "failure", "treasure", "surprise"],
+  "version": ["", "2", "II", "3", "III", "Redux", ": Director's Cut"],
   "year": ["2008", "2010", "2016", "2018", "2019"],
   "display-name": [
-    "#name#'s #ultimate.alt# #sport#",
-    "#sport# #year#"
+    "#name#'s #adjective.alt# #sport#",
+    "#sport# #year#",
+    "#adjective.alt# #noun.alt# #version#",
+    "#name#'s #adjective.alt# #noun.alt#"
   ] 
 }
