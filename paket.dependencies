@@ -41,3 +41,4 @@ nuget TopoSort
 git https://github.com/dustinlacewell/Tracery.git master build: "build.sh", OS: mono, Packages: /Tracery/nupkg
 git https://github.com/dustinlacewell/Tracery.git master build: "build.bat", OS: windows, Packages: /Tracery/nupkg
 nuget Tracery
+nuget B2Net
