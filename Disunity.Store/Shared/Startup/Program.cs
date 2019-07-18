@@ -12,18 +12,26 @@ using Microsoft.Extensions.Logging;
 using Syncfusion.EJ2.Linq;
 
 
-namespace Disunity.Store.Shared.Startup {
+namespace Disunity.Store.Shared.Startup
+{
 
-    public class Program {
+    public class Program
+    {
 
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
             return WebHost.CreateDefaultBuilder(args)
                           .UseWebRoot("../Frontend/dist")
-                          .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
+                          .ConfigureAppConfiguration((hostingContext, config) =>
+                          {
+                              config.AddEnvironmentVariables();
+                              config.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+                          })
                           .ConfigureLogging(f => f.AddConsole().AddDebug())
                           .UseStartup<Startup>();
         }
