@@ -56,6 +56,10 @@ namespace Disunity.Store.Shared.Archive {
         public Manifest GetManifest(string filename = "manifest.json") {
             var entry = GetEntry(filename);
 
+            if (entry == null) {
+                throw new ArchiveLoadException($"No manifest found at {filename}");
+            }
+
             using (var file = entry.Open()) {
                 var reader = new StreamReader(file);
                 var json = reader.ReadToEnd();

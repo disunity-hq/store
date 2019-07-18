@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Linq;
 
 using BindingAttributes;
 
@@ -32,7 +33,7 @@ namespace Disunity.Store.Shared.Archive {
 
         private static void ValidateFormFile(IFormFile formFile) {
             var fileName = GetFileName(formFile);
-            CheckMimeType(formFile, "application/zip", fileName);
+            CheckMimeType(formFile, fileName, "application/zip", "application/x-zip", "application/x-zip-compressed");
             CheckEmpty(formFile, fileName);
             CheckSize(formFile, fileName);
         }
@@ -41,9 +42,11 @@ namespace Disunity.Store.Shared.Archive {
             return WebUtility.HtmlEncode(Path.GetFileName(formFile.FileName));
         }
 
-        private static void CheckMimeType(IFormFile formFile, string mimeType, string fileName) {
-            if (formFile.ContentType.ToLower() != mimeType) {
-                var msg = $"The file {fileName} must be of type {mimeType}.";
+        private static void CheckMimeType(IFormFile formFile, string fileName, params string[] mimeTypes) {
+
+            var fileMimeType = formFile.ContentType.ToLower();
+            if (!mimeTypes.Contains(fileMimeType)) {
+                var msg = $"The file {fileName} must be of type {string.Join(", or ", mimeTypes.Select(s => $"`{s}`"))}. Type `{fileMimeType}` was provided";
                 throw new ArchiveFormFileValidationError(msg);
             }
         }

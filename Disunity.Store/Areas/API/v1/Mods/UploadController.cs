@@ -54,13 +54,21 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
             try {
                 var archive = _archiveFactory(ArchiveUpload);
-                return new JsonResult(new {archive.Manifest.DisplayName});
+                return new JsonResult(new { archive.Manifest.DisplayName });
             }
-            catch (ManifestSchemaException e) {
-                return BadRequest(new {
-                    Type = "ManifestSchemaException",
-                    Errors = e.Errors.Select(FormatSchemaError)
-                });
+            catch (Exception e) {
+                string Type = e.GetType().Name;
+                object[] Errors = new object[] { };
+                if (e is ManifestSchemaException schemaExc) {
+                    Errors = schemaExc.Errors.Select(FormatSchemaError).ToArray();
+                }
+                else if (e is ArchiveFormFileValidationError formFileError) {
+                    Errors = new[] { formFileError.Message };
+                }
+                else if (e is ArchiveLoadException archiveExc) {
+                    Errors = new[] { archiveExc.Message };
+                }
+                return BadRequest(new { Type, Errors });
             }
         }
 
