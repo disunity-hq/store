@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 
 using Syncfusion.EJ2.Linq;
 
-
 namespace Disunity.Store.Shared.Startup
 {
 
@@ -29,8 +28,8 @@ namespace Disunity.Store.Shared.Startup
                           .UseWebRoot("../Frontend/dist")
                           .ConfigureAppConfiguration((hostingContext, config) =>
                           {
-                              config.AddEnvironmentVariables();
                               config.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+                              config.AddEnvironmentVariables();
                           })
                           .ConfigureLogging(f => f.AddConsole().AddDebug())
                           .UseStartup<Startup>();
