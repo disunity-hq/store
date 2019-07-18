@@ -664,6 +664,12 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Targets_Slug",
+                table: "Targets",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TargetVersionCompatibilities_MaxCompatibleVersionId",
                 table: "TargetVersionCompatibilities",
                 column: "MaxCompatibleVersionId");

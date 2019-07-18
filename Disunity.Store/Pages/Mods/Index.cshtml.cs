@@ -12,14 +12,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 using SmartBreadcrumbs.Attributes;
-
+using SmartBreadcrumbs.Nodes;
 using Syncfusion.EJ2.Linq;
 
 
 namespace Disunity.Store.Pages.Mods
 {
-
-    [Breadcrumb("Mods")]
+    [Breadcrumb]
     public class Index : PageModel, IOrderableModel
     {
 
@@ -49,6 +48,38 @@ namespace Disunity.Store.Pages.Mods
         };
 
         public async Task OnGetAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Target))
+            {
+                ViewData["BreadcrumbNode"] = new RazorPageBreadcrumbNode("/Mods", "Mods");
+            }
+            else
+            {
+                var targetDisplayName = await _context.Targets
+                    .Where(t => t.Slug == Target)
+                    .Include(t => t.Latest)
+                    .Select(t => t.Latest.DisplayName)
+                    .SingleAsync();
+
+                var targetsNode = new RazorPageBreadcrumbNode("/Targets/Index", "Targets") { OverwriteTitleOnExactMatch = true };
+                var targetNode = new RazorPageBreadcrumbNode($"/Targets/Details", targetDisplayName)
+                {
+                    OverwriteTitleOnExactMatch = true,
+                    Parent = targetsNode,
+                    RouteValues = new { targetSlug = Target }
+                };
+                var modsNode = new RazorPageBreadcrumbNode("/Mods", "Mods")
+                {
+                    OverwriteTitleOnExactMatch = true,
+                    Parent = targetNode
+                };
+                ViewData["BreadcrumbNode"] = modsNode;
+            }
+
+            Mods = await GetFilteredMods();
+        }
+
+        private async Task<List<Mod>> GetFilteredMods()
         {
             IQueryable<Mod> mods = _context.Mods
                     .Include(m => m.Latest)
@@ -83,7 +114,7 @@ namespace Disunity.Store.Pages.Mods
             }
 
 
-            Mods = await mods.ToListAsync();
+            return await mods.ToListAsync();
         }
 
     }

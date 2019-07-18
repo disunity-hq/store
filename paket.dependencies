@@ -19,7 +19,7 @@ nuget Npgsql.EntityFrameworkCore.PostgreSQL >= 2.2.4
 nuget Npgsql.EntityFrameworkCore.PostgreSQL.Design >= 1.1.1
 nuget Overby.Extensions.AsyncBinaryReaderWriter >= 1.0.39
 nuget SemanticVersion >= 2.0.0
-nuget Slugify >= 0.1.0.20570
+nuget Slugify.Core 2.3.0
 nuget SmartBreadcrumbs >= 2.1.0
 nuget Swashbuckle.AspNetCore
 nuget Syncfusion.EJ2.AspNet.Core >= 17.1.0.53pak

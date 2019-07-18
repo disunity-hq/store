@@ -15,11 +15,10 @@ Npgsql.EntityFrameworkCore.PostgreSQL
 Npgsql.EntityFrameworkCore.PostgreSQL.Design
 Overby.Extensions.AsyncBinaryReaderWriter
 SemanticVersion
-Slugify
+Slugify.Core
 SmartBreadcrumbs
 Swashbuckle.AspNetCore
 Syncfusion.EJ2.AspNet.Core
-
 EFCoreHooks
 BindingAttributes
 TopoSort

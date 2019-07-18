@@ -310,6 +310,9 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasIndex("LatestId")
                         .IsUnique();
 
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
                     b.ToTable("Targets");
                 });
 
