@@ -9,16 +9,6 @@ using Newtonsoft.Json.Schema;
 using Xunit;
 using Xunit.Abstractions;
 
-
-namespace to `Artifacts`
-
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
-
-using Xunit;
-using Xunit.Abstractions;
-
-
 namespace Disunity.Store.Tests {
 
     public class SchemaTests {
