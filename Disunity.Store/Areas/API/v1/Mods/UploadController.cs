@@ -34,18 +34,18 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         private readonly UserManager<UserIdentity> _userManager;
         private readonly ApplicationDbContext _context;
 
-        private readonly IStorageProvider _b2;
+        private readonly IStorageProvider _storage;
 
         public UploadController(ILogger<Upload> logger,
                                 UserManager<UserIdentity> userManager,
                                 ApplicationDbContext context,
                                 Func<IFormFile, Archive> archiveFactory,
-                                IStorageProvider b2) {
+                                IStorageProvider storage) {
             _logger = logger;
             _userManager = userManager;
             _context = context;
             _archiveFactory = archiveFactory;
-            _b2 = b2;
+            _storage = storage;
         }
 
         [FromForm] public IFormFile ArchiveUpload { get; set; }
@@ -82,7 +82,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
                 var org = await _context.Orgs.SingleAsync(o => o.Slug == user.Slug);
 
-                await _b2.UploadArchive(archive, org);
+                await _storage.UploadArchive(archive, org);
 
                 return new JsonResult(new {archive.Manifest.DisplayName});
             }
