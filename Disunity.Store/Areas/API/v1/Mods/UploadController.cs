@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Disunity.Store.Backblaze;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;
 using Disunity.Store.Artifacts;
-using Disunity.Store.Backblaze;
 using Disunity.Store.Data;
+using Disunity.Store.Storage;
+using Disunity.Store.Storage.Backblaze;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,13 +34,13 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         private readonly UserManager<UserIdentity> _userManager;
         private readonly ApplicationDbContext _context;
 
-        private readonly IB2Service _b2;
+        private readonly IStorageProvider _b2;
 
         public UploadController(ILogger<Upload> logger,
                                 UserManager<UserIdentity> userManager,
                                 ApplicationDbContext context,
                                 Func<IFormFile, Archive> archiveFactory,
-                                IB2Service b2) {
+                                IStorageProvider b2) {
             _logger = logger;
             _userManager = userManager;
             _context = context;
@@ -74,27 +74,15 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             try {
                 var archive = _archiveFactory(ArchiveUpload);
 
-                _logger.LogInformation("File Upload received");
+                var user = await _userManager.GetUserAsync(HttpContext.User);
 
-                if (_b2.ServiceConfigured) {
-                    var user = await _userManager.GetUserAsync(HttpContext.User);
-
-                    if (user == null) {
-                        return Unauthorized();
-                    }
-
-                    var org = await _context.Orgs.SingleAsync(o => o.Slug == user.Slug);
-
-                    var filename = $"{org.Slug}-{archive.Manifest.ModID}.zip";
-
-                    var fileInfo = new Dictionary<string, string>() {{"modVersion", archive.Manifest.Version}};
-                    _logger.LogInformation($"Uploading {filename}");
-
-                    using (var uploadStream = _b2.GetUploadStream(filename, fileInfo)) {
-                        await ArchiveUpload.CopyToAsync(uploadStream);
-                        uploadStream.FinalizeUpload();
-                    }
+                if (user == null) {
+                    return Unauthorized();
                 }
+
+                var org = await _context.Orgs.SingleAsync(o => o.Slug == user.Slug);
+
+                await _b2.UploadArchive(archive, org);
 
                 return new JsonResult(new {archive.Manifest.DisplayName});
             }

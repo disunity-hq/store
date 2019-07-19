@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 using BindingAttributes;
 
@@ -23,12 +25,14 @@ namespace Disunity.Store.Artifacts {
 
         private ILogger<Archive> log;
         private Func<string, Manifest> manifestFactory;
+        private readonly Stream _stream;
 
         public Archive(ILogger<Archive> log,
                        Func<string, Manifest> manifestFactory,
                        Stream stream) {
             this.log = log;
             this.manifestFactory = manifestFactory;
+            _stream = stream;
             archive = new ZipArchive(stream, ZipArchiveMode.Read);
             Manifest = GetManifest();
             Readme = GetReadme();
@@ -84,6 +88,14 @@ namespace Disunity.Store.Artifacts {
 
                 return readme;
             }
+        }
+
+        public void CopyTo(Stream stream) {
+            _stream.CopyTo(stream);
+        }
+
+        public Task CopyToAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken)) {
+            return _stream.CopyToAsync(stream, cancellationToken);
         }
 
     }

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 using B2Net;
 using B2Net.Models;
 
-using Disunity.Store.Artifacts;
 
+namespace Disunity.Store.Storage.Backblaze {
 
-namespace Disunity.Store.Backblaze {
-
-    public class B2UploadStream : Stream {
+    public class B2UploadStream : UploadStream {
 
         private const int MinPartSize = 5 * 1024 * 1024;
 
@@ -29,26 +28,10 @@ namespace Disunity.Store.Backblaze {
 
         private readonly List<string> _shas = new List<string>();
 
-        public override bool CanRead => false;
-
-        public override bool CanSeek => false;
-
         public override bool CanWrite => _finish == null;
-
-        public override long Length => throw new NotSupportedException("B2UploadStream only supports writing");
-
-        public override long Position {
-            get => throw new NotSupportedException("B2UploadStream only supports writing");
-            set => throw new NotSupportedException("B2UploadStream only supports writing");
-        }
-
-        public B2UploadStream(B2Client client, string fileName) : this(client, fileName, bucketId: "") { }
-
+        
         public B2UploadStream(B2Client client, string fileName, string bucketId) : this(
             client, fileName, bucketId, null) { }
-
-        public B2UploadStream(B2Client client, string fileName, Dictionary<string, string> fileInfo) : this(
-            client, fileName, "", fileInfo) { }
 
         public B2UploadStream(B2Client client, string fileName, string bucketId, Dictionary<string, string> fileInfo) {
             _client = client;
@@ -106,19 +89,6 @@ namespace Disunity.Store.Backblaze {
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
-            throw new NotSupportedException("B2UploadStream only supports writing");
-        }
-
-        public override long Seek(long offset, SeekOrigin origin) {
-            throw new NotSupportedException("B2UploadStream only supports writing");
-        }
-
-        public override void SetLength(long value) {
-
-            throw new NotSupportedException("B2UploadStream only supports writing");
-        }
-
         public override void Write(byte[] buffer, int offset, int count) {
             _buffer.Write(buffer, offset, count);
             CheckFlush();
@@ -150,8 +120,14 @@ namespace Disunity.Store.Backblaze {
             }
         }
 
-        public B2File FinalizeUpload() {
-            if (_finish != null) return _finish;
+        public override StorageFile FinalizeUpload() {
+            var bucketName = _client.Buckets.GetList().Result.Single(b => b.BucketId == _bucketId).BucketName;
+
+            if (_finish != null) {
+                return B2StorageFile.Create(_client, _finish, bucketName);
+            }
+
+            ;
 
             if (_start == null) {
                 var bytes = _buffer.ToArray();
@@ -166,7 +142,7 @@ namespace Disunity.Store.Backblaze {
                 }
             }
 
-            return _finish;
+            return B2StorageFile.Create(_client, _finish, bucketName);
         }
 
     }

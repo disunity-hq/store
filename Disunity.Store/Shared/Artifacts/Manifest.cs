@@ -97,6 +97,7 @@ namespace Disunity.Store.Artifacts {
         public string RuntimeClass;
 
         public object ExtraData;
+
     }
 
 
@@ -105,7 +106,6 @@ namespace Disunity.Store.Artifacts {
         public ILogger<Manifest> logger;
 
         public static void ValidateJson(ILogger<Manifest> logger, string json) {
-            logger.LogError("Manifest logger working.");
             var schema = Schema.LoadSchema();
             var obj = JObject.Parse(json);
             obj.IsValid(schema, out IList<ValidationError> errors);
