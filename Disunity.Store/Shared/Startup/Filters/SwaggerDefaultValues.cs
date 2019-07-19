@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 
-namespace Disunity.Store.Shared.Startup.Filters {
+namespace Disunity.Store.Startup.Filters {
 
     public class SwaggerDefaultValues : IOperationFilter {
 

@@ -6,7 +6,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Disunity.Store.Shared.Extensions {
+namespace Disunity.Store.Extensions {
 
     public static class DbContextExtensions {
 

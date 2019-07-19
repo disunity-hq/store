@@ -1,7 +1,8 @@
-﻿@model Disunity.Store.Shared.Util.IOrderableModel
+﻿@using Disunity.Store.Util
+@model Disunity.Store.Util.IOrderableModel
 
 <div class="e-btn-group d-flex flex-row flex-fill mr-1">
-    @if (Model.Order == Store.Shared.Util.Ordering.Desc)
+    @if (Model.Order == Ordering.Desc)
     {
         <input type="radio" id="asc" name="order" value="asc" onchange="this.form.submit()" />
         <label class="e-btn e-primary flex-grow-1" for="asc">Asc</label>

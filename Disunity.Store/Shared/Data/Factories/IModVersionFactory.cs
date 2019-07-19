@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Disunity.Store.Entities;
 
 
-namespace Disunity.Store.Shared.Data.Factories {
+namespace Disunity.Store.Data.Factories {
 
     public interface IModVersionFactory {
 

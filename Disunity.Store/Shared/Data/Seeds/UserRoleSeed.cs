@@ -5,15 +5,12 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Startup;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-using Syncfusion.EJ2.Linq;
 
-
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
     public class UserRoleSeed:ISeeder {

@@ -1,17 +1,15 @@
 using System;
 using System.IO;
-using System.Net;
 using System.Linq;
+using System.Net;
 
 using BindingAttributes;
-
-using Disunity.Store.Shared.Startup;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Archive {
+namespace Disunity.Store.Archive {
 
     public class ArchiveFormFileValidationError : Exception {
 

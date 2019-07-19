@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Data.Services;
+using Disunity.Store.Data;
+using Disunity.Store.Data.Services;
 
 using EFCoreHooks.Attributes;
 

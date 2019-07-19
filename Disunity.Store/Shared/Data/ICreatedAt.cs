@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using EFCoreHooks.Attributes;
 
 
-namespace Disunity.Store.Entities {
+namespace Disunity.Store.Data {
 
     public interface ICreatedAt {
 

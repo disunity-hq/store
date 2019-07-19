@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Extensions;
+using Disunity.Store.Data;
+using Disunity.Store.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

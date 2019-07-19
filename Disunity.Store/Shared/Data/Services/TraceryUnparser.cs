@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,12 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Slugify;
-
 using Tracery;
 
 
-namespace Disunity.Store.Shared.Data.Services
+namespace Disunity.Store.Data.Services
 {
 
     public class TraceryUnparser

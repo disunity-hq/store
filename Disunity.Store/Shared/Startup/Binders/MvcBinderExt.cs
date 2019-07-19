@@ -1,4 +1,4 @@
-using Disunity.Store.Shared.Startup.Filters;
+using Disunity.Store.Startup.Filters;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class MvcBinderExt {
 

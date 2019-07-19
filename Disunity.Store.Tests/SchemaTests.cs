@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-using Disunity.Store.Shared.Archive;
+using Disunity.Store.Archive;
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;

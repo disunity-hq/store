@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-using Disunity.Store.Shared.Startup.Binders;
-using Disunity.Store.Shared.Startup.Services;
+using Disunity.Store.Startup.Binders;
+using Disunity.Store.Startup.Services;
 
 using EFCoreHooks.Extensions;
 
@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace Disunity.Store.Shared.Startup {
+namespace Disunity.Store.Startup {
 
     public class Startup {
 

@@ -5,7 +5,7 @@ using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class AutoMapperBinderExt {
 

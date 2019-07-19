@@ -4,9 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Disunity.Store.Data;
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Util;
+using Disunity.Store.Util;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

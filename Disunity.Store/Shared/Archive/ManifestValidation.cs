@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
-namespace Disunity.Store.Shared.Archive {
+namespace Disunity.Store.Archive {
 
     public partial class Manifest {
 

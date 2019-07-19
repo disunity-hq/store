@@ -5,16 +5,14 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Store.Archive;
 using Disunity.Store.Entities;
 using Disunity.Store.Entities.Extensions;
-using Disunity.Store.Shared.Archive;
-using Disunity.Store.Shared.Extensions;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Data.Factories {
+namespace Disunity.Store.Data.Factories {
 
     public class ModVersionFactory : IModVersionFactory {
 

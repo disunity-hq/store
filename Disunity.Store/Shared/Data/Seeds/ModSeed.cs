@@ -4,20 +4,18 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Store.Data.Factories;
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data.Factories;
-using Disunity.Store.Shared.Data.Services;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators.Internal;
 using Microsoft.Extensions.Logging;
 
 using TopoSort;
 
 
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
     [DependsOn(typeof(TargetSeed), typeof(UserRoleSeed))]

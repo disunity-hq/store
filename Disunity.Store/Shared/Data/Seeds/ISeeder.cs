@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 
 
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     public interface ISeeder {
 

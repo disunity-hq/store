@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Disunity.Store.Shared.Extensions {
+namespace Disunity.Store.Extensions {
 
     public static class EnumerableExtensions {
 

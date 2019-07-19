@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Disunity.Store.Shared.Data.Services;
+using Disunity.Store.Data.Services;
 
 using EFCoreHooks.Attributes;
 

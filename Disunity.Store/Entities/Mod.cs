@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-using Disunity.Store.Shared.Data;
+using Disunity.Store.Data;
 
 using EFCoreHooks.Attributes;
 

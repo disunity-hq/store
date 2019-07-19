@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Syncfusion.Licensing;
 
 
-namespace Disunity.Store.Shared.Startup.Services {
+namespace Disunity.Store.Startup.Services {
 
     [AsSingleton(typeof(IStartupService))]
     public class AppService : IStartupService {

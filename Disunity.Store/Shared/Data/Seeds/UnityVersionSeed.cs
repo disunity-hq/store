@@ -8,7 +8,7 @@ using Disunity.Store.Entities;
 using Microsoft.AspNetCore.Hosting;
 
 
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
     public class UnityVersionSeed : ISeeder {

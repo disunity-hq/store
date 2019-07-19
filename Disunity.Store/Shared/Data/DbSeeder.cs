@@ -1,27 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data.Seeds;
-using Disunity.Store.Shared.Startup;
+using Disunity.Store.Data.Seeds;
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using Syncfusion.EJ2.Linq;
 
 using TopoSort;
 
 
-namespace Disunity.Store.Shared.Data {
+namespace Disunity.Store.Data {
 
     [AsScoped]
     public class DbSeeder {

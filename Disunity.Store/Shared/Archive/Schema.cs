@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
 
-namespace Disunity.Store.Shared.Archive {
+namespace Disunity.Store.Archive {
 
     public static partial class Schema {
 

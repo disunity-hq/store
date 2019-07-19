@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Tracery;
 
 
-namespace Disunity.Store.Shared.Data.Services {
+namespace Disunity.Store.Data.Services {
 
     [AsSingleton]
     public class IconRandomizer {

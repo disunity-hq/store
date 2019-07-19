@@ -5,23 +5,19 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Bogus;
-
+using Disunity.Store.Data.Factories;
+using Disunity.Store.Data.Services;
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data.Factories;
-using Disunity.Store.Shared.Data.Services;
-using Disunity.Store.Shared.Extensions;
+using Disunity.Store.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
-
-using Slugify;
 
 using TopoSort;
 
 using Tracery;
 
 
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
     [DependsOn(typeof(UnityVersionSeed))]

@@ -1,10 +1,9 @@
-using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data;
+using Disunity.Store.Data;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Disunity.Store.Shared.Extensions {
+namespace Disunity.Store.Extensions {
 
     public static class EntityTypeBuilderExtensions {
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SmartBreadcrumbs.Attributes;
 
 
-namespace Disunity.Store.Shared.Startup.Filters {
+namespace Disunity.Store.Startup.Filters {
 
     public class BreadcrumbFilter : IAsyncPageFilter {
 

@@ -2,14 +2,12 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using Disunity.Store.Shared.Startup.Filters;
+using Disunity.Store.Startup.Filters;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Swashbuckle.AspNetCore.Swagger;
 
-
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class SwaggerBinderExt {
 

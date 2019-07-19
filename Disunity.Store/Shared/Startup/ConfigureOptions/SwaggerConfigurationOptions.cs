@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 
-namespace Disunity.Store.Shared.Startup.ConfigureOptions {
+namespace Disunity.Store.Startup.ConfigureOptions {
 
     [AsTransient(typeof(IConfigureOptions<SwaggerGenOptions>))]
     public class SwaggerConfigurationOptions : IConfigureOptions<SwaggerGenOptions> {

@@ -4,8 +4,6 @@ using System.Linq;
 
 using BindingAttributes;
 
-using Disunity.Store.Shared.Startup;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +14,7 @@ using Newtonsoft.Json.Schema;
 using SemVersion;
 
 
-namespace Disunity.Store.Shared.Archive {
+namespace Disunity.Store.Archive {
 
     public class ManifestSchemaException : Exception {
 

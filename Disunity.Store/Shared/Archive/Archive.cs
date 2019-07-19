@@ -5,13 +5,11 @@ using System.Text;
 
 using BindingAttributes;
 
-using Disunity.Store.Shared.Startup;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace Disunity.Store.Shared.Archive {
+namespace Disunity.Store.Archive {
 
     public class ArchiveLoadException : Exception {
 

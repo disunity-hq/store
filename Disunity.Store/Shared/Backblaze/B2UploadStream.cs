@@ -1,16 +1,14 @@
-﻿using B2Net;
-using B2Net.Models;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+
+using B2Net;
+using B2Net.Models;
 
 
-namespace Disunity.Store.Shared.Backblaze {
+namespace Disunity.Store.Backblaze {
 
     public class B2UploadStream : Stream {
 

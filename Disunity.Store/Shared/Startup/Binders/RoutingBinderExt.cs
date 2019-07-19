@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
-using System.Reflection;
-
 using Microsoft.Extensions.DependencyInjection;
 
 using SmartBreadcrumbs.Extensions;
 
 
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class RoutingBinderExt {
 

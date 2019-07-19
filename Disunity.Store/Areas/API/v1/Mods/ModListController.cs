@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Entities.DataTransferObjects;
-using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Extensions;
+using Disunity.Store.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

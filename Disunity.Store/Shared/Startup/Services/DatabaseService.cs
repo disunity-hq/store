@@ -1,9 +1,8 @@
 using System;
-using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Shared.Data;
+using Disunity.Store.Data;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace Disunity.Store.Shared.Startup.Services {
+namespace Disunity.Store.Startup.Services {
 
     [AsSingleton(typeof(IStartupService))]
     public class DatabaseService : IStartupService {

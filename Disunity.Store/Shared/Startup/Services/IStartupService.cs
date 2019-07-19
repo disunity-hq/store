@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 
 
-namespace Disunity.Store.Shared.Startup.Services {
+namespace Disunity.Store.Startup.Services {
 
     public interface IStartupService {
 

@@ -1,4 +1,4 @@
-using Disunity.Store.Shared.Util;
+using Disunity.Store.Util;
 
 using Xunit;
 

@@ -4,9 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-using Disunity.Store.Shared.Archive;
-using Disunity.Store.Shared.Data;
-using Disunity.Store.Shared.Extensions;
+using Disunity.Store.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

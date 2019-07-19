@@ -1,15 +1,12 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
+using Disunity.Store.Data;
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data;
 
-using Microsoft.AspNetCore.ResponseCaching.Internal;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Disunity.Store.Shared.Extensions {
+namespace Disunity.Store.Extensions {
 
     public static class QueryableExtensions {
 

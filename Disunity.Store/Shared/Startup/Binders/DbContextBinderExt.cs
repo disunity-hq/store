@@ -1,11 +1,11 @@
-using Disunity.Store.Shared.Data;
+using Disunity.Store.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class DbContextBinderExt {
 

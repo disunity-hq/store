@@ -1,17 +1,10 @@
-﻿using System.Linq;
-using System.Reflection;
-
-using Disunity.Store.Shared.Startup.Binders;
-
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Syncfusion.EJ2.Linq;
 
-namespace Disunity.Store.Shared.Startup
+namespace Disunity.Store.Startup
 {
 
     public class Program

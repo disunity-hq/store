@@ -1,17 +1,11 @@
-using System.ComponentModel;
-
 using BindingAttributes;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 
-namespace Disunity.Store.Shared.Startup.Services {
+namespace Disunity.Store.Startup.Services {
 
     [AsSingleton(typeof(IStartupService))]
     public class SwaggerService : IStartupService {

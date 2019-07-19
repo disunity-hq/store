@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 
-namespace Disunity.Store.Shared.Util {
+namespace Disunity.Store.Util {
 
     public static class ReflectionExtensions {
 

@@ -3,7 +3,7 @@ using BindingAttributes;
 using Slugify;
 
 
-namespace Disunity.Store.Shared.Data.Services {
+namespace Disunity.Store.Data.Services {
 
     public interface ISlugifier {
 

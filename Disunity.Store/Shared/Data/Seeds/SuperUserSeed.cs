@@ -1,21 +1,18 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using BindingAttributes;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Startup;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 
 using TopoSort;
 
 
-namespace Disunity.Store.Shared.Data.Seeds {
+namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
     [DependsOn(typeof(UserRoleSeed))]

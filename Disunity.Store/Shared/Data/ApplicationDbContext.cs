@@ -1,20 +1,17 @@
 ﻿using System.Data;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
 
 using EFCoreHooks;
 
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using Npgsql;
 
 
-namespace Disunity.Store.Shared.Data {
+namespace Disunity.Store.Data {
 
     public class ApplicationDbContext : HookedIdentityDbContext<UserIdentity> {
 

@@ -1,12 +1,12 @@
+using Disunity.Store.Data;
 using Disunity.Store.Entities;
-using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Startup.Binders {
+namespace Disunity.Store.Startup.Binders {
 
     public static class IdentityBinderExt {
 

@@ -1,4 +1,9 @@
-﻿using B2Net;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+
+using B2Net;
 using B2Net.Models;
 
 using BindingAttributes;
@@ -6,16 +11,8 @@ using BindingAttributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-
-
-namespace Disunity.Store.Shared.Backblaze {
+namespace Disunity.Store.Backblaze {
 
     public interface IB2Service {
 

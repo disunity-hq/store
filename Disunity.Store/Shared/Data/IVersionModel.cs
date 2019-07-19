@@ -1,7 +1,7 @@
 using Disunity.Store.Entities;
 
 
-namespace Disunity.Store.Shared.Data {
+namespace Disunity.Store.Data {
 
     public interface IVersionModel {
 

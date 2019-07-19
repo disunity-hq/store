@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Disunity.Store.Archive;
+using Disunity.Store.Backblaze;
+using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;
-using Disunity.Store.Shared.Archive;
-using Disunity.Store.Shared.Backblaze;
-using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +26,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
     [Route("api/v{version:apiVersion}/mods/upload")]
     public class UploadController : ControllerBase {
 
-        private readonly Func<IFormFile, Archive> _archiveFactory;
+        private readonly Func<IFormFile, Archive.Archive> _archiveFactory;
 
         private readonly ILogger<Upload> _logger;
         private readonly UserManager<UserIdentity> _userManager;
@@ -37,7 +37,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         public UploadController(ILogger<Upload> logger,
                                 UserManager<UserIdentity> userManager,
                                 ApplicationDbContext context,
-                                Func<IFormFile, Archive> archiveFactory,
+                                Func<IFormFile, Archive.Archive> archiveFactory,
                                 IB2Service b2) {
             _logger = logger;
             _userManager = userManager;

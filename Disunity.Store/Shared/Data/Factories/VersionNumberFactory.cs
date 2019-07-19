@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Shared.Data.Factories {
+namespace Disunity.Store.Data.Factories {
 
     [AsScoped(typeof(IVersionNumberFactory))]
     public class VersionNumberFactory : IVersionNumberFactory {
