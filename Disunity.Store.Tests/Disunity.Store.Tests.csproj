@@ -20,6 +20,12 @@
   <ItemGroup>
     <None Update="data\manifest.json" CopyToOutputDirectory="Always" />
     <None Update="data\broken_manifest.json" CopyToOutputDirectory="Always" />
+    <None Include="..\Disunity.Store\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\Disunity.Store\appsettings.Development.json" CopyToOutputDirectory="Always" />
+    <Content Include="..\Disunity.Store\Shared\Data\**\*.json">
+      <Link>Shared\Data\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

@@ -59,12 +59,13 @@ namespace Disunity.Store.Shared.Data.Seeds {
                 _context.UnityVersions.FindExactVersion((VersionNumber) "2018.4.4").Single();
 
             for (var i = 0; i < 10; i++) {
-                var displayName = _unparser.Generate("#display-name.capitalizeEach#");
+                var displayName = _unparser.Generate("#display_name.title#");
                 var slug = _slugifier.Slugify(displayName);
                 var iconUrl = _iconRandomizer.GetIconUrl();
+                var description = _unparser.Generate("#description#");
                 
                 var targetVersion = new TargetVersion() {
-                    Description = "Foo Bar the Game",
+                    Description = description,
                     Hash = $"0123456789abcdef-{i}",
                     DisplayName = displayName,
                     IconUrl = iconUrl,

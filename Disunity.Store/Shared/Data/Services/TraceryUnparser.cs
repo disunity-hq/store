@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,6 +7,7 @@ using BindingAttributes;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Slugify;
 
@@ -19,30 +21,41 @@ namespace Disunity.Store.Shared.Data.Services
     {
 
         [Factory]
-        public static Func<string, Unparser> UnparserFactory(IServiceProvider di)
-        {
+        public static Func<string, Unparser> UnparserFactory(IServiceProvider di) {
+            var logger = di.GetRequiredService<ILogger<TraceryUnparser>>();
             var config = di.GetRequiredService<IConfiguration>();
-            var thesaurus = di.GetRequiredService<IThesaurus>();
             var slugifier = di.GetRequiredService<ISlugifier>();
+            var grammarPath = config.GetValue<string>("Database:TraceryGrammarPath");
 
-            string CapitalizeEach(string s)
-            {
+            string Capitalize(string s) {
+                if (string.IsNullOrEmpty(s)) {
+                    return s;
+                }
+
+                var result = char.ToUpper(s[0]).ToString();
+
+                if (s.Length > 1) {
+                    result += s.Substring(1);
+                }
+
+                return result;
+            }
+
+            string TitleCase(string s) {
                 var parts = s.Split(null)
-                             .Where(p => p.Count() > 0)
+                             .Where(p => p.Any())
                              .Select(p => char.ToUpper(p[0]) + p.Substring(1));
 
                 return String.Join(" ", parts);
             }
 
-            return filename =>
-            {
-                var grammarPath = config.GetValue<string>("Database:TraceryGrammarPath");
+            return filename => {
                 var fullPath = Path.Combine(grammarPath, filename);
                 var grammar = Grammar.FromFile(fullPath);
                 var unparser = new Unparser(grammar);
 
-                unparser.Modifiers["capitalizeEach"] = CapitalizeEach;
-                unparser.Modifiers["alt"] = thesaurus.For;
+                unparser.Modifiers["capitalize"] = Capitalize;
+                unparser.Modifiers["title"] = TitleCase;
                 unparser.Modifiers["slug"] = slugifier.Slugify;
 
                 return unparser;

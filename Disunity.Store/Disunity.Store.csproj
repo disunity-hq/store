@@ -11,35 +11,6 @@
   <ItemGroup>
     <None Update="Shared\Data\Grammars\*.json" CopyToOutputDirectory="Always" />
     <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
-    <None Update="Shared\Data\Thesaurus\json\*.json" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-a.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-b.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-c.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-d.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-e.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-f.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-g.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-h.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-i.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-j.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-k.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-l.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-m.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-n.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-o.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-p.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-q.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-r.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-s.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-t.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-u.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-v.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-w.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-x.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-y.json" />
-    <_ContentIncludedByDefault Remove="Shared\Data\thesaurus\json\thesaurus-z.json" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
