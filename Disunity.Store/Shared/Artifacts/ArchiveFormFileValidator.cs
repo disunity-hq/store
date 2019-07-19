@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Archive {
+namespace Disunity.Store.Artifacts {
 
     public class ArchiveFormFileValidationError : Exception {
 

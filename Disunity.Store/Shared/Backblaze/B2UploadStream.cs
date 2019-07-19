@@ -7,6 +7,8 @@ using System.Text;
 using B2Net;
 using B2Net.Models;
 
+using Disunity.Store.Artifacts;
+
 
 namespace Disunity.Store.Backblaze {
 

@@ -14,7 +14,7 @@ using Newtonsoft.Json.Schema;
 using SemVersion;
 
 
-namespace Disunity.Store.Archive {
+namespace Disunity.Store.Artifacts {
 
     public class ManifestSchemaException : Exception {
 

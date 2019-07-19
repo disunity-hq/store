@@ -1,7 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
 
-using Disunity.Store.Archive;
+using Disunity.Store.Artifacts;
+
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+
+using Xunit;
+using Xunit.Abstractions;
+
+
+namespace to `Artifacts`
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using Disunity.Store.Archive;
+using Disunity.Store.Artifacts;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

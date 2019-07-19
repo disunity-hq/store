@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
 
-namespace Disunity.Store.Archive {
+namespace Disunity.Store.Artifacts {
 
     public static partial class Schema {
 
@@ -21,7 +21,7 @@ namespace Disunity.Store.Archive {
         private static object SchemaData() {
             return Object(new {
                 ManifestVersion = Integer(1, 1),
-                
+
                 // identifiers
                 OrgID = String(SLUG_PATTERN),
                 ModID = String(SLUG_PATTERN),
@@ -82,9 +82,9 @@ namespace Disunity.Store.Archive {
                 RuntimeAssemblies = Array(String(DLL_PATTERN)),
                 RuntimeAssembly = String(CLASS_PATTERN),
                 RuntimeClass = String(CLASS_PATTERN),
-                
+
                 ExtraData = Object(),
-                
+
             }, dependencies: new {
                 PreloadClass = new[] {"PreloadAssemblies", "PreloadAssembly"},
                 PreloadAssembly = new[] {"PreloadAssemblies", "PreloadClass"},

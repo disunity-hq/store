@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Artifacts;
 
 
 namespace Disunity.Store.Data.Factories {
@@ -16,7 +17,7 @@ namespace Disunity.Store.Data.Factories {
         /// <param name="archive">An <see cref="Archive"/> containing information to build a <see cref="Mod"/></param>
         /// <param name="context">The DbContext on which to search for version numbers</param>
         /// <returns>A new <see cref="ModVersion"/>. Be careful to ensure it is valid before adding to the db</returns>
-        Task<ModVersion> FromArchiveAsync(Archive.Archive archive);
+        Task<ModVersion> FromArchiveAsync(Archive archive);
 
     }
 

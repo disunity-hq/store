@@ -1,7 +1,7 @@
 using System.Dynamic;
 
 
-namespace Disunity.Store.Archive {
+namespace Disunity.Store.Artifacts {
 
     public static partial class Schema {
 
@@ -9,8 +9,8 @@ namespace Disunity.Store.Archive {
             return new ExpandoObject();
         }
 
-        public static object Integer(int? min = null, int? max = null, 
-                                     int? exclusiveMin = null, 
+        public static object Integer(int? min = null, int? max = null,
+                                     int? exclusiveMin = null,
                                      int? exclusiveMax = null) {
             dynamic eo = EO();
             eo.type = "integer";
