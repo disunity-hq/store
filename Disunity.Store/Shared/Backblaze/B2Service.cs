@@ -12,6 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
+
 
 namespace Disunity.Store.Shared.Backblaze {
 
@@ -23,7 +25,8 @@ namespace Disunity.Store.Shared.Backblaze {
 
         Task UploadFile(Stream stream, string filename);
 
-        B2UploadStream GetUploadStream(string filename);
+
+        B2UploadStream GetUploadStream(string filename, Dictionary<string, string> fileInfo = null);
 
     }
 
@@ -83,13 +86,19 @@ namespace Disunity.Store.Shared.Backblaze {
             _logger.LogInformation("File Uploaded");
         }
 
-        public B2UploadStream GetUploadStream(string filename) {
+        public async Task UploadFile(Stream stream, string filename) {
+            using (var uploadStream = GetUploadStream(filename)) {
+                await stream.CopyToAsync(uploadStream);
+            }
+        }
+
+        public B2UploadStream GetUploadStream(string filename, Dictionary<string, string> fileInfo = null) {
             if (!ServiceConfigured) {
                 _logger.LogWarning("Attempting to upload file when b2 is not configured");
                 return null;
             }
 
-            var stream = new B2UploadStream(_client, filename);
+            var stream = new B2UploadStream(_client, filename, fileInfo);
             return stream;
         }
 

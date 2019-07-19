@@ -1,13 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
+using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;
 using Disunity.Store.Shared.Archive;
 using Disunity.Store.Shared.Backblaze;
+using Disunity.Store.Shared.Data;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json.Schema;
@@ -23,13 +29,19 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         private readonly Func<IFormFile, Archive> _archiveFactory;
 
         private readonly ILogger<Upload> _logger;
+        private readonly UserManager<UserIdentity> _userManager;
+        private readonly ApplicationDbContext _context;
 
         private readonly IB2Service _b2;
 
         public UploadController(ILogger<Upload> logger,
+                                UserManager<UserIdentity> userManager,
+                                ApplicationDbContext context,
                                 Func<IFormFile, Archive> archiveFactory,
                                 IB2Service b2) {
             _logger = logger;
+            _userManager = userManager;
+            _context = context;
             _archiveFactory = archiveFactory;
             _b2 = b2;
         }
@@ -52,7 +64,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         }
 
         [HttpPost]
-        public IActionResult Post() {
+        public async Task<IActionResult> PostAsync() {
             if (!ModelState.IsValid) {
                 return BadRequest();
             }
@@ -60,11 +72,24 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             try {
                 var archive = _archiveFactory(ArchiveUpload);
 
-                if (_b2.ServiceConfigured) {
-                    _logger.LogInformation($"Uploading {archive.Manifest.ModID}.zip");
+                _logger.LogInformation("File Upload received");
 
-                    using (var uploadStream = _b2.GetUploadStream($"{archive.Manifest.ModID}.zip")) {
-                        ArchiveUpload.CopyTo(uploadStream);
+                if (_b2.ServiceConfigured) {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+
+                    if (user == null) {
+                        return Unauthorized();
+                    }
+
+                    var org = await _context.Orgs.SingleAsync(o => o.Slug == user.Slug);
+
+                    var filename = $"{org.Slug}-{archive.Manifest.ModID}.zip";
+
+                    var fileInfo = new Dictionary<string, string>() {{"modVersion", archive.Manifest.Version}};
+                    _logger.LogInformation($"Uploading {filename}");
+
+                    using (var uploadStream = _b2.GetUploadStream(filename, fileInfo)) {
+                        await ArchiveUpload.CopyToAsync(uploadStream);
                         uploadStream.FinalizeUpload();
                     }
                 }

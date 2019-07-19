@@ -100,7 +100,7 @@ namespace Disunity.Store.Shared.Backblaze {
                     FinalizeUpload();
                 }
             }
-            catch (Exception e) {
+            catch (Exception) {
                 _client.LargeFiles.CancelLargeFile(_start.FileId).Wait();
                 throw;
             }
@@ -160,7 +160,7 @@ namespace Disunity.Store.Shared.Backblaze {
                 try {
                     _finish = _client.LargeFiles.FinishLargeFile(_start.FileId, _shas.ToArray()).Result;
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     _client.LargeFiles.CancelLargeFile(_start.FileId).Wait();
                     throw;
                 }

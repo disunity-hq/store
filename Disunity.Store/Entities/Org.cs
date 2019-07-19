@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 using Disunity.Store.Shared.Data;
+using Disunity.Store.Shared.Data.Services;
 
 using EFCoreHooks.Attributes;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Entities {
@@ -33,9 +35,17 @@ namespace Disunity.Store.Entities {
             if (org == null) {
                 context.Orgs.Add(new Org() {
                     DisplayName = user.UserName,
+                    Slug = user.Slug,
                     Members = new List<OrgMember>()
                         {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
                 });
+            }
+        }
+
+        [OnBeforeCreate]
+        public static void OnBeforeCreate(Org org, IServiceProvider services) {
+            if (org.Slug == null) {
+                org.Slug = services.GetRequiredService<ISlugifier>().Slugify(org.DisplayName);
             }
         }
 
