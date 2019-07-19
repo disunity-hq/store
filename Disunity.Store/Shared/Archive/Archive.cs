@@ -69,6 +69,11 @@ namespace Disunity.Store.Shared.Archive {
 
         public string GetReadme(string filename = "README.md") {
             var entry = GetEntry(filename);
+
+            if (entry == null) {
+                return null;
+            }
+
             var encoding = new UTF8Encoding(false, true);
 
             using (var reader = new StreamReader(entry.Open(), encoding, true)) {
