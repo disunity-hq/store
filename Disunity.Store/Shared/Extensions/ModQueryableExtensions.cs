@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using Disunity.Store.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Disunity.Store.Entities.Extensions {
+namespace Disunity.Store.Extensions {
 
     public static class ModQueryableExtensions {
 

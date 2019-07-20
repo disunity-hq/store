@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BindingAttributes;
 
 using Disunity.Store.Entities;
-using Disunity.Store.Entities.Extensions;
 using Disunity.Store.Artifacts;
 using Disunity.Store.Extensions;
 
@@ -14,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Data.Factories {
-
+    
     public class ModVersionFactory : IModVersionFactory {
 
         private readonly ApplicationDbContext _context;
