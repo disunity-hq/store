@@ -43,7 +43,7 @@ namespace Disunity.Store.Data.Factories {
                 Description = manifest.Description,
                 Readme = archive.Readme,
                 DisplayName = manifest.DisplayName,
-                FileUrl = "",
+                FileId = "",
                 IconUrl = "",
                 WebsiteUrl = manifest.URL,
                 VersionNumber = await _versionNumberFactory.FindOrCreateVersionNumber(manifest.Version)

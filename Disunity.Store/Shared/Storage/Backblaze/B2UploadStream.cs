@@ -124,7 +124,7 @@ namespace Disunity.Store.Storage.Backblaze {
             var bucketName = _client.Buckets.GetList().Result.Single(b => b.BucketId == _bucketId).BucketName;
 
             if (_finish != null) {
-                return B2StorageFile.Create(_client, _finish, bucketName);
+                return B2StorageFile.Create(_finish);
             }
 
             ;
@@ -142,7 +142,7 @@ namespace Disunity.Store.Storage.Backblaze {
                 }
             }
 
-            return B2StorageFile.Create(_client, _finish, bucketName);
+            return B2StorageFile.Create(_finish);
         }
 
     }

@@ -62,7 +62,7 @@ namespace Disunity.Store.Data.Seeds {
                         Description = "This is a mod!",
                         Readme = "# Markdown!",
                         DisplayName = $"test-org-mod-{i}",
-                        FileUrl = "",
+                        FileId = "",
                         IconUrl = "/assets/logo_512x512.png",
                         VersionNumber = attachedVersion,
                         WebsiteUrl = "",

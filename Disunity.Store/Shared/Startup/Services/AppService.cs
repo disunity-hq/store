@@ -2,6 +2,8 @@ using System;
 
 using BindingAttributes;
 
+using Disunity.Store.Middleware;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -40,10 +42,13 @@ namespace Disunity.Store.Startup.Services {
             _app.UseCookiePolicy();
             _app.UseAuthentication();
 
+            _app.UseMiddleware<DownloadRedirectMiddleware>();
+
             _app.UseMvc(routes => {
                 routes.MapAreaRoute("api", "API",
                                     "api/v{version:apiVersion}/[controller]/[action=Index]");
             });
+
         }
 
         public void DevelopmentStartup() {

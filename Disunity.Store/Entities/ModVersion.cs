@@ -36,8 +36,7 @@ namespace Disunity.Store.Entities {
 
         [MaxLength(1024)]
         [Required]
-        [DataType(DataType.Upload)]
-        public string FileUrl { get; set; }
+        public string FileId { get; set; }
 
         [MaxLength(1024)]
         [Required]

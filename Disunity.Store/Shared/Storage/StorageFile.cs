@@ -7,7 +7,7 @@ namespace Disunity.Store.Storage {
 
         public string FileName { get; set; }
 
-        public string DownloadUrl { get; set; }
+        public string FileId { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; }
 

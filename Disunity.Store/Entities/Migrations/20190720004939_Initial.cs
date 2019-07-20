@@ -342,7 +342,7 @@ namespace Disunity.Store.Entities.Migrations
                     WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     Description = table.Column<string>(maxLength: 256, nullable: false),
                     Readme = table.Column<string>(nullable: false),
-                    FileUrl = table.Column<string>(maxLength: 1024, nullable: false),
+                    FileId = table.Column<string>(maxLength: 1024, nullable: false),
                     IconUrl = table.Column<string>(maxLength: 1024, nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                 },

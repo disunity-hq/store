@@ -12,8 +12,11 @@ using BindingAttributes;
 using Disunity.Store.Artifacts;
 using Disunity.Store.Entities;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 
 namespace Disunity.Store.Storage.Backblaze {
@@ -64,7 +67,7 @@ namespace Disunity.Store.Storage.Backblaze {
 
             var file = await _client.Files.Upload(fileData, filename, "", fileInfo);
 
-            return B2StorageFile.Create(_client, file, _bucketName);
+            return B2StorageFile.Create(file);
         }
 
         public async Task<StorageFile> UploadFile(Stream stream, string filename,
@@ -97,6 +100,15 @@ namespace Disunity.Store.Storage.Backblaze {
                 await archive.CopyToAsync(uploadStream);
                 return uploadStream.FinalizeUpload();
             }
+        }
+
+        public Task<IActionResult> GetDownloadAction(string fileId) {
+            new FileStreamResult(null,"");
+            return Task.FromResult<IActionResult>(new RedirectResult(GetDownloadUrl(fileId)));
+        }
+
+        public string GetDownloadUrl(string fileId) {
+            return $"{_b2Options.DownloadUrl}/b2api/v2/b2_download_file_by_id?fileId={fileId}";
         }
 
     }

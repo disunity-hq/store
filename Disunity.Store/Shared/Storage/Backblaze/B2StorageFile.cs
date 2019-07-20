@@ -6,15 +6,13 @@ namespace Disunity.Store.Storage.Backblaze {
 
     public static class B2StorageFile {
 
-        public static StorageFile Create(B2Client b2Client, B2File file, string bucketName) {
+        public static StorageFile Create(B2File file) {
             if (file == null) {
                 return null;
             }
 
-            var downloadUrl = b2Client.Files.GetFriendlyDownloadUrl(file.FileName, bucketName);
-
             return new StorageFile() {
-                DownloadUrl = downloadUrl,
+                FileId = file.FileId,
                 FileName = file.FileName,
                 Metadata = file.FileInfo
             };

@@ -6,6 +6,8 @@ using Disunity.Store.Artifacts;
 using Disunity.Store.Entities;
 using Disunity.Store.Storage.Backblaze;
 
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace Disunity.Store.Storage {
 
@@ -14,10 +16,12 @@ namespace Disunity.Store.Storage {
         Task<StorageFile> UploadFile(byte[] fileData, string filename, Dictionary<string, string> fileInfo = null);
 
         Task<StorageFile> UploadFile(Stream stream, string filename, Dictionary<string, string> fileInfo = null);
-        
+
         UploadStream GetUploadStream(string filename, Dictionary<string, string> fileInfo = null);
 
         Task<StorageFile> UploadArchive(Archive archive, Org owner);
+
+        Task<IActionResult> GetDownloadAction(string fileId);
 
     }
 
