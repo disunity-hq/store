@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Data.Factories;
 using Disunity.Store.Entities;
+using Disunity.Store.Entities.Factories;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

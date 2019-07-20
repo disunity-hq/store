@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Data.Factories;
 using Disunity.Store.Data.Services;
 using Disunity.Store.Entities;
+using Disunity.Store.Entities.Factories;
 using Disunity.Store.Extensions;
 
 using Microsoft.AspNetCore.Hosting;

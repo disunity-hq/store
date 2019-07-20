@@ -88,19 +88,7 @@ namespace Disunity.Store.Storage.Backblaze {
             return stream;
         }
 
-        public async Task<StorageFile> UploadArchive(Archive archive, Org owner) {
-
-
-            var filename = $"{owner.Slug}-{archive.Manifest.ModID}.zip";
-
-            var fileInfo = new Dictionary<string, string>() {{"modVersion", archive.Manifest.Version}};
-            _logger.LogInformation($"Uploading {filename}");
-
-            using (var uploadStream = GetUploadStream(filename, fileInfo)) {
-                await archive.CopyToAsync(uploadStream);
-                return uploadStream.FinalizeUpload();
-            }
-        }
+        
 
         public Task<IActionResult> GetDownloadAction(string fileId) {
             new FileStreamResult(null,"");

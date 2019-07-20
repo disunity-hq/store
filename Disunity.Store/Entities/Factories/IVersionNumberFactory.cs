@@ -1,9 +1,7 @@
 using System.Threading.Tasks;
 
-using Disunity.Store.Entities;
 
-
-namespace Disunity.Store.Data.Factories {
+namespace Disunity.Store.Entities.Factories {
 
     public interface IVersionNumberFactory {
 

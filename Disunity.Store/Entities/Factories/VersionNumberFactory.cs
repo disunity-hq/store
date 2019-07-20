@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Entities;
+using Disunity.Store.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Store.Data.Factories {
+namespace Disunity.Store.Entities.Factories {
 
     [AsScoped(typeof(IVersionNumberFactory))]
     public class VersionNumberFactory : IVersionNumberFactory {
