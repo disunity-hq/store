@@ -37,6 +37,16 @@ namespace Disunity.Store.Storage.InMemory {
 
         }
 
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
+
+            if (!disposing) {
+                return;
+            }
+            
+            _buffer.Dispose();
+        }
+
     }
 
 }

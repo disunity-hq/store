@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 
 using Disunity.Store.Entities;
@@ -22,6 +23,9 @@ namespace Disunity.Store.Storage.Database {
         private readonly Stream _stream;
         private readonly IDbContextTransaction _transaction;
         private readonly uint _oid;
+        private readonly NpgsqlConnection _connection;
+
+        private StorageFile _storageFile;
 
         public DbUploadStream(DbContext context, string filename, Dictionary<string, string> fileInfo) {
             _context = context;
@@ -30,7 +34,8 @@ namespace Disunity.Store.Storage.Database {
 
             _transaction = _context.Database.BeginTransaction();
 
-            var objectManager = new NpgsqlLargeObjectManager(_context.Database.GetDbConnection() as NpgsqlConnection);
+            _connection = _context.Database.GetDbConnection() as NpgsqlConnection;
+            var objectManager = new NpgsqlLargeObjectManager(_connection);
             _oid = objectManager.Create();
             _stream = objectManager.OpenReadWrite(_oid);
         }
@@ -50,10 +55,15 @@ namespace Disunity.Store.Storage.Database {
         }
 
         public override StorageFile FinalizeUpload() {
+            if (_storageFile != null) {
+                return _storageFile;
+            }
+
+            _stream.Dispose();
             _transaction.Commit();
 
             var storedFile = new StoredFile {
-                Guid = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FileName = _filename,
                 ObjectId = _oid,
                 FileInfo = JsonConvert.SerializeObject(_fileInfo)
@@ -62,11 +72,13 @@ namespace Disunity.Store.Storage.Database {
             _context.Add(storedFile);
             _context.SaveChanges();
 
-            return new StorageFile() {
+            _storageFile = new StorageFile() {
                 Metadata = _fileInfo,
                 FileName = _filename,
-                FileId = storedFile.Guid.ToString()
+                FileId = storedFile.Id.ToString()
             };
+
+            return _storageFile;
         }
 
         protected override void Dispose(bool disposing) {
@@ -76,8 +88,14 @@ namespace Disunity.Store.Storage.Database {
                 return;
             }
 
-            _stream.Dispose();
+            if (_connection.State == ConnectionState.Closed) {
+                _connection.Open();
+            }
+
+            FinalizeUpload();
+
             _transaction.Dispose();
+            _connection.Close();
         }
 
     }

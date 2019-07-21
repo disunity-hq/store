@@ -20,18 +20,16 @@ namespace Disunity.Store.Middleware {
     public class DownloadRedirectMiddleware {
 
         private readonly RequestDelegate _next;
-        private readonly IStorageProvider _storage;
         private readonly ILogger<DownloadRedirectMiddleware> _logger;
 
-        public DownloadRedirectMiddleware(RequestDelegate next, IStorageProvider storage,
+        public DownloadRedirectMiddleware(RequestDelegate next,
                                           ILogger<DownloadRedirectMiddleware> logger) {
             _next = next;
-            _storage = storage;
             _logger = logger;
         }
 
 
-        public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext) {
+        public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext, IStorageProvider storage) {
             var regex = new Regex(
                 @"/mods/download/(?'owner'[a-z\d]+(?:-[a-z\d]+)*)/(?'mod'[a-z\d]+(?:-[a-z\d]+)*)/(?'version'\d+\.\d\.\d)\.zip");
 
@@ -53,15 +51,19 @@ namespace Disunity.Store.Middleware {
                     _logger.LogInformation(
                         $"Received download request for {modVersion.DisplayName}@{modVersion.VersionNumber}");
 
-                    var downloadAction = await _storage.GetDownloadAction(modVersion.FileId);
+                    var downloadAction = await storage.GetDownloadAction(modVersion.FileId);
 
                     switch (downloadAction) {
-                        case RedirectResult redirectResult:
-                            await context.ExecuteResultAsync(redirectResult);
+                        case RedirectResult actionResult:
+                            await context.ExecuteResultAsync(actionResult);
                             break;
 
-                        case FileResult fileResult:
-                            await context.ExecuteResultAsync(fileResult);
+                        case FileContentResult actionResult:
+                            await context.ExecuteResultAsync(actionResult);
+                            break;
+
+                        case FileStreamResult actionResult:
+                            await context.ExecuteResultAsync(actionResult);
                             break;
                     }
 

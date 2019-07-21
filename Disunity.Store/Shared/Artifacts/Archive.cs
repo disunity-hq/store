@@ -91,10 +91,12 @@ namespace Disunity.Store.Artifacts {
         }
 
         public void CopyTo(Stream stream) {
+            _stream.Seek(0, SeekOrigin.Begin);
             _stream.CopyTo(stream);
         }
 
         public Task CopyToAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken)) {
+            _stream.Seek(0, SeekOrigin.Begin);
             return _stream.CopyToAsync(stream, cancellationToken);
         }
 

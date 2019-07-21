@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -43,13 +44,17 @@ namespace Disunity.Store.Storage.Database {
         }
 
         public async Task<IActionResult> GetDownloadAction(string fileId) {
-            var file = await _context.StoredFiles.FirstOrDefaultAsync(f => f.Guid == Guid.Parse(fileId));
+            var file = await _context.StoredFiles.FirstOrDefaultAsync(f => f.Id == Guid.Parse(fileId));
 
-            var manager = new NpgsqlLargeObjectManager(_context.Database.GetDbConnection() as NpgsqlConnection);
+            var dbConnection = _context.Database.GetDbConnection() as NpgsqlConnection;
+            var manager = new NpgsqlLargeObjectManager(dbConnection);
+
+            dbConnection.Open();
+            var transaction = dbConnection.BeginTransaction();
 
             var readStream = manager.OpenRead(file.ObjectId);
 
-            return new FileStreamResult(readStream, "application/zip");
+            return new DbDownloadStreamResult(readStream, "application/zip", transaction);
         }
 
     }

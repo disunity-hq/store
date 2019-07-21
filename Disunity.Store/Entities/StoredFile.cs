@@ -5,7 +5,7 @@ namespace Disunity.Store.Entities {
 
     public class StoredFile {
 
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
 
         public uint ObjectId { get; set; }
 

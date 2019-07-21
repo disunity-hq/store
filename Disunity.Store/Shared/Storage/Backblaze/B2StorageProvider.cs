@@ -7,21 +7,13 @@ using System.Threading.Tasks;
 using B2Net;
 using B2Net.Models;
 
-using BindingAttributes;
-
-using Disunity.Store.Artifacts;
-using Disunity.Store.Entities;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
-
 
 namespace Disunity.Store.Storage.Backblaze {
 
-    [AsSingleton(typeof(IStorageProvider))]
     public class B2StorageProvider : IStorageProvider {
 
         private readonly ILogger<B2StorageProvider> _logger;
@@ -88,10 +80,8 @@ namespace Disunity.Store.Storage.Backblaze {
             return stream;
         }
 
-        
 
         public Task<IActionResult> GetDownloadAction(string fileId) {
-            new FileStreamResult(null,"");
             return Task.FromResult<IActionResult>(new RedirectResult(GetDownloadUrl(fileId)));
         }
 
