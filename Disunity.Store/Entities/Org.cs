@@ -30,16 +30,18 @@ namespace Disunity.Store.Entities {
         [OnBeforeCreate(typeof(UserIdentity), WatchDescendants = false)]
         public static void OnBeforeCreateUser(UserIdentity user, ApplicationDbContext context) {
 
-            var org = context.Orgs.FirstOrDefault(o => o.DisplayName == user.UserName);
+            var org = context.Orgs.FirstOrDefault(o => o.Slug == user.Slug);
 
-            if (org == null) {
-                context.Orgs.Add(new Org() {
-                    DisplayName = user.UserName,
-                    Slug = user.Slug,
-                    Members = new List<OrgMember>()
-                        {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
-                });
+            if (org != null) {
+                return;
             }
+
+            context.Orgs.Add(new Org() {
+                DisplayName = user.UserName,
+                Slug = user.Slug,
+                Members = new List<OrgMember>()
+                    {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
+            });
         }
 
         [OnBeforeCreate]
