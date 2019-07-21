@@ -20,11 +20,7 @@ namespace Disunity.Store.Pages.Mods {
         }
 
         [BindProperty] public IFormFile ArchiveUpload { get; set; }
-
-        public void OnGet() {
-            _logger.LogInformation("Upload page get");
-        }
-
+        
         public async Task<IActionResult> OnPostAsync() {
             if (!ModelState.IsValid) {
                 return Page();

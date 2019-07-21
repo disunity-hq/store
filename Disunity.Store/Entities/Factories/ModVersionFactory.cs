@@ -7,13 +7,15 @@ using BindingAttributes;
 
 using Disunity.Store.Artifacts;
 using Disunity.Store.Data;
+using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Entities.Factories {
-    
+
     public class ModVersionFactory : IModVersionFactory {
 
         private readonly ApplicationDbContext _context;
@@ -25,40 +27,57 @@ namespace Disunity.Store.Entities.Factories {
 
         }
 
-        [Factory]
-        public static Func<Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
+        [ScopedFactory]
+        public static Func<Archive, Org, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
             var context = services.GetRequiredService<ApplicationDbContext>();
             var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
 
             var factory = new ModVersionFactory(context, versionFactory);
 
-            return factory.FromArchiveAsync;
+            return (archive, org) => factory.FromArchiveAsync(archive, org);
         }
 
-        public async Task<ModVersion> FromArchiveAsync(Archive archive) {
+        public async Task<ModVersion> FromArchiveAsync(Archive archive, Org owner) {
             var manifest = archive.Manifest;
 
+            var mod = await _context.Mods.FirstOrDefaultAsync(m => m.Slug == manifest.ModID);
+
+            if (mod == null) {
+                mod = new Mod() {
+                    Owner = owner,
+                    Slug = manifest.ModID,
+                    DisplayName = manifest.DisplayName
+                };
+
+                _context.Attach(mod);
+            }
+
             var modVersion = new ModVersion() {
+                Mod = mod,
                 Description = manifest.Description,
                 Readme = archive.Readme,
                 DisplayName = manifest.DisplayName,
                 FileId = "",
                 IconUrl = "",
                 WebsiteUrl = manifest.URL,
-                VersionNumber = await _versionNumberFactory.FindOrCreateVersionNumber(manifest.Version)
+                VersionNumber = await _versionNumberFactory.FindOrCreateVersionNumber(manifest.Version),
             };
+            
+            var requiredDeps = manifest.Dependencies
+                                       .Select(DependencyDictToModDependency(
+                                                   modVersion, ModDependencyType.Dependency));
 
-            modVersion.ModDependencies = manifest.Dependencies
-                                                 .Select(DependencyDictToModDependency(
-                                                             modVersion, ModDependencyType.Dependency))
-                                                 .Concat(manifest.OptionalDependencies.Select(
-                                                             DependencyDictToModDependency(
-                                                                 modVersion,
-                                                                 ModDependencyType.OptionalDependency)))
-                                                 .Concat(manifest.Incompatibilities.Select(
-                                                             DependencyDictToModDependency(
-                                                                 modVersion, ModDependencyType.Incompatible)))
-                                                 .ToList();
+            var optionalDeps = manifest.OptionalDependencies.Select(
+                DependencyDictToModDependency(
+                    modVersion, ModDependencyType.OptionalDependency));
+
+            var incompatible = manifest.Incompatibilities.Select(
+                DependencyDictToModDependency(
+                    modVersion, ModDependencyType.Incompatible));
+
+            modVersion.ModDependencies = requiredDeps.Concat(optionalDeps).Concat(incompatible).ToList();
+
+            _context.Attach(modVersion);
 
             return modVersion;
         }

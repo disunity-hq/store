@@ -52,7 +52,9 @@ namespace Disunity.Store.Storage.InMemory {
             if (file == null) {
                 result = new NotFoundResult();
             } else {
-                result = new FileContentResult(file.Data, "application/zip");
+                result = new FileContentResult(file.Data, "application/zip") {
+                    FileDownloadName = file.Name
+                };
             }
 
             return Task.FromResult(result);

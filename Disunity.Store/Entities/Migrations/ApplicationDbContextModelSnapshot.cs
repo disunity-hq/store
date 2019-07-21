@@ -290,6 +290,22 @@ namespace Disunity.Store.Entities.Migrations
                     b.ToTable("OrgMembers");
                 });
 
+            modelBuilder.Entity("Disunity.Store.Entities.StoredFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileInfo");
+
+                    b.Property<string>("FileName");
+
+                    b.Property<long>("ObjectId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoredFiles");
+                });
+
             modelBuilder.Entity("Disunity.Store.Entities.Target", b =>
                 {
                     b.Property<int>("ID")

@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Exceptions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +18,14 @@ namespace Disunity.Store.Extensions {
             var orgSlug = segments[0];
             var modSlug = segments[1];
 
-            return mods
-                   .Where(m => m.Slug == modSlug)
-                   .SingleAsync(m => m.Owner.Slug == orgSlug);
+
+            var mod = mods
+                      .Where(m => m.Slug == modSlug)
+                      .SingleOrDefaultAsync(m => m.Owner.Slug == orgSlug);
+
+            if (mod != null) return mod;
+            
+            throw new ModNotFoundException($"Could not find mod matching dependency string {depString}");
         }
 
     }

@@ -56,6 +56,8 @@ namespace Disunity.Store.Artifacts {
         }
 
         public Manifest GetManifest(string filename = "manifest.json") {
+
+
             var entry = GetEntry(filename);
 
             if (entry == null) {
@@ -69,11 +71,15 @@ namespace Disunity.Store.Artifacts {
             }
         }
 
-        public string GetReadme(string filename = "README.md") {
+        public string GetReadme(string filename = null) {
+            if (filename == null) {
+                filename = Manifest.Readme ?? "Readme.md";
+            }
+
             var entry = GetEntry(filename);
 
             if (entry == null) {
-                return null;
+                return "";
             }
 
             var encoding = new UTF8Encoding(false, true);

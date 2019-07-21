@@ -54,7 +54,8 @@ namespace Disunity.Store.Storage.Database {
 
             var readStream = manager.OpenRead(file.ObjectId);
 
-            return new DbDownloadStreamResult(readStream, "application/zip", transaction);
+            return new DbDownloadStreamResult(readStream, "application/zip", transaction)
+                {FileDownloadName = file.FileName};
         }
 
     }

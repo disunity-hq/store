@@ -68,6 +68,20 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StoredFiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ObjectId = table.Column<long>(nullable: false),
+                    FileName = table.Column<string>(nullable: true),
+                    FileInfo = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoredFiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VersionNumbers",
                 columns: table => new
                 {
@@ -826,6 +840,9 @@ namespace Disunity.Store.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrgMembers");
+
+            migrationBuilder.DropTable(
+                name: "StoredFiles");
 
             migrationBuilder.DropTable(
                 name: "TargetVersionCompatibilities");

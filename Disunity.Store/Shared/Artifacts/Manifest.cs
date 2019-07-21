@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 using BindingAttributes;
@@ -104,6 +105,15 @@ namespace Disunity.Store.Artifacts {
     public partial class Manifest {
 
         public ILogger<Manifest> logger;
+
+        public Manifest() {
+            Tags = new List<string>();
+            UnityVersions = new VersionRange();
+            Targets = new Dictionary<string, VersionRange>();
+            Dependencies = new Dictionary<string, VersionRange>();
+            OptionalDependencies = new Dictionary<string, VersionRange>();
+            Incompatibilities = new Dictionary<string, VersionRange>();
+        }
 
         public static void ValidateJson(ILogger<Manifest> logger, string json) {
             var schema = Schema.LoadSchema();

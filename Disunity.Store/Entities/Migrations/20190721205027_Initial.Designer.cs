@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190720004939_Initial")]
+    [Migration("20190721205027_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -290,6 +290,22 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasIndex("OrgId");
 
                     b.ToTable("OrgMembers");
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.StoredFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileInfo");
+
+                    b.Property<string>("FileName");
+
+                    b.Property<long>("ObjectId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoredFiles");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.Target", b =>

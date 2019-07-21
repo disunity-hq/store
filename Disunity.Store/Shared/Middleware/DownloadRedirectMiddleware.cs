@@ -31,7 +31,7 @@ namespace Disunity.Store.Middleware {
 
         public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext, IStorageProvider storage) {
             var regex = new Regex(
-                @"/mods/download/(?'owner'[a-z\d]+(?:-[a-z\d]+)*)/(?'mod'[a-z\d]+(?:-[a-z\d]+)*)/(?'version'\d+\.\d\.\d)\.zip");
+                @"/u/(?'owner'[a-z\d\.]+(?:-[a-z\d\.]+)*)/(?'mod'[a-z\d]+(?:-[a-z\d]+)*)/(?'version'\d+\.\d\.\d)/download");
 
             var match = regex.Match(context.Request.Path);
 
