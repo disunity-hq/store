@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using BindingAttributes;
@@ -9,10 +10,13 @@ using Disunity.Store.Entities.Factories;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 
 using TopoSort;
+
+using Tracery;
+
+using EnumerableExtensions = Microsoft.EntityFrameworkCore.Internal.EnumerableExtensions;
 
 
 namespace Disunity.Store.Data.Seeds {
@@ -35,52 +39,42 @@ namespace Disunity.Store.Data.Seeds {
         }
 
         public bool ShouldSeed() {
-            return _env.IsDevelopment() && !_context.Mods.Any();
+            return _env.IsDevelopment() && !EnumerableExtensions.Any(_context.Mods);
         }
 
         public async Task Seed() {
+            var random = new Random();
+            var orgs = _context.Orgs.ToList();
             var targets = await _context.Targets.ToListAsync();
 
-            var random = new Random();
 
-            foreach (var target in targets) {
-                Org testOrg = new Org();
+            for (var i = 0; i < 45; i++) {
+                var org = orgs.PickRandom();
+                var target = targets.PickRandom();
+                var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
+                var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
 
-                for (var i = 0; i < random.Next(6, 12); i++) {
-                    if (i % 3 == 0) {
-                        testOrg = new Org() {
-                            Slug = $"test_org_{target.Slug} {i / 3}",
-                            DisplayName = $"Test Org {target.DisplayName} {i / 3}"
-                        };
-                    }
+                var modVersion = new ModVersion() {
+                    Description = "This is a mod!",
+                    Readme = "# Markdown!",
+                    DisplayName = $"test-org-mod-{i}",
+                    FileId = "",
+                    IconUrl = "/assets/logo_512x512.png",
+                    VersionNumber = attachedVersion,
+                    WebsiteUrl = "",
+                    TargetCompatibilities = new List<ModTargetCompatibility>()
+                        {new ModTargetCompatibility() {Target = target}}
+                };
 
-                    var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
+                var mod = new Mod() {
+                    Owner = org,
+                    Slug = $"test_org-mod-{i}",
+                    Versions = new List<ModVersion>() {modVersion},
+                    DisplayName = $"test_org-mod-{i}"
+                };
 
-                    var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
-
-                    var modVersion = new ModVersion() {
-                        Description = "This is a mod!",
-                        Readme = "# Markdown!",
-                        DisplayName = $"test-org-mod-{i}",
-                        FileId = "",
-                        IconUrl = "/assets/logo_512x512.png",
-                        VersionNumber = attachedVersion,
-                        WebsiteUrl = "",
-                        TargetCompatibilities = new List<ModTargetCompatibility>()
-                            {new ModTargetCompatibility() {Target = target}}
-                    };
-
-                    var mod = new Mod() {
-                        Owner = testOrg,
-                        Slug = $"test_org-mod-{i}",
-                        Versions = new List<ModVersion>() {modVersion},
-                        DisplayName = $"test_org-mod-{i}"
-                    };
-
-                    _context.Mods.Add(mod);
-                }
+                _context.Mods.Add(mod);
             }
-
 
             await _context.SaveChangesAsync();
 

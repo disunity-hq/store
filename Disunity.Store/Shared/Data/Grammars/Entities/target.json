@@ -1,9 +1,7 @@
 {
   "@import": ["../all.json"],
-  "name": ["#male_name#", "#female_name#"],
   "version": ["2", "II", "3", "III", "Redux"],
   "year": ["20#double_digit#"],
-  "adj": ["#adjective"],
   "item_base": [
     "#noun#",
     "#noun#",

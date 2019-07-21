@@ -9,6 +9,10 @@
     "male-names.json",
     "female-names.json",
     "quantifiers.json",
+    "tlds.json",
     "verbs.json"
-  ]
+  ],
+
+  "name": ["#male_name#", "#female_name#"]
+  
 }
