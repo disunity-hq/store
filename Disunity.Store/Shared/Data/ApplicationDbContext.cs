@@ -45,7 +45,7 @@ namespace Disunity.Store.Data {
         public DbSet<ModDisunityCompatibility> ModDisunityCompatibilities { get; set; }
 
         public DbSet<UnityVersion> UnityVersions { get; set; }
-        
+
         public DbSet<Target> Targets { get; set; }
         public DbSet<TargetVersion> TargetVersions { get; set; }
         public DbSet<TargetVersionCompatibility> TargetVersionCompatibilities { get; set; }
@@ -54,6 +54,8 @@ namespace Disunity.Store.Data {
         public DbSet<DisunityVersionCompatibility> DisunityVersionCompatibilities { get; set; }
 
         public DbSet<VersionNumber> VersionNumbers { get; set; }
+
+        public DbSet<StoredFile> StoredFiles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder) {
