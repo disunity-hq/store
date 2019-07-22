@@ -15,6 +15,7 @@
     - [Building the Frontend](#Building-the-Frontend)
     - [Starting the server](#Starting-the-server)
     - [Running in Watch mode](#Running-in-Watch-mode)
+    - [Local Settings](#local-settings)
 
 The main project readme describes the recommended approach for development that
 utilizes docker to ensure a consistent environment across machines. Using docker
@@ -74,14 +75,23 @@ pgAdmin is a highly usefully graphical interface for querying/editing a postgres
 
 ### Installing Code Dependencies
 
-Once both of those tools are installed the real fun can begin. We need to use both of the cli tools we installed to download and install the dependencies for the .NET server as well as the Frontend. Run the following commands to install all needed dependencies:
+Once both of those tools are installed the real fun can begin. We need to use both of the cli tools we installed to download and install the dependencies for the .NET server as well as the Frontend. Run the following commands to install all needed dependencies for dotnet:
 
 ```sh
-cd Disunity.Store
-dotnet restore # Downloads and installs dotnet deps
-cd ../Frontend
+.paket/paket install # Downloads and installs dotnet deps
+```
+
+Then run the following to install the dependencies for the Frontend build process
+
+```sh
+cd Frontend
 npm i # install frontend dependencies
 ```
+
+#### A Note on Paket <!-- omit in toc -->
+
+Paket is a tool for managing dotnet dependencies both from nuget and directly from git repositories.
+We utilize paket to keep our sister projects up-to-date with each other without the need to constant pushes to nuget.
 
 ## Building and Running the project
 
@@ -114,6 +124,13 @@ Both the Frontend build and dotnet have a "watch" mode where they will automatic
 To build the Frontend in watch mode, run `npm run build:Watch`.
 
 To start the server in watch mode, run `dotnet watch run`
+
+### Local settings
+The local appsettings can be used for an settings that you want to apply locally that you don't wish to be committed.
+This can include modifications meant purely for testing, or secret values.
+
+To create an `appsetings.Local.json` simply make a copy of `appsettings.Local.template.json` and modify as you see fit.
+You may add or remove values, but if you remove and/or don't specify the secrets, then features that rely on them will be disabled 
 
 ---
 
