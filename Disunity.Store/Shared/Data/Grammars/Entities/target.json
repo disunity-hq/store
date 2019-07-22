@@ -12,7 +12,7 @@
   ],
   "item": [
     "#item_base#",
-    "#adj# #item_base#"
+    "#adjective# #item_base#"
   ],
   "possessive": [
     "#name#'s #item#",
