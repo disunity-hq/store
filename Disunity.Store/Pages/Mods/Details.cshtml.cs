@@ -56,11 +56,9 @@ namespace Disunity.Store.Pages.Mods {
 
             var ownerNode = new RazorPageBreadcrumbNode("/Users/Details", ModVersion.Mod.Owner.DisplayName) {
                 OverwriteTitleOnExactMatch = true,
-                RouteValues = new Dictionary<string, string>() {
-                    {"userSlug", ModVersion.Mod.Owner.Slug}
-                }
+                RouteValues = new {userSlug = ModVersion.Mod.Owner.Slug}
             };
-            
+
             var modNode = new RazorPageBreadcrumbNode("/Mods/Details", ModVersion.DisplayName) {
                 OverwriteTitleOnExactMatch = true,
                 Parent = ownerNode
