@@ -60,6 +60,7 @@ namespace Disunity.Store.Data.Seeds {
             var random = new Random();
             var orgs = _context.Orgs.ToList();
             var targets = await _context.Targets.ToListAsync();
+            var names = new HashSet<string>();
 
 
             for (var i = 0; i < 45; i++) {
@@ -67,7 +68,15 @@ namespace Disunity.Store.Data.Seeds {
                 var target = targets.PickRandom();
                 var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
                 var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
+
                 var displayName = _unparser.Generate("#display_name.title");
+
+                while (names.Contains(displayName)) {
+                    displayName = _unparser.Generate("#display_name.title");
+                }
+
+                names.Add(displayName);
+                
                 var slug = _slugifier.Slugify(displayName);
                 var description = _unparser.Generate("#description.capitalize#");
                 var iconUrl = _iconRandomizer.GetIconUrl();
