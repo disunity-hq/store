@@ -1,0 +1,9 @@
+@model IEnumerable<Disunity.Store.Entities.ModVersion>
+
+@if (Model != null && Model.Any()) {
+    <ul>
+        @foreach (var version in Model) {
+            <li>@version.DisplayName - @version.VersionNumber</li>
+        }
+    </ul>
+}

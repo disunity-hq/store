@@ -52,6 +52,11 @@ namespace Disunity.Store.Extensions {
             return query;
         }
 
+        public static IQueryable<T> FindExactVersion<T>(this IQueryable<T> query, string versionNumber)
+            where T : class, IVersionModel {
+            return FindExactVersion(query, new VersionNumber(versionNumber));
+        }
+
         public static IQueryable<T> FindExactVersion<T>(this IQueryable<T> query, VersionNumber versionNumber)
             where T : class, IVersionModel {
             return query.Include(v => v.VersionNumber)

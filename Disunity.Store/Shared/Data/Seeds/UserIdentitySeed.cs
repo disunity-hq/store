@@ -52,7 +52,7 @@ namespace Disunity.Store.Data.Seeds {
 
 
         public bool ShouldSeed() {
-            var users = _userManager.GetUsersInRoleAsync("users").Result;
+            var users = _userManager.GetUsersInRoleAsync(UserRoles.User.ToString()).Result;
             return _env.IsDevelopment() && users.Count() <= 1;
         }
 

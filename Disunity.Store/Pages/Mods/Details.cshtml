@@ -1,0 +1,64 @@
+@page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
+@model Disunity.Store.Pages.Mods.Details
+@addTagHelper *, Syncfusion.EJ2
+
+<h1>
+    @Model.ModVersion.DisplayName <small>by @Model.ModVersion.Mod.Owner.DisplayName</small>
+</h1>
+
+<div id="detailsBlock">
+    <table class="table table-headless">
+        <tbody>
+        <tr>
+            <td>Latest Updated</td>
+            <td>@Html.DisplayFor(m => m.ModVersion.CreatedAt)</td>
+        </tr>
+        <tr>
+            <td>Total Downloads</td>
+            <td>@Model.ModVersion.Downloads</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="display: none">
+    <div id="readmeBlock">
+        <h5>I'm a readme</h5>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dependenciesBlock">
+        @if (Model.ModVersion.ModDependencies.Any()) {
+            if (Model.ModVersion.Dependencies.Any()) {
+                <h5>Required Dependencies</h5>
+                <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
+            }
+            if (Model.ModVersion.OptionalDependencies.Any()) {
+                <h5>Optional Dependencies</h5>
+                <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
+            }
+            if (Model.ModVersion.Dependencies.Any()) {
+                <h5>Incompatibilites</h5>
+                <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
+            }
+        } else {
+            <p>None!</p>
+        }
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="versionsBlock">
+        <partial name="_ModVersionListPartial" for="ModVersion.Mod.Versions"/>
+    </div>
+</div>
+
+<ejs-accordion id="ParentNested" expandMode="Multiple">
+    <e-accordion-accordionitems>
+        @* <e-accordion-accordionitem header="Details" expanded="false" content="#detailsBlock"></e-accordion-accordionitem> *@
+        <e-accordion-accordionitem header="Readme" expanded="true" content="#readmeBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Dependencies" expanded="false" content="#dependenciesBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Versions" expanded="false" content="#versionsBlock"></e-accordion-accordionitem>
+    </e-accordion-accordionitems>
+</ejs-accordion>

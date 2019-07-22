@@ -14,19 +14,18 @@ using Microsoft.EntityFrameworkCore;
 
 using SmartBreadcrumbs.Attributes;
 using SmartBreadcrumbs.Nodes;
+
 using Syncfusion.EJ2.Linq;
 
 
-namespace Disunity.Store.Pages.Mods
-{
+namespace Disunity.Store.Pages.Mods {
+
     [Breadcrumb]
-    public class Index : PageModel, IOrderableModel
-    {
+    public class Index : PageModel, IOrderableModel {
 
         private readonly ApplicationDbContext _context;
 
-        public Index(ApplicationDbContext context)
-        {
+        public Index(ApplicationDbContext context) {
             _context = context;
 
         }
@@ -42,72 +41,65 @@ namespace Disunity.Store.Pages.Mods
 
         public IEnumerable<string> OrderByChoices => OrderOptions.Keys;
 
-        public Dictionary<string, Expression<Func<Mod, IComparable>>> OrderOptions { get; set; } = new Dictionary<string, Expression<Func<Mod, IComparable>>>() {
-            { "Latest", m => m.Latest.CreatedAt },
-            { "Downloads", m => m.Versions.Sum(v => v.Downloads)},
-            { "Name",  m => m.DisplayName},
-        };
+        public Dictionary<string, Expression<Func<Mod, IComparable>>> OrderOptions { get; set; } =
+            new Dictionary<string, Expression<Func<Mod, IComparable>>>() {
+                {"Latest", m => m.Latest.CreatedAt},
+                {"Downloads", m => m.Versions.Sum(v => v.Downloads)},
+                {"Name", m => m.DisplayName},
+            };
 
-        public async Task OnGetAsync()
-        {
-            if (string.IsNullOrWhiteSpace(Target))
-            {
+        public async Task OnGetAsync() {
+            if (string.IsNullOrWhiteSpace(Target)) {
                 ViewData["BreadcrumbNode"] = new RazorPageBreadcrumbNode("/Mods", "Mods");
-            }
-            else
-            {
+            } else {
                 var targetDisplayName = await _context.Targets
-                    .Where(t => t.Slug == Target)
-                    .Include(t => t.Latest)
-                    .Select(t => t.Latest.DisplayName)
-                    .SingleAsync();
+                                                      .Where(t => t.Slug == Target)
+                                                      .Include(t => t.Latest)
+                                                      .Select(t => t.Latest.DisplayName)
+                                                      .SingleAsync();
 
-                var targetsNode = new RazorPageBreadcrumbNode("/Targets/Index", "Targets") { OverwriteTitleOnExactMatch = true };
-                var targetNode = new RazorPageBreadcrumbNode($"/Targets/Details", targetDisplayName)
-                {
+                var targetsNode = new RazorPageBreadcrumbNode("/Targets/Index", "Targets")
+                    {OverwriteTitleOnExactMatch = true};
+
+                var targetNode = new RazorPageBreadcrumbNode($"/Targets/Details", targetDisplayName) {
                     OverwriteTitleOnExactMatch = true,
                     Parent = targetsNode,
-                    RouteValues = new { targetSlug = Target }
+                    RouteValues = new {targetSlug = Target}
                 };
-                var modsNode = new RazorPageBreadcrumbNode("/Mods", "Mods")
-                {
+
+                var modsNode = new RazorPageBreadcrumbNode("/Mods", "Mods") {
                     OverwriteTitleOnExactMatch = true,
                     Parent = targetNode
                 };
+
                 ViewData["BreadcrumbNode"] = modsNode;
             }
 
             Mods = await GetFilteredMods();
         }
 
-        private async Task<List<Mod>> GetFilteredMods()
-        {
+        private async Task<List<Mod>> GetFilteredMods() {
             IQueryable<Mod> mods = _context.Mods
-                    .Include(m => m.Latest)
-                    .ThenInclude(v => v.VersionNumber);
+                                           .Include(m => m.Owner)
+                                           .Include(m => m.Latest)
+                                           .ThenInclude(v => v.VersionNumber);
 
-            if (!string.IsNullOrWhiteSpace(Title))
-            {
+            if (!string.IsNullOrWhiteSpace(Title)) {
                 mods = mods.Where(m => EF.Functions.ILike(m.Latest.DisplayName, $"%{Title}%"));
             }
 
-            if (!string.IsNullOrWhiteSpace(Target))
-            {
+            if (!string.IsNullOrWhiteSpace(Target)) {
                 mods = mods.Where(m => m.Versions.Any(v => v.TargetCompatibilities.Any(c => c.Target.Slug == Target)));
             }
 
-            if (!string.IsNullOrWhiteSpace(OrderBy))
-            {
+            if (!string.IsNullOrWhiteSpace(OrderBy)) {
 
                 var ordering = OrderOptions.GetValueOrDefault(OrderBy);
-                if (ordering != null)
-                {
-                    if (Order != null && Order == Ordering.Desc)
-                    {
+
+                if (ordering != null) {
+                    if (Order != null && Order == Ordering.Desc) {
                         mods = mods.OrderByDescending(ordering);
-                    }
-                    else
-                    {
+                    } else {
                         mods = mods.OrderBy(ordering);
                     }
 

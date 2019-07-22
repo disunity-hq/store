@@ -13,3 +13,9 @@
 .alert-info {
   border-color: lighten($info, 20%);
 }
+
+.table.table-headless {
+  tr:first-child > td {
+    border-top-width: 0px;
+  }
+}

@@ -2,22 +2,33 @@
 
 @addTagHelper *, Syncfusion.EJ2
 
+@{
+    var routeParams = new Dictionary<string, string>() {
+        {"ownerSlug", Model.Owner.Slug},
+        {"modSlug", Model.Slug},
+        {"versionNumber", Model.Latest.VersionNumber}
+    };
+}
+
 <div class="col-xs-12 my-3">
-    <div class="e-card e-card-horizontal e-card-stacked target-list-row">
-        <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
-        <div class="e-card-stacked justify-content-start">
-            <div class="e-card-header">
-                <div class="e-card-header-caption">
-                    <div class="e-card-header-title target-list-row-title">
-                        @Model?.DisplayName
-                        <ejs-chiplist id="target-version-@Model?.Id" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
-                        @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+    <a class="nav-link p-0" asp-page="/Mods/Details" asp-all-route-data="@routeParams">
+
+        <div class="e-card e-card-horizontal e-card-stacked target-list-row">
+            <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
+            <div class="e-card-stacked justify-content-start">
+                <div class="e-card-header">
+                    <div class="e-card-header-caption">
+                        <div class="e-card-header-title target-list-row-title">
+                            @Model?.DisplayName
+                            <ejs-chiplist id="target-version-@Model?.Id" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
+                            @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="e-card-content">
-                @Model?.Latest.Description
+                <div class="e-card-content">
+                    @Model?.Latest.Description
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
