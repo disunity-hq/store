@@ -36,43 +36,81 @@ namespace Disunity.Store.Middleware {
             var match = regex.Match(context.Request.Path);
 
             if (match.Success) {
-                var ownerSlug = match.Groups["owner"].Value;
-                var modSlug = match.Groups["mod"].Value;
-                var versionString = match.Groups["version"].Value;
-
-                _logger.LogInformation($"Download request for {ownerSlug}/{modSlug}@{versionString}");
-
-                var modVersion = await dbContext.ModVersions
-                                                .Where(v => v.Mod.Slug == modSlug && v.Mod.Owner.Slug == ownerSlug)
-                                                .FindExactVersion(new VersionNumber(versionString))
-                                                .FirstOrDefaultAsync();
+                var modVersion = await FindModVersion(dbContext, match);
 
                 if (modVersion != null) {
-                    _logger.LogInformation(
-                        $"Received download request for {modVersion.DisplayName}@{modVersion.VersionNumber}");
-
-                    var downloadAction = await storage.GetDownloadAction(modVersion.FileId);
-
-                    switch (downloadAction) {
-                        case RedirectResult actionResult:
-                            await context.ExecuteResultAsync(actionResult);
-                            break;
-
-                        case FileContentResult actionResult:
-                            await context.ExecuteResultAsync(actionResult);
-                            break;
-
-                        case FileStreamResult actionResult:
-                            await context.ExecuteResultAsync(actionResult);
-                            break;
-                    }
-
+                    await ExecuteDownload(context, storage, modVersion, dbContext);
                     return;
                 }
 
             }
 
             await _next(context);
+        }
+
+        private async Task ExecuteDownload(HttpContext context, IStorageProvider storage, ModVersion modVersion,
+                                           ApplicationDbContext dbContext) {
+            _logger.LogInformation(
+                $"Executing download request for {modVersion.DisplayName}@{modVersion.VersionNumber}");
+
+            await CountDownload(context, modVersion, dbContext);
+
+            var downloadAction = await storage.GetDownloadAction(modVersion.FileId);
+
+            switch (downloadAction) {
+                case RedirectResult actionResult:
+                    _logger.LogDebug($"Redirecting to {actionResult.Url}");
+                    await context.ExecuteResultAsync(actionResult);
+                    break;
+
+                case FileContentResult actionResult:
+                    await context.ExecuteResultAsync(actionResult);
+                    break;
+
+                case FileStreamResult actionResult:
+                    await context.ExecuteResultAsync(actionResult);
+                    break;
+            }
+
+        }
+
+        private static async Task CountDownload(HttpContext context, ModVersion modVersion,
+                                                ApplicationDbContext dbContext) {
+            var sourceIp = context.Connection.RemoteIpAddress.ToString();
+
+            var downloadEvent =
+                await dbContext.ModVersionDownloadEvents.FirstOrDefaultAsync(e => e.SourceIp == sourceIp);
+
+            if (downloadEvent == null) {
+                downloadEvent = new ModVersionDownloadEvent() {
+                    ModVersion = modVersion,
+                    SourceIp = sourceIp
+                };
+
+                dbContext.Add(downloadEvent);
+            }
+
+
+            if (downloadEvent.TryCountDownload()) {
+                modVersion.Downloads++;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        private async Task<ModVersion> FindModVersion(ApplicationDbContext dbContext, Match match) {
+            var ownerSlug = match.Groups["owner"].Value;
+            var modSlug = match.Groups["mod"].Value;
+            var versionString = match.Groups["version"].Value;
+
+            _logger.LogInformation($"Download request for {ownerSlug}/{modSlug}@{versionString}");
+
+            var modVersion = await dbContext.ModVersions
+                                            .Where(v => v.Mod.Slug == modSlug && v.Mod.Owner.Slug == ownerSlug)
+                                            .FindExactVersion(new VersionNumber(versionString))
+                                            .FirstOrDefaultAsync();
+
+            return modVersion;
         }
 
     }

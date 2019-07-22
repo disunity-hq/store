@@ -26,11 +26,13 @@ namespace Disunity.Store.Storage.Database {
 
         public override async Task ExecuteResultAsync(ActionContext context) {
             await base.ExecuteResultAsync(context);
-
+            
             _transaction.Commit();
             _transaction.Connection.Close();
+            _transaction.Dispose();
+            FileStream.Dispose();
         }
-        
+
     }
 
 }
