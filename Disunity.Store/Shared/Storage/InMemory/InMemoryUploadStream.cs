@@ -33,6 +33,7 @@ namespace Disunity.Store.Storage.InMemory {
         }
 
         public override StorageFile FinalizeUpload() {
+            _buffer.Seek(0, SeekOrigin.Begin);
             return _storedFile ?? (_storedFile = _storageProvider.UploadFile(_buffer, _filename, _fileInfo).Result);
 
         }
@@ -43,6 +44,8 @@ namespace Disunity.Store.Storage.InMemory {
             if (!disposing) {
                 return;
             }
+
+            FinalizeUpload();
             
             _buffer.Dispose();
         }

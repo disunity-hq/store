@@ -35,7 +35,7 @@ namespace Disunity.Store.Storage.InMemory {
                                                   Dictionary<string, string> fileInfo = null) {
             using (var memoryStream = new MemoryStream()) {
                 await stream.CopyToAsync(memoryStream);
-                return await UploadFile(memoryStream.GetBuffer(), filename, fileInfo);
+                return await UploadFile(memoryStream.ToArray(), filename, fileInfo);
             }
         }
 

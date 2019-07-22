@@ -28,13 +28,13 @@ namespace Disunity.Store.Entities.Factories {
         }
 
         [ScopedFactory]
-        public static Func<Archive, Org, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
+        public static Func<Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
             var context = services.GetRequiredService<ApplicationDbContext>();
             var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
 
             var factory = new ModVersionFactory(context, versionFactory);
 
-            return (archive, org) => factory.FromArchiveAsync(archive);
+            return (archive) => factory.FromArchiveAsync(archive);
         }
 
         public async Task<ModVersion> FromArchiveAsync(Archive archive) {
