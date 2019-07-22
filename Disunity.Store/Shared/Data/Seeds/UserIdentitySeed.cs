@@ -88,7 +88,7 @@ namespace Disunity.Store.Data.Seeds {
                     Role = OrgMemberRole.Owner
                 };
 
-                _logger.LogWarning($"Created user: `{displayName}` => {slug}");
+                _logger.LogInformation($"Created user: `{displayName}` => {slug}");
             }
             
             await _context.SaveChangesAsync();
