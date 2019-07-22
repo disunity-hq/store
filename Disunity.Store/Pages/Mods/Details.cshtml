@@ -1,4 +1,5 @@
 @page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
+@using Disunity.Store.Entities
 @model Disunity.Store.Pages.Mods.Details
 @addTagHelper *, Syncfusion.EJ2
 
@@ -36,15 +37,15 @@
     <div id="dependentsBlock">
         @if (Model.ModVersion.Dependencies.Any()) {
             <h5>Mods that require this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
+            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.Dependency).Select(d => d.Dependant)"/>
         }
         @if (Model.ModVersion.OptionalDependencies.Any()) {
             <h5>Mods optionally compatible with this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
+            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.OptionalDependency).Select(d => d.Dependant)"/>
         }
         @if (Model.ModVersion.Dependencies.Any()) {
             <h5>Mods incompatible with this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
+            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.Incompatible).Select(d => d.Dependant)"/>
         }
         @if (!Model.ModVersion.Dependencies.Any()) {
             <p>No mods depend on this mod</p>
@@ -83,6 +84,7 @@
         @* <e-accordion-accordionitem header="Details" expanded="false" content="#detailsBlock"></e-accordion-accordionitem> *@
         <e-accordion-accordionitem header="Readme" expanded="true" content="#readmeBlock"></e-accordion-accordionitem>
         <e-accordion-accordionitem header="Dependencies" expanded="false" content="#dependenciesBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Dependents" expanded="false" content="#dependentsBlock"></e-accordion-accordionitem>
         <e-accordion-accordionitem header="Versions" expanded="false" content="#versionsBlock"></e-accordion-accordionitem>
     </e-accordion-accordionitems>
 </ejs-accordion>

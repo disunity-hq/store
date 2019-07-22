@@ -29,6 +29,8 @@ namespace Disunity.Store.Pages.Mods {
 
         public ModVersion ModVersion { get; set; }
 
+        public List<ModDependency> Dependants { get; set; }
+
         public Details(ILogger<Details> logger, ApplicationDbContext context) {
             _logger = logger;
             _context = context;
@@ -53,6 +55,8 @@ namespace Disunity.Store.Pages.Mods {
                 _logger.LogInformation($"No modversion found for {OwnerSlug}/{ModSlug}@{VersionNumber}");
                 return NotFound();
             }
+
+            Dependants = await _context.ModDependencies.Where(d => d.DependantId == ModVersion.Id).ToListAsync();
 
             var ownerNode = new RazorPageBreadcrumbNode("/Users/Details", ModVersion.Mod.Owner.DisplayName) {
                 OverwriteTitleOnExactMatch = true,
