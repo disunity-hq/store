@@ -42,3 +42,4 @@ git https://github.com/dustinlacewell/Tracery.git master build: "build.sh", OS: 
 git https://github.com/dustinlacewell/Tracery.git master build: "build.bat", OS: windows, Packages: /Tracery/nupkg
 nuget Tracery
 nuget B2Net
+nuget Westwind.AspNetCore.Markdown 3.2.5
