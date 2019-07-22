@@ -6,7 +6,7 @@
     @Model.ModVersion.DisplayName <small>by @Model.ModVersion.Mod.Owner.DisplayName</small>
 </h1>
 
-<div id="detailsBlock">
+<div id="detailsBlock" class="pb-2">
     <table class="table table-headless">
         <tbody>
         <tr>
@@ -19,30 +19,54 @@
         </tr>
         </tbody>
     </table>
+    <div class="d-flex flex-row">
+        <a href="/u/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber/download" class="flex-grow-1 d-flex flex-row">
+            <ejs-button id="downloadButton" content="Download" isPrimary="true" cssClass="e-primary flex-grow-1"></ejs-button>
+        </a>
+    </div>
 </div>
 
 <div style="display: none">
     <div id="readmeBlock">
-        <markdown markdown="Model.ModVersion.Readme"/>
+        <markdown markdown="ModVersion.Readme"/>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dependentsBlock">
+        @if (Model.ModVersion.Dependencies.Any()) {
+            <h5>Mods that require this mod</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
+        }
+        @if (Model.ModVersion.OptionalDependencies.Any()) {
+            <h5>Mods optionally compatible with this mod</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
+        }
+        @if (Model.ModVersion.Dependencies.Any()) {
+            <h5>Mods incompatible with this mod</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
+        }
+        @if (!Model.ModVersion.Dependencies.Any()) {
+            <p>No mods depend on this mod</p>
+        }
     </div>
 </div>
 
 <div style="display: none">
     <div id="dependenciesBlock">
-        @if (Model.ModVersion.ModDependencies.Any()) {
-            if (Model.ModVersion.Dependencies.Any()) {
-                <h5>Required Dependencies</h5>
-                <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
-            }
-            if (Model.ModVersion.OptionalDependencies.Any()) {
-                <h5>Optional Dependencies</h5>
-                <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
-            }
-            if (Model.ModVersion.Dependencies.Any()) {
-                <h5>Incompatibilites</h5>
-                <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
-            }
-        } else {
+        @if (Model.ModVersion.Dependencies.Any()) {
+            <h5>Required Dependencies</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
+        }
+        @if (Model.ModVersion.OptionalDependencies.Any()) {
+            <h5>Optional Dependencies</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
+        }
+        @if (Model.ModVersion.Dependencies.Any()) {
+            <h5>Incompatibilites</h5>
+            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
+        }
+        @if (!Model.ModVersion.Dependencies.Any()) {
             <p>None!</p>
         }
     </div>
