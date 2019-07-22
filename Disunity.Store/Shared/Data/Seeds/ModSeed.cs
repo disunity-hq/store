@@ -69,10 +69,10 @@ namespace Disunity.Store.Data.Seeds {
                 var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
                 var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
 
-                var displayName = _unparser.Generate("#display_name.title");
+                var displayName = _unparser.Generate("#display_name.title#");
 
                 while (names.Contains(displayName)) {
-                    displayName = _unparser.Generate("#display_name.title");
+                    displayName = _unparser.Generate("#display_name.title#");
                 }
 
                 names.Add(displayName);
