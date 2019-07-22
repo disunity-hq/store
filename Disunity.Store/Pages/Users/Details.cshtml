@@ -2,3 +2,5 @@
 @model Disunity.Store.Pages.Users.Details
 
 <h1>@Model.Org.DisplayName</h1>
+
+<partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>

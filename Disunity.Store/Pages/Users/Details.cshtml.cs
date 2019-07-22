@@ -31,7 +31,11 @@ namespace Disunity.Store.Pages.Users {
         }
 
         public async Task<IActionResult> OnGetAsync() {
-            Org = await _context.Orgs.FirstOrDefaultAsync(o => o.Slug == UserSlug);
+            Org = await _context.Orgs
+                                .Include(o => o.Mods)
+                                .ThenInclude(m => m.Latest)
+                                .ThenInclude(v => v.VersionNumber)
+                                .FirstOrDefaultAsync(o => o.Slug == UserSlug);
 
             if (Org == null) {
                 return NotFound();
