@@ -9,12 +9,12 @@ namespace Disunity.Store.Artifacts {
 
     public static partial class Schema {
 
-        private const string SLUG_PATTERN = "^[a-z0-9]+(?:-[a-z0-9]+)*$";
+        public const string SLUG_PATTERN = "^[a-z0-9]+(?:-[a-z0-9]+)*$";
         private const string NAME_PATTERN = "^[a-zA-Z0-9 -_]+$";
         public const string WORD_PATTERN = "^[a-zA-Z0-9-_]+$";
         private const string CLASS_PATTERN = "^[a-zA-Z]+$";
         private const string PACKAGE_PATTERN = "^[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$";
-        private const string VERSION_PATTERN = "^[0-9]+\\.[0-9]+\\.[0-9]+$";
+        public const string VERSION_PATTERN = "^[0-9]+\\.[0-9]+\\.[0-9]+$";
         private const string DLL_PATTERN = "^[a-zA-Z0-9-_]+\\.dll$";
         private const string TAG_PATTERN = "^[a-z]+(?:-[a-z]+)*$";
 

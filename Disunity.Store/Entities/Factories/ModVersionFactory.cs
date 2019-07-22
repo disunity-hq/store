@@ -34,13 +34,14 @@ namespace Disunity.Store.Entities.Factories {
 
             var factory = new ModVersionFactory(context, versionFactory);
 
-            return (archive, org) => factory.FromArchiveAsync(archive, org);
+            return (archive, org) => factory.FromArchiveAsync(archive);
         }
 
-        public async Task<ModVersion> FromArchiveAsync(Archive archive, Org owner) {
+        public async Task<ModVersion> FromArchiveAsync(Archive archive) {
             var manifest = archive.Manifest;
 
             var mod = await _context.Mods.FirstOrDefaultAsync(m => m.Slug == manifest.ModID);
+            var owner = await _context.Orgs.FirstOrDefaultAsync(o => o.Slug == manifest.OrgID);
 
             if (mod == null) {
                 mod = new Mod() {

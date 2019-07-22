@@ -29,7 +29,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
     public class UploadController : ControllerBase {
 
         private readonly Func<IFormFile, Archive> _archiveFactory;
-        private readonly Func<Archive, Org, Task<ModVersion>> _modVersionFactory;
+        private readonly Func<Archive, Task<ModVersion>> _modVersionFactory;
 
         private readonly ILogger<Upload> _logger;
         private readonly UserManager<UserIdentity> _userManager;
@@ -41,7 +41,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                                 UserManager<UserIdentity> userManager,
                                 ApplicationDbContext context,
                                 Func<IFormFile, Archive> archiveFactory,
-                                Func<Archive, Org, Task<ModVersion>> modVersionFactory,
+                                Func<Archive, Task<ModVersion>> modVersionFactory,
                                 IStorageProvider storage) {
             _logger = logger;
             _userManager = userManager;
@@ -82,12 +82,10 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                 if (user == null) {
                     return Unauthorized();
                 }
+                
+                var uploadedFile = await _storage.UploadArchive(archive);
 
-                var org = await _context.Orgs.SingleAsync(o => o.Slug == user.Slug);
-
-                var uploadedFile = await _storage.UploadArchive(archive, org);
-
-                var modVersion = await _modVersionFactory(archive, org);
+                var modVersion = await _modVersionFactory(archive);
                 modVersion.FileId = uploadedFile.FileId;
 
                 await _context.SaveChangesAsync();
