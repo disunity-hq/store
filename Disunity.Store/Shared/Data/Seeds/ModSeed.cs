@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Store.Data.Services;
 using Disunity.Store.Entities;
 using Disunity.Store.Entities.Factories;
 
@@ -29,13 +30,26 @@ namespace Disunity.Store.Data.Seeds {
         private readonly ILogger<ModSeed> _logger;
         private readonly IHostingEnvironment _env;
         private readonly IVersionNumberFactory _versionNumberFactory;
+        private readonly Unparser _unparser;
+        private IconRandomizer _iconRandomizer;
+        private readonly ISlugifier _slugifier;
 
-        public ModSeed(ApplicationDbContext context, ILogger<ModSeed> logger, IHostingEnvironment env,
-                       IVersionNumberFactory versionNumberFactory) {
+
+        public ModSeed(ApplicationDbContext context,
+                       ILogger<ModSeed> logger,
+                       IHostingEnvironment env,
+                       IVersionNumberFactory versionNumberFactory,
+                       Func<string, Unparser> unparserFactory,
+                       IconRandomizer iconRandomizer,
+                       ISlugifier slugifier) {
             _context = context;
             _logger = logger;
             _env = env;
             _versionNumberFactory = versionNumberFactory;
+            _iconRandomizer = iconRandomizer;
+            _slugifier = slugifier;
+
+            _unparser = unparserFactory("Entities/mod.json");
         }
 
         public bool ShouldSeed() {
@@ -53,24 +67,29 @@ namespace Disunity.Store.Data.Seeds {
                 var target = targets.PickRandom();
                 var version = new VersionNumber(random.Next(3), random.Next(3), random.Next(3));
                 var attachedVersion = await _versionNumberFactory.FindOrCreateVersionNumber(version);
+                var displayName = _unparser.Generate("#display_name.title");
+                var slug = _slugifier.Slugify(displayName);
+                var description = _unparser.Generate("#description.capitalize#");
+                var iconUrl = _iconRandomizer.GetIconUrl();
+                var website = _unparser.Generate("http://#adjective##noun.s#.#tld#");
 
                 var modVersion = new ModVersion() {
-                    Description = "This is a mod!",
+                    Description = description,
                     Readme = "# Markdown!",
-                    DisplayName = $"test-org-mod-{i}",
+                    DisplayName = displayName,
                     FileId = "",
-                    IconUrl = "/assets/logo_512x512.png",
+                    IconUrl = iconUrl,
                     VersionNumber = attachedVersion,
-                    WebsiteUrl = "",
+                    WebsiteUrl = website,
                     TargetCompatibilities = new List<ModTargetCompatibility>()
                         {new ModTargetCompatibility() {Target = target}}
                 };
 
                 var mod = new Mod() {
                     Owner = org,
-                    Slug = $"test_org-mod-{i}",
+                    Slug = slug,
                     Versions = new List<ModVersion>() {modVersion},
-                    DisplayName = $"test_org-mod-{i}"
+                    DisplayName = displayName
                 };
 
                 _context.Mods.Add(mod);
