@@ -20,15 +20,15 @@ namespace Disunity.Store.Entities {
 
     public class ModDependency {
 
-        public int DependantId { get; set; }
+        public int DependentId { get; set; }
         /// <summary>
         /// The <see cref="ModVersion"/> whose dependency is being described
         /// </summary>
-        public ModVersion Dependant { get; set; }
+        public ModVersion Dependent { get; set; }
 
         public int DependencyId { get; set; }
         /// <summary>
-        /// The dependency required by <see cref="Dependant"/>
+        /// The dependency required by <see cref="Dependent"/>
         /// </summary>
         public Mod Dependency { get; set; }
 
@@ -39,14 +39,14 @@ namespace Disunity.Store.Entities {
 
         public int? MinVersionId { get; set; }
         /// <summary>
-        /// The min version compatible with <see cref="Dependant"/>.
+        /// The min version compatible with <see cref="Dependent"/>.
         /// May be null, signifying all versions below <see cref="MaxVersion"/> are compatible
         /// </summary>
         public ModVersion MinVersion { get; set; }
 
         public int? MaxVersionId { get; set; }
         /// <summary>
-        /// The max version compatible with <see cref="Dependant"/>.
+        /// The max version compatible with <see cref="Dependent"/>.
         /// May be null, signifying all versions above <see cref="MinVersion"/> are compatible
         /// </summary>
         public ModVersion MaxVersion { get; set; }
@@ -54,7 +54,7 @@ namespace Disunity.Store.Entities {
         public class ModDependencyConfiguration: IEntityTypeConfiguration<ModDependency> {
 
             public void Configure(EntityTypeBuilder<ModDependency> builder) {
-                builder.HasKey(c => new {c.DependantId, c.DependencyId});
+                builder.HasKey(c => new {DependantId = c.DependentId, c.DependencyId});
 
                 builder.HasOne(d => d.MinVersion);
                 builder.HasOne(d => d.MaxVersion);

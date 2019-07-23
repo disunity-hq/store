@@ -1,13 +1,10 @@
+@using Disunity.Store.Util
 @model Disunity.Store.Entities.Mod
 
 @addTagHelper *, Syncfusion.EJ2
 
 @{
-    var routeParams = new Dictionary<string, string>() {
-        {"ownerSlug", Model.Owner.Slug},
-        {"modSlug", Model.Slug},
-        {"versionNumber", Model.Latest.VersionNumber}
-    };
+    var routeParams = Helpers.RouteParamsFromMod(Model);
 }
 
 <div class="col-xs-12 my-3">

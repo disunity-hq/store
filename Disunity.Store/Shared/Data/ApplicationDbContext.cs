@@ -19,6 +19,7 @@ namespace Disunity.Store.Data {
 
         static ApplicationDbContext() {
             NpgsqlConnection.GlobalTypeMapper.MapEnum<OrgMemberRole>();
+            NpgsqlConnection.GlobalTypeMapper.MapEnum<ModDependencyType>();
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
@@ -61,6 +62,7 @@ namespace Disunity.Store.Data {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
             builder.ForNpgsqlHasEnum<OrgMemberRole>();
+            builder.ForNpgsqlHasEnum<ModDependencyType>();
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 

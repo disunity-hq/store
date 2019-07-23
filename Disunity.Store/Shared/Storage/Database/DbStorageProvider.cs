@@ -46,6 +46,10 @@ namespace Disunity.Store.Storage.Database {
         public async Task<IActionResult> GetDownloadAction(string fileId) {
             var file = await _context.StoredFiles.FirstOrDefaultAsync(f => f.Id == Guid.Parse(fileId));
 
+            if (file == null) {
+                return new NotFoundResult();
+            }
+
             var dbConnection = _context.Database.GetDbConnection() as NpgsqlConnection;
             var manager = new NpgsqlLargeObjectManager(dbConnection);
 

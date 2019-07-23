@@ -17,6 +17,16 @@ using SmartBreadcrumbs.Nodes;
 
 namespace Disunity.Store.Pages.Mods {
 
+    public class DependencyList {
+
+        public IEnumerable<ModDependency> Dependencies { get; set; }
+
+        public bool ShowDependent { get; set; } = true;
+
+        public bool ShowDependency { get; set; } = true;
+
+    }
+
     [Breadcrumb(FromPage = typeof(Index))]
     public class Details : PageModel {
 
@@ -29,7 +39,10 @@ namespace Disunity.Store.Pages.Mods {
 
         public ModVersion ModVersion { get; set; }
 
-        public List<ModDependency> Dependants { get; set; }
+        public DependencyList Dependencies { get; set; }
+        public DependencyList Dependents { get; set; }
+
+        public string CreateAtString { get; set; }
 
         public Details(ILogger<Details> logger, ApplicationDbContext context) {
             _logger = logger;
@@ -42,6 +55,13 @@ namespace Disunity.Store.Pages.Mods {
                                                    .Include(v => v.Mod).ThenInclude(m => m.Owner)
                                                    .Include(v => v.VersionNumber)
                                                    .Include(v => v.ModDependencies)
+                                                   .ThenInclude(d => d.Dependency).ThenInclude(m => m.Owner)
+                                                   .Include(v => v.ModDependencies)
+                                                   .ThenInclude(d => d.Dependency).ThenInclude(m => m.Latest)
+                                                   .Include(v => v.ModDependencies)
+                                                   .ThenInclude(d => d.MinVersion).ThenInclude(v => v.VersionNumber)
+                                                   .Include(v => v.ModDependencies)
+                                                   .ThenInclude(d => d.MaxVersion).ThenInclude(v => v.VersionNumber)
                                                    .Where(v => v.Mod.Owner.Slug == OwnerSlug && v.Mod.Slug == ModSlug)
                                                    .OrderByVersionDescending();
 
@@ -56,7 +76,33 @@ namespace Disunity.Store.Pages.Mods {
                 return NotFound();
             }
 
-            Dependants = await _context.ModDependencies.Where(d => d.DependantId == ModVersion.Id).ToListAsync();
+            CreateAtString = ModVersion.CreatedAt.ToString("o");
+
+            Dependents = new DependencyList() {
+                Dependencies = await _context.ModDependencies
+                                             .Include(d => d.Dependent)
+                                             .ThenInclude(v => v.Mod)
+                                             .ThenInclude(m => m.Owner)
+                                             .Include(d => d.Dependent)
+                                             .ThenInclude(v => v.VersionNumber)
+                                             .Include(d => d.Dependency)
+                                             .Where(d => d.DependencyId == ModVersion.Id)
+                                             .ToListAsync(),
+                ShowDependent = true,
+                ShowDependency = false
+            };
+
+            Dependencies = new DependencyList() {
+                Dependencies = ModVersion.Dependencies,
+                ShowDependent = false
+            };
+
+            ViewData["ModVersions"] = await _context.ModVersions
+                                                    .Where(v => v.ModId == ModVersion.ModId)
+                                                    .Select(v => new {
+                                                        VersionNumber = v.VersionNumber.ToString(), v.Id
+                                                    }).ToListAsync();
+
 
             var ownerNode = new RazorPageBreadcrumbNode("/Users/Details", ModVersion.Mod.Owner.DisplayName) {
                 OverwriteTitleOnExactMatch = true,

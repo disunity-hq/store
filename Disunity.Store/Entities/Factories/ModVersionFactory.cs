@@ -86,7 +86,7 @@ namespace Disunity.Store.Entities.Factories {
         private Func<KeyValuePair<string, VersionRange>, ModDependency> DependencyDictToModDependency(
             ModVersion modVersion, ModDependencyType dependencyType) {
             return d => new ModDependency() {
-                Dependant = modVersion,
+                Dependent = modVersion,
                 Dependency = _context.Mods.FindModByDepString(d.Key).Result,
                 DependencyType = dependencyType,
                 MinVersion = _context

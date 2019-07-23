@@ -34,16 +34,14 @@ namespace Disunity.Store.Entities {
 
         [Required] [MaxLength] public string Readme { get; set; }
 
-        [MaxLength(1024)]
-        [Required]
-        public string FileId { get; set; }
+        [MaxLength(1024)] [Required] public string FileId { get; set; }
 
         [MaxLength(1024)]
         [Required]
         [DataType(DataType.ImageUrl)]
         public string IconUrl { get; set; }
 
-        [InverseProperty("Dependant")] public List<ModDependency> ModDependencies { get; set; }
+        [InverseProperty("Dependent")] public List<ModDependency> ModDependencies { get; set; }
         [InverseProperty("Version")] public List<ModTargetCompatibility> TargetCompatibilities { get; set; }
 
         [NotMapped]
@@ -73,7 +71,7 @@ namespace Disunity.Store.Entities {
 
                 builder.HasIndex(v => new {v.ModId, v.VersionNumberId}).IsUnique();
 
-                builder.HasMany(v => v.ModDependencies).WithOne(d => d.Dependant);
+                builder.HasMany(v => v.ModDependencies).WithOne(d => d.Dependent);
                 builder.HasMany(v => v.TargetCompatibilities).WithOne(c => c.Version);
 
             }

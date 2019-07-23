@@ -1,29 +1,53 @@
 @page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
-@using Disunity.Store.Entities
+@using Bogus.Extensions
 @model Disunity.Store.Pages.Mods.Details
 @addTagHelper *, Syncfusion.EJ2
 
-<h1>
-    @Model.ModVersion.DisplayName <small>by @Model.ModVersion.Mod.Owner.DisplayName</small>
-</h1>
+@{
+    var ownerRoute = new Dictionary<string, string>() {
+        {"userSlug", Model.ModVersion.Mod.Owner.Slug}
+    };
+}
 
-<div id="detailsBlock" class="pb-2">
-    <table class="table table-headless">
-        <tbody>
-        <tr>
-            <td>Latest Updated</td>
-            <td>@Html.DisplayFor(m => m.ModVersion.CreatedAt)</td>
-        </tr>
-        <tr>
-            <td>Total Downloads</td>
-            <td>@Model.ModVersion.Downloads</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="d-flex flex-row">
-        <a href="/u/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber/download" class="flex-grow-1 d-flex flex-row">
-            <ejs-button id="downloadButton" content="Download" isPrimary="true" cssClass="e-primary flex-grow-1"></ejs-button>
-        </a>
+<div class="d-flex flex-row mb-5 align-items-start">
+    <img src="@Model.ModVersion.IconUrl" class="pr-2"/>
+    <div class="flex-grow-1">
+        <h1 class="mb-3">
+            @Model.ModVersion.DisplayName
+            <small>
+                by <a asp-page="/Users/Details" asp-all-route-data="@ownerRoute">@Model.ModVersion.Mod.Owner.DisplayName</a>
+            </small>
+        </h1>
+
+        <div class="d-flex flex-row justify-content-between mb-1">
+            <div class="d-flex flex-row">
+                <span class="badge m-1 p-1" style="font-size:15px;">
+                    <span class="fas fa-download"></span> @Model.ModVersion.Downloads
+                </span>
+                <span class="badge m-1 p-1" style="font-size:15px;">
+                    <span class="fas fa-heart" style="color:darkred"></span> @Model.ModVersion.Downloads
+                </span>
+            </div>
+            <span class="font-italic" style="color:grey">Updated: <time class="timeago" datetime="@Model.CreateAtString">@Model.CreateAtString</time></span>
+        </div>
+
+        <ejs-dropdownlist id="versionDropdown" placeholder="Latest" dataSource="@ViewData["ModVersions"]">
+            <e-dropdownlist-fields text="VersionNumber" value="Id"></e-dropdownlist-fields>
+        </ejs-dropdownlist>
+
+        <div class="d-flex flex-row mt-1">
+            <a href="/u/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber/download" class="flex-grow-1 d-flex flex-row m-1">
+                <ejs-button id="downloadButton" content="Download" isPrimary="false" cssClass="e-primary flex-grow-1"></ejs-button>
+            </a>
+            <a href="disunity://v1/install/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber" class="flex-grow-1 d-flex flex-row m-1">
+                <ejs-button id="installButton" content="Install" isPrimary="true" cssClass="e-primary flex-grow-1"></ejs-button>
+            </a>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <span class="text-center" style="flex-basis: 90%">
+                @Model.ModVersion.Description
+            </span>
+        </div>
     </div>
 </div>
 
@@ -35,47 +59,19 @@
 
 <div style="display: none">
     <div id="dependentsBlock">
-        @if (Model.ModVersion.Dependencies.Any()) {
-            <h5>Mods that require this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.Dependency).Select(d => d.Dependant)"/>
-        }
-        @if (Model.ModVersion.OptionalDependencies.Any()) {
-            <h5>Mods optionally compatible with this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.OptionalDependency).Select(d => d.Dependant)"/>
-        }
-        @if (Model.ModVersion.Dependencies.Any()) {
-            <h5>Mods incompatible with this mod</h5>
-            <partial name="_ModVersionListPartial" model="@Model.Dependants.Where(d => d.DependencyType == ModDependencyType.Incompatible).Select(d => d.Dependant)"/>
-        }
-        @if (!Model.ModVersion.Dependencies.Any()) {
-            <p>No mods depend on this mod</p>
-        }
+        <partial name="_ModDependencyTable" model="@Model.Dependents"/>
     </div>
 </div>
 
 <div style="display: none">
     <div id="dependenciesBlock">
-        @if (Model.ModVersion.Dependencies.Any()) {
-            <h5>Required Dependencies</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Dependencies.Select(d => d.Dependency)"/>
-        }
-        @if (Model.ModVersion.OptionalDependencies.Any()) {
-            <h5>Optional Dependencies</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.OptionalDependencies.Select(d => d.Dependency)"/>
-        }
-        @if (Model.ModVersion.Dependencies.Any()) {
-            <h5>Incompatibilites</h5>
-            <partial name="_ModVersionListPartial" model="@Model.ModVersion.Incompatibilities.Select(d => d.Dependency)"/>
-        }
-        @if (!Model.ModVersion.Dependencies.Any()) {
-            <p>None!</p>
-        }
+        <partial name="_ModDependencyTable" model="@Model.Dependencies"/>
     </div>
 </div>
 
 <div style="display: none">
     <div id="versionsBlock">
-        <partial name="_ModVersionListPartial" for="ModVersion.Mod.Versions"/>
+        <partial name="_ModVersionTablePartial" for="ModVersion.Mod.Versions"/>
     </div>
 </div>
 

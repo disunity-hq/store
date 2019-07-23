@@ -10,6 +10,7 @@ namespace Disunity.Store.Entities.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:mod_dependency_type", "dependency,optional_dependency,incompatible")
                 .Annotation("Npgsql:Enum:org_member_role", "owner,admin,member");
 
             migrationBuilder.CreateTable(
@@ -331,15 +332,15 @@ namespace Disunity.Store.Entities.Migrations
                 name: "ModDependencies",
                 columns: table => new
                 {
-                    DependantId = table.Column<int>(nullable: false),
+                    DependentId = table.Column<int>(nullable: false),
                     DependencyId = table.Column<int>(nullable: false),
-                    DependencyType = table.Column<int>(nullable: false),
+                    DependencyType = table.Column<ModDependencyType>(nullable: false),
                     MinVersionId = table.Column<int>(nullable: true),
                     MaxVersionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ModDependencies", x => new { x.DependantId, x.DependencyId });
+                    table.PrimaryKey("PK_ModDependencies", x => new { x.DependentId, x.DependencyId });
                 });
 
             migrationBuilder.CreateTable(
@@ -714,9 +715,17 @@ namespace Disunity.Store.Entities.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ModDependencies_ModVersions_DependantId",
+                name: "FK_ModDependencies_Mods_DependencyId",
                 table: "ModDependencies",
-                column: "DependantId",
+                column: "DependencyId",
+                principalTable: "Mods",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ModDependencies_ModVersions_DependentId",
+                table: "ModDependencies",
+                column: "DependentId",
                 principalTable: "ModVersions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -736,14 +745,6 @@ namespace Disunity.Store.Entities.Migrations
                 principalTable: "ModVersions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ModDependencies_Mods_DependencyId",
-                table: "ModDependencies",
-                column: "DependencyId",
-                principalTable: "Mods",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ModVersions_Mods_ModId",
@@ -801,8 +802,8 @@ namespace Disunity.Store.Entities.Migrations
                 table: "ModVersions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Mods_ModVersions_LatestId",
-                table: "Mods");
+                name: "FK_ModVersions_Mods_ModId",
+                table: "ModVersions");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_TargetVersions_Targets_TargetId",
@@ -863,10 +864,10 @@ namespace Disunity.Store.Entities.Migrations
                 name: "VersionNumbers");
 
             migrationBuilder.DropTable(
-                name: "ModVersions");
+                name: "Mods");
 
             migrationBuilder.DropTable(
-                name: "Mods");
+                name: "ModVersions");
 
             migrationBuilder.DropTable(
                 name: "Orgs");

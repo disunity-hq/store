@@ -11,13 +11,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190721205027_Initial")]
+    [Migration("20190723041219_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:Enum:mod_dependency_type", "dependency,optional_dependency,incompatible")
                 .HasAnnotation("Npgsql:Enum:org_member_role", "owner,admin,member")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
@@ -112,17 +113,17 @@ namespace Disunity.Store.Entities.Migrations
 
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
                 {
-                    b.Property<int>("DependantId");
+                    b.Property<int>("DependentId");
 
                     b.Property<int>("DependencyId");
 
-                    b.Property<int>("DependencyType");
+                    b.Property<ModDependencyType>("DependencyType");
 
                     b.Property<int?>("MaxVersionId");
 
                     b.Property<int?>("MinVersionId");
 
-                    b.HasKey("DependantId", "DependencyId");
+                    b.HasKey("DependentId", "DependencyId");
 
                     b.HasIndex("DependencyId");
 
@@ -635,14 +636,14 @@ namespace Disunity.Store.Entities.Migrations
 
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
                 {
-                    b.HasOne("Disunity.Store.Entities.ModVersion", "Dependant")
-                        .WithMany("ModDependencies")
-                        .HasForeignKey("DependantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Disunity.Store.Entities.Mod", "Dependency")
                         .WithMany()
                         .HasForeignKey("DependencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Disunity.Store.Entities.ModVersion", "Dependent")
+                        .WithMany("ModDependencies")
+                        .HasForeignKey("DependentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Disunity.Store.Entities.ModVersion", "MaxVersion")

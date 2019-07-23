@@ -14,8 +14,22 @@
   border-color: lighten($info, 20%);
 }
 
-.table.table-headless {
-  tr:first-child > td {
-    border-top-width: 0px;
+.table.no-top-border {
+  > *:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top-width: 0px;
+      }
+    }
+  }
+}
+
+.table {
+  tr.pt-0 {
+    > td,
+    > th {
+      padding-top: 0;
+    }
   }
 }
