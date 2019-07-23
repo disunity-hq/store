@@ -6,18 +6,20 @@
 }
 
 <h1>
-    <ejs-inplaceeditor id="element" type="Text"
-                       mode="Inline"
-                       name="DisplayName"
-                       value="@Model.Org.DisplayName" 
-                       model="@modalData"
-                       url="/api/v1/orgs/@Model.Org.Slug"
-                       primaryKey="@Model.Org.Slug"
-                       adaptor="UrlAdaptor"
-                       data-underline="false"
-                       ></ejs-inplaceeditor>
+    @if (Model.CanManageOrg) {
+        <ejs-inplaceeditor id="element" type="Text"
+                           mode="Inline"
+                           name="DisplayName"
+                           value="@Model.Org.DisplayName"
+                           model="@modalData"
+                           url="/api/v1/orgs/@Model.Org.Slug"
+                           primaryKey="@Model.Org.Slug"
+                           adaptor="UrlAdaptor"
+                           data-underline="false"></ejs-inplaceeditor>
+        
+    } else {
+        @Model.Org.DisplayName
+    }
 </h1>
-
-
 
 <partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>

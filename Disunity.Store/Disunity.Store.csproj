@@ -12,11 +12,6 @@
     <None Update="Shared\Data\Grammars\*.json" CopyToOutputDirectory="Always" />
     <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Shared\Startup\Policies\OrgMemberHandler.cs">
-      <DependentUpon>OrgMemberRequirement.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
 
