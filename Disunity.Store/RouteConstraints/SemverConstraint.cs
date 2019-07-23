@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Disunity.Store.RouteConstraints {
 
+    [RouteConstraint("semver")]
     public class SemverConstraint:IRouteConstraint {
 
         public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values,
