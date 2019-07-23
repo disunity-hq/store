@@ -6,6 +6,7 @@ using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Extensions;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,14 @@ namespace Disunity.Store.Pages.Mods {
 
     }
 
+    public class DropdownListItem {
+
+        public string VersionNumber { get; set; }
+
+        public string Url { get; set; }
+
+    }
+
     [Breadcrumb(FromPage = typeof(Index))]
     public class Details : PageModel {
 
@@ -43,6 +52,8 @@ namespace Disunity.Store.Pages.Mods {
         public DependencyList Dependents { get; set; }
 
         public string CreateAtString { get; set; }
+
+        public int ModVersionIndex { get; set; }
 
         public Details(ILogger<Details> logger, ApplicationDbContext context) {
             _logger = logger;
@@ -97,12 +108,15 @@ namespace Disunity.Store.Pages.Mods {
                 ShowDependent = false
             };
 
-            ViewData["ModVersions"] = await _context.ModVersions
-                                                    .Where(v => v.ModId == ModVersion.ModId)
-                                                    .Select(v => new {
-                                                        VersionNumber = v.VersionNumber.ToString(), v.Id
-                                                    }).ToListAsync();
+            var versionNumbers = await _context.ModVersions
+                                               .Where(v => v.ModId == ModVersion.ModId)
+                                               .Include(v => v.VersionNumber)
+                                               .OrderByVersionDescending()
+                                               .Select(v => ModVersionToDropdownListItem(v)).ToListAsync();
 
+            ViewData["ModVersions"] = versionNumbers;
+
+            ModVersionIndex = versionNumbers.FindIndex(n => n.VersionNumber.StartsWith(ModVersion.VersionNumber));
 
             var ownerNode = new RazorPageBreadcrumbNode("/Users/Details", ModVersion.Mod.Owner.DisplayName) {
                 OverwriteTitleOnExactMatch = true,
@@ -118,6 +132,22 @@ namespace Disunity.Store.Pages.Mods {
             ViewData["Title"] = ModVersion.DisplayName;
 
             return Page();
+        }
+
+        private DropdownListItem ModVersionToDropdownListItem(ModVersion version) {
+            var versionNumber = version.VersionNumber.ToString();
+
+            if (version == ModVersion.Mod.Latest) {
+                versionNumber += " - Latest";
+            }
+            if (version == ModVersion) {
+                versionNumber += " - This Mod";
+            }
+
+            return new DropdownListItem {
+                VersionNumber = versionNumber,
+                Url = $"/u/{ModVersion.Mod.Owner.Slug}/{ModVersion.Mod.Slug}/{version.VersionNumber}"
+            };
         }
 
     }

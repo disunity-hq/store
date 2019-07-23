@@ -31,8 +31,8 @@
             <span class="font-italic" style="color:grey">Updated: <time class="timeago" datetime="@Model.CreateAtString">@Model.CreateAtString</time></span>
         </div>
 
-        <ejs-dropdownlist id="versionDropdown" placeholder="Latest" dataSource="@ViewData["ModVersions"]">
-            <e-dropdownlist-fields text="VersionNumber" value="Id"></e-dropdownlist-fields>
+        <ejs-dropdownlist id="versionDropdown" index="@Model.ModVersionIndex" change="NavigateToVersion" dataSource="@(ViewData["ModVersions"])">
+            <e-dropdownlist-fields text="VersionNumber" value="Url" ></e-dropdownlist-fields>
         </ejs-dropdownlist>
 
         <div class="d-flex flex-row mt-1">
@@ -84,3 +84,7 @@
         <e-accordion-accordionitem header="Versions" expanded="false" content="#versionsBlock"></e-accordion-accordionitem>
     </e-accordion-accordionitems>
 </ejs-accordion>
+
+@section Scripts {
+    <page-script>mods/details</page-script>
+}

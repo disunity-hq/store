@@ -3,6 +3,7 @@ import { Uploader } from '@syncfusion/ej2-inputs';
 import { htmlToElement } from 'utils';
 
 import ErrorReporter from 'shared/ErrorReporter';
+import { DropDownList } from '@syncfusion/ej2-dropdowns';
 
 export class ModUploadPage {
   private uploader: Uploader;
@@ -22,6 +23,7 @@ export class ModUploadPage {
       uploading: this.reporter.Empty.bind(this.reporter)
     });
     this.uploader.appendTo('#ArchiveUpload');
+
   };
 
   private uploadSuccess = (args: any) => {};
