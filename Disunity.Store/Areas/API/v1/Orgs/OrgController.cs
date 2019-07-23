@@ -12,6 +12,7 @@ using Disunity.Store.Pages.Mods;
 using Disunity.Store.Artifacts;
 using Disunity.Store.Data;
 using Disunity.Store.Entities.DataTransferObjects;
+using Disunity.Store.Policies;
 using Disunity.Store.Storage;
 using Disunity.Store.Storage.Backblaze;
 
@@ -43,11 +44,16 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<UserIdentity> _userManager;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorization;
 
-        public OrgController(ILogger<Upload> logger, ApplicationDbContext context,
-                             UserManager<UserIdentity> userManager, IMapper mapper) {
+        public OrgController(ILogger<Upload> logger, 
+                             ApplicationDbContext context,
+                             IAuthorizationService authorization,
+                             UserManager<UserIdentity> userManager, 
+                             IMapper mapper) {
             _logger = logger;
             _context = context;
+            _authorization = authorization;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -77,14 +83,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         }
 
         [HttpPost]
-        [Authorize(Policy = "CanManageOrg")]
         public async Task<IActionResult> PostAsync(string orgSlug) {
-            using (var reader = new StreamReader(Request.Body))
-            {
-                var body = reader.ReadToEnd();
-                _logger.LogWarning(body);
-            }
-
             if (!ModelState.IsValid) {
                 return BadRequest();
             }
@@ -94,6 +93,18 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
                 if (org == null) {
                     return new NotFoundResult();
+                }
+
+                var authorization = await _authorization.AuthorizeAsync(User, org, Operations.Update);
+
+                if (!authorization.Succeeded) {
+                    return Unauthorized();
+                }
+                
+                using (var reader = new StreamReader(Request.Body))
+                {
+                    var body = reader.ReadToEnd();
+                    _logger.LogWarning(body);
                 }
 
                 org.DisplayName = SubmitModel.value;
