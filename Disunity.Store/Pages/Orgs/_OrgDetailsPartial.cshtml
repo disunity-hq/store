@@ -1,12 +1,10 @@
 @using Disunity.Store.Policies
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.Extensions.DependencyInjection
 @model Disunity.Store.Entities.Org
+@inject IAuthorizationService AuthorizationService
 
 @{
-    var authService = Context.RequestServices.GetRequiredService<IAuthorizationService>();
-    var authorization = await authService.AuthorizeAsync(User, Model, Operations.Update);
-    
+    var authorization = await AuthorizationService.AuthorizeAsync(User, Model, Operations.Update);
     var modalData = new {placeholder = "Enter Org display name"};
 }
 
