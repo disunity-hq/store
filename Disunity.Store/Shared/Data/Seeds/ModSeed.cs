@@ -81,10 +81,11 @@ namespace Disunity.Store.Data.Seeds {
                 var description = _unparser.Generate("#description.capitalize#");
                 var iconUrl = _iconRandomizer.GetIconUrl();
                 var website = _unparser.Generate("http://#adjective##noun.s#.#tld#");
+                var readme = displayName + "\n=====\n\n" + _unparser.Generate("#readme#");
 
                 var modVersion = new ModVersion() {
                     Description = description,
-                    Readme = "# Markdown!",
+                    Readme = readme,
                     DisplayName = displayName,
                     FileId = "",
                     IconUrl = iconUrl,
