@@ -77,7 +77,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         }
 
         [HttpPost]
-        [Authorize(Policy = "IsMember")]
+        [Authorize(Policy = "CanManageOrg")]
         public async Task<IActionResult> PostAsync(string orgSlug) {
             using (var reader = new StreamReader(Request.Body))
             {
