@@ -28,32 +28,6 @@ namespace Disunity.Store.Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    Slug = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orgs",
                 columns: table => new
                 {
@@ -116,6 +90,77 @@ namespace Disunity.Store.Entities.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    ShadowOrgId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Orgs_ShadowOrgId",
+                        column: x => x.ShadowOrgId,
+                        principalTable: "Orgs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DisunityVersions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    URL = table.Column<string>(nullable: true),
+                    VersionNumberId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DisunityVersions", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_DisunityVersions_VersionNumbers_VersionNumberId",
+                        column: x => x.VersionNumberId,
+                        principalTable: "VersionNumbers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UnityVersions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    VersionNumberId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnityVersions", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_UnityVersions_VersionNumbers_VersionNumberId",
+                        column: x => x.VersionNumberId,
+                        principalTable: "VersionNumbers",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -226,45 +271,6 @@ namespace Disunity.Store.Entities.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DisunityVersions",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    URL = table.Column<string>(nullable: true),
-                    VersionNumberId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DisunityVersions", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_DisunityVersions_VersionNumbers_VersionNumberId",
-                        column: x => x.VersionNumberId,
-                        principalTable: "VersionNumbers",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UnityVersions",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    VersionNumberId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UnityVersions", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_UnityVersions_VersionNumbers_VersionNumberId",
-                        column: x => x.VersionNumberId,
-                        principalTable: "VersionNumbers",
-                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -562,10 +568,9 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_Slug",
+                name: "IX_AspNetUsers_ShadowOrgId",
                 table: "AspNetUsers",
-                column: "Slug",
-                unique: true);
+                column: "ShadowOrgId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DisunityVersionCompatibilities_MaxCompatibleVersionId",
@@ -798,6 +803,10 @@ namespace Disunity.Store.Entities.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_Mods_Orgs_OwnerId",
+                table: "Mods");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_ModVersions_VersionNumbers_VersionNumberId",
                 table: "ModVersions");
 
@@ -861,6 +870,9 @@ namespace Disunity.Store.Entities.Migrations
                 name: "UnityVersions");
 
             migrationBuilder.DropTable(
+                name: "Orgs");
+
+            migrationBuilder.DropTable(
                 name: "VersionNumbers");
 
             migrationBuilder.DropTable(
@@ -868,9 +880,6 @@ namespace Disunity.Store.Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "ModVersions");
-
-            migrationBuilder.DropTable(
-                name: "Orgs");
 
             migrationBuilder.DropTable(
                 name: "Targets");

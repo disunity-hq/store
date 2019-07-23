@@ -69,8 +69,8 @@ namespace Disunity.Store.Data.Seeds {
 
                 var user = new UserIdentity() {
                     UserName = slug,
-                    Slug = slug,
                     Email = email,
+                    ShadowOrg = org
                 };
 
                 await _userManager.CreateAsync(user, "Password1!");
@@ -87,6 +87,8 @@ namespace Disunity.Store.Data.Seeds {
                     Org = org,
                     Role = OrgMemberRole.Owner
                 };
+
+                _context.Attach(membership);
 
                 _logger.LogInformation($"Created user: `{displayName}` => {slug}");
             }

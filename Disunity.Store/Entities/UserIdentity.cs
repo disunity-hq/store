@@ -17,21 +17,12 @@ namespace Disunity.Store.Entities {
 
         public IList<OrgMember> Orgs { get; set; }
 
-        public string Slug { get; set; }
-
-        [OnBeforeCreate]
-        public static void OnBeforeCreate(UserIdentity user, IServiceProvider services) {
-            if (user.Slug == null) {
-                var slugifier = services.GetRequiredService<ISlugifier>();
-                user.Slug = slugifier.Slugify(user.UserName);
-            }
-        }
+        public int ShadowOrgId { get; set; }
+        public Org ShadowOrg { get; set; }
 
         public class UserIdenityConfiguration : IEntityTypeConfiguration<UserIdentity> {
 
-            public void Configure(EntityTypeBuilder<UserIdentity> builder) {
-                builder.HasIndex(u => u.Slug).IsUnique();
-            }
+            public void Configure(EntityTypeBuilder<UserIdentity> builder) { }
 
         }
 

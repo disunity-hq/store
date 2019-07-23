@@ -1,7 +1,8 @@
-@page "/u/{userSlug:slug}"
+@page "/u/{userSlug:user}"
 @model Disunity.Store.Pages.Users.Details
 
 @{
+    ViewData["Title"] = Model.Org.DisplayName;
     var modalData = new {placeholder = "Enter Org display name"};
 }
 

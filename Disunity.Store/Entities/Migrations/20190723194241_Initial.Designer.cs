@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190723041219_Initial")]
+    [Migration("20190723194241_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -443,7 +443,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<string>("Slug");
+                    b.Property<int>("ShadowOrgId");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -459,8 +459,7 @@ namespace Disunity.Store.Entities.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.HasIndex("Slug")
-                        .IsUnique();
+                    b.HasIndex("ShadowOrgId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -762,6 +761,14 @@ namespace Disunity.Store.Entities.Migrations
                     b.HasOne("Disunity.Store.Entities.VersionNumber", "VersionNumber")
                         .WithMany()
                         .HasForeignKey("VersionNumberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Disunity.Store.Entities.UserIdentity", b =>
+                {
+                    b.HasOne("Disunity.Store.Entities.Org", "ShadowOrg")
+                        .WithMany()
+                        .HasForeignKey("ShadowOrgId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -52,9 +52,6 @@ namespace Disunity.Store.Pages.Users {
                 RouteValues = new {UserSlug}
             };
 
-            ViewData["Title"] = Org.DisplayName;
-
-
             return Page();
         }
 
