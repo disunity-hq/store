@@ -17,8 +17,7 @@
                     <div class="e-card-header-caption">
                         <div class="e-card-header-title target-list-row-title">
                             @Model?.DisplayName
-                            <ejs-chiplist id="target-version-@Model?.Id" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
-                            @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+                            <span class="badge badge-dark">Version: @Model?.Latest.VersionNumber</span>
                         </div>
                     </div>
                 </div>

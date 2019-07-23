@@ -3,22 +3,21 @@
 @addTagHelper *, Syncfusion.EJ2
 
 @{
-    var modPageParams = new Dictionary<string, string> { { "target", Model.Slug } };
+    var modPageParams = new Dictionary<string, string> {{"target", Model.Slug}};
 }
 
 <div class="col-xs-12 my-3">
     <a class="nav-link p-0" asp-page="/Mods/Index" asp-all-route-data="@modPageParams">
         <div class="e-card e-card-horizontal e-card-stacked target-list-row">
             <div class="target-list-row-icon">
-                <img class="p-1" src="@Model?.Latest.IconUrl" />
+                <img class="p-1" src="@Model?.Latest.IconUrl"/>
             </div>
             <div class="e-card-stacked justify-content-start">
                 <div class="e-card-header">
                     <div class="e-card-header-caption">
                         <div class="e-card-header-title target-list-row-title">
                             @Model?.Latest.DisplayName
-                            <ejs-chiplist id="target-version-@Model?.ID" text="Version: @Model?.Latest.VersionNumber"></ejs-chiplist>
-                            @* <small class="px-2 py-1 ml-1" style="border-radius: 50%">Version: @Model?.Latest.VersionNumber</small> *@
+                            <span class="badge badge-dark">Version: @Model?.Latest.VersionNumber</span>
                         </div>
                     </div>
                 </div>

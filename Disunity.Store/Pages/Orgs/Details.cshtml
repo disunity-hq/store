@@ -5,4 +5,6 @@
     ViewData["Title"] = "Org details";
 }
 
-<h1>Org Details Page</h1>
+<partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
+
+<partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>
