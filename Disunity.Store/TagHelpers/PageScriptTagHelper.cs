@@ -18,6 +18,19 @@ namespace Disunity.Store.TagHelpers {
         private readonly IHttpContextAccessor _context;
         private readonly ILogger<PageScriptTagHelper> _logger;
 
+        /// <summary>
+        /// The path to the script to load.
+        /// </summary>
+        /// <example>
+        /// "mod/upload" will be mapped to the js file "/js/mod/upload.js"
+        /// </example>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Whether or not the attempt to run the `InitPageScript()` function after injecting script
+        /// </summary>
+        public bool InitScript { get; set; } = true;
+
         public PageScriptTagHelper(IHostingEnvironment env, IHttpContextAccessor context,
                                    ILogger<PageScriptTagHelper> logger) {
             _env = env;
@@ -31,10 +44,6 @@ namespace Disunity.Store.TagHelpers {
             } else {
                 return $"/js/{path}.min.js";
             }
-        }
-
-        private async Task<string> GetContentForTag(TagHelperOutput output) {
-            return (await output.GetChildContentAsync()).GetContent().ToLower();
         }
 
         private string GetPathForPage() {
@@ -63,15 +72,14 @@ namespace Disunity.Store.TagHelpers {
             return $"<script src=\"{src}\"></script>";
         }
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {
-            var path = await GetContentForTag(output);
+        public override void Process(TagHelperContext context, TagHelperOutput output) {
+            var path = Path ?? GetPathForPage();
 
             string content;
 
-            if (string.IsNullOrEmpty(path)) {
-                var route = GetPathForPage();
-                var addendum = GetAddendum(route);
-                content = GetContent(route) + addendum;
+            if (InitScript) {
+                var addendum = GetAddendum(path);
+                content = GetContent(path) + addendum;
             } else {
                 content = GetContent(path);
             }

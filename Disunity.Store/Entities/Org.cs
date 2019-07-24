@@ -23,9 +23,12 @@ namespace Disunity.Store.Entities {
 
         public string Slug { get; set; }
 
+        public bool? ShowUsers { get; set; }
+
         public List<OrgMember> Members { get; set; }
 
         public List<Mod> Mods { get; set; }
+
 
         [OnBeforeCreate(typeof(UserIdentity), WatchDescendants = false)]
         public static void OnBeforeCreateUser(UserIdentity user, ApplicationDbContext context) {
@@ -54,6 +57,8 @@ namespace Disunity.Store.Entities {
 
             public void Configure(EntityTypeBuilder<Org> builder) {
                 builder.HasIndex(o => o.Slug).IsUnique();
+
+                builder.Property(o => o.ShowUsers).HasDefaultValue(true);
 
                 builder.HasMany(o => o.Mods)
                        .WithOne(m => m.Owner);

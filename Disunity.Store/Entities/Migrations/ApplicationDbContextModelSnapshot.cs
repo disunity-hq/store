@@ -266,6 +266,10 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
+                    b.Property<bool?>("ShowUsers")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Slug");
 
                     b.HasKey("Id");

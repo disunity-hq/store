@@ -1,15 +1,18 @@
+@using Disunity.Store.Entities
 @using Disunity.Store.Policies
 @using Microsoft.AspNetCore.Authorization
 @model Disunity.Store.Entities.Org
 @inject IAuthorizationService AuthorizationService
 
 @{
-    var authorization = await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update);
+    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update)).Succeeded;
+    var canManageUsers = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMembers)).Succeeded;
+    var canManageRoles = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMemberRoles)).Succeeded;
     var modalData = new {placeholder = "Enter Org display name"};
 }
 
 <h1>
-    @if (authorization.Succeeded) {
+    @if (canEdit) {
         <ejs-inplaceeditor id="element" type="Text"
                            mode="Inline"
                            name="DisplayName"
@@ -19,8 +22,37 @@
                            primaryKey="@Model.Slug"
                            adaptor="UrlAdaptor"
                            data-underline="false">
-        </ejs-inplaceeditor>  
+        </ejs-inplaceeditor>
     } else {
         @Model.DisplayName
     }
 </h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Role</th>
+        @if (canManageUsers) {
+            <th>
+                <ejs-button id="addUserButton" iconCss="fas fa-plus"></ejs-button>
+            </th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var membership in Model.Members) {
+        <tr>
+            <td>@membership.User.ShadowOrg.DisplayName</td>
+            <td>@membership.Role</td>
+            @if (canManageUsers) {
+                <td>
+                    @if (membership.Role != OrgMemberRole.Owner) {
+                        <ejs-button id="addUserButton" iconCss="fas fa-minus"></ejs-button>
+                    }
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>

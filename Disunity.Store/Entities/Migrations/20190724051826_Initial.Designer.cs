@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190723194241_Initial")]
+    [Migration("20190724051826_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,6 +267,10 @@ namespace Disunity.Store.Entities.Migrations
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(128);
+
+                    b.Property<bool?>("ShowUsers")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Slug");
 

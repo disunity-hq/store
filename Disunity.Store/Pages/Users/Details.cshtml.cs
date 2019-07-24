@@ -36,6 +36,9 @@ namespace Disunity.Store.Pages.Users {
                                 .Include(o => o.Mods)
                                 .ThenInclude(m => m.Latest)
                                 .ThenInclude(v => v.VersionNumber)
+                                .Include(o => o.Members)
+                                .ThenInclude(m => m.User)
+                                .ThenInclude(u => u.ShadowOrg)
                                 .FirstOrDefaultAsync(o => o.Slug == UserSlug);
 
             ViewData["BreadcrumbNode"] = new RazorPageBreadcrumbNode("/Users/Details", Org.DisplayName) {

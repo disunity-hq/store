@@ -48,16 +48,25 @@ namespace Disunity.Store.Policies {
             return membership?.Role == OrgMemberRole.Owner;
         }
 
+        private static bool ManageMembersOp(OrgMember membership) {
+            return membership?.Role == OrgMemberRole.Owner || membership?.Role == OrgMemberRole.Admin;
+        }
+
+        private static bool ManageMemberRolesOp(OrgMember membership) {
+            return membership?.Role == OrgMemberRole.Owner;
+        }
+
         private MethodInfo GetHandler(OperationRequirement requirement) {
             var name = $"{requirement.Operation.ToString()}Op";
             var type = typeof(OrgPolicyHandler);
             return type.GetMethod(name, BindingFlags.Public | BindingFlags.Static);
-        } 
+        }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                        OperationRequirement requirement,
                                                        Org resource) {
             _logger.LogDebug($"Handling OperationRequirement: {requirement.Operation.ToString()}");
+
             if (context.User.IsInRole(UserRoles.Admin.ToString())) {
                 context.Succeed(requirement);
                 return Task.CompletedTask;

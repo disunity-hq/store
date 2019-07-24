@@ -5,7 +5,9 @@ namespace Disunity.Store.Policies {
         Create,
         Read,
         Update,
-        Delete
+        Delete,
+        ManageMembers,
+        ManageMemberRoles
 
     }
 

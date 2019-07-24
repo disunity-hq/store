@@ -35,6 +35,7 @@ namespace Disunity.Store.Entities.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     Slug = table.Column<string>(nullable: true),
+                    ShowUsers = table.Column<bool>(nullable: true, defaultValue: true),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
