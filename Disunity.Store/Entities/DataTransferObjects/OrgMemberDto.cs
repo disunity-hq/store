@@ -9,13 +9,7 @@ namespace Disunity.Store.Entities.DataTransferObjects {
         /// The id of a user that is in this organization
         /// </summary>
         [Required]
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// The organization's id
-        /// </summary>
-        [Required]
-        public int OrgId { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// The role this user has within this organization

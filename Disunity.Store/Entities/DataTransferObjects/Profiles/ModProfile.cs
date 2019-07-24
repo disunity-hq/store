@@ -1,7 +1,7 @@
 using AutoMapper;
 
 
-namespace Disunity.Store.Entities.DataTransferObjects {
+namespace Disunity.Store.Entities.DataTransferObjects.Profiles {
 
     public class ModProfile : Profile {
 

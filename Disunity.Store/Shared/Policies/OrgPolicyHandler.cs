@@ -59,7 +59,7 @@ namespace Disunity.Store.Policies {
         private MethodInfo GetHandler(OperationRequirement requirement) {
             var name = $"{requirement.Operation.ToString()}Op";
             var type = typeof(OrgPolicyHandler);
-            return type.GetMethod(name, BindingFlags.Public | BindingFlags.Static);
+            return type.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,

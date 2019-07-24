@@ -1,4 +1,10 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+
+using Disunity.Store.Data;
+
+using EFCoreHooks.Attributes;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,10 +32,24 @@ namespace Disunity.Store.Entities {
 
         [Required] public OrgMemberRole Role { get; set; }
 
+        [OnBeforeCreate]
+        public static void EnsureOneOwner(OrgMember membership, ApplicationDbContext context) {
+            var oldOwner = context.OrgMembers.SingleOrDefault(m => m.OrgId == membership.OrgId &&
+                                                                   m.UserId == membership.UserId &&
+                                                                   m.Role == OrgMemberRole.Owner);
+            if (oldOwner != null) {
+                oldOwner.Role = OrgMemberRole.Admin;
+            }
+        }
+
         public class OrgMemberConfiguration : IEntityTypeConfiguration<OrgMember> {
 
             public void Configure(EntityTypeBuilder<OrgMember> builder) {
                 builder.HasKey(m => new {m.UserId, m.OrgId});
+
+                builder.HasIndex(m => new {m.OrgId, m.Role})
+                       .HasFilter("[Role] = owner")
+                       .IsUnique();
 
                 builder.HasOne(m => m.Org)
                        .WithMany(o => o.Members)
