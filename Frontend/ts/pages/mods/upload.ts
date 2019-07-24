@@ -23,7 +23,6 @@ export class ModUploadPage {
       uploading: this.reporter.Empty.bind(this.reporter)
     });
     this.uploader.appendTo('#ArchiveUpload');
-
   };
 
   private uploadSuccess = (args: any) => {};

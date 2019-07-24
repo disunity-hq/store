@@ -4,7 +4,7 @@ const glob = require('glob');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const entries = (() => {
   const pagesPath = path.join(__dirname, 'ts/pages');
@@ -36,14 +36,21 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
         test: /\.html$/,
         exclude: /node_modules/,
         loader: 'html-loader?exportAsEs6Default'
       },
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
-        exclude: /node_modules/
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       },
       {
         test: /\.(css|scss|sass)$/,
@@ -65,23 +72,19 @@ module.exports = {
             }
           }
         ]
-      },
-      {
-        test: /\.ttf$/,
-        use: [
-          {
-            loader: 'ttf-loader',
-            options: {
-              name: './font/[hash].[ext]'
-            }
-          }
-        ]
       }
     ]
   },
   resolve: {
-    plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.html']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.html', '.vue'],
+    alias: {
+      vue$: 'vue/dist/vue.esm.js',
+      shared: path.resolve(__dirname, 'ts/shared'),
+      '@vendor': path.resolve(__dirname, 'ts/vendor')
+    }
   },
-  plugins: [new CopyPlugin(['favicon.ico', { from: 'assets', to: 'assets' }])]
+  plugins: [
+    new VueLoaderPlugin(),
+    new CopyPlugin(['favicon.ico', { from: 'assets', to: 'assets' }])
+  ]
 };
