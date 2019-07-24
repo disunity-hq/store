@@ -31,9 +31,11 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
     [Bind("Name", "PrimaryKey", "Value")]
     public class OrgInput {
+
         public string name { get; set; }
         public string primaryKey { get; set; }
         public string value { get; set; }
+
     }
 
     [ApiController]
@@ -46,10 +48,10 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         private readonly IMapper _mapper;
         private readonly IAuthorizationService _authorization;
 
-        public OrgController(ILogger<Upload> logger, 
+        public OrgController(ILogger<Upload> logger,
                              ApplicationDbContext context,
                              IAuthorizationService authorization,
-                             UserManager<UserIdentity> userManager, 
+                             UserManager<UserIdentity> userManager,
                              IMapper mapper) {
             _logger = logger;
             _context = context;
@@ -58,18 +60,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             _mapper = mapper;
         }
 
-        [FromBody]
-        public OrgInput SubmitModel { get; set; }
-//
-//        protected object FormatSchemaError(ValidationError e) {
-//            return new {
-//                Kind = e.ErrorType,
-//                e.Path,
-//                e.Message,
-//                e.LineNumber,
-//                e.LinePosition
-//            };
-//        }
+        [FromBody] public OrgInput SubmitModel { get; set; }
 
         [HttpGet]
         public IActionResult Get(string orgSlug) {
@@ -83,6 +74,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         }
 
         [HttpPost]
+        [OrgOperation("orgSlug", "Update")]
         public async Task<IActionResult> PostAsync(string orgSlug) {
             if (!ModelState.IsValid) {
                 return BadRequest();
@@ -95,14 +87,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
                     return new NotFoundResult();
                 }
 
-                var authorization = await _authorization.AuthorizeAsync(User, org, Operations.Update);
-
-                if (!authorization.Succeeded) {
-                    return Unauthorized();
-                }
-                
-                using (var reader = new StreamReader(Request.Body))
-                {
+                using (var reader = new StreamReader(Request.Body)) {
                     var body = reader.ReadToEnd();
                     _logger.LogWarning(body);
                 }
