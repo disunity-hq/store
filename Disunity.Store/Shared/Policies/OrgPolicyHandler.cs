@@ -45,7 +45,7 @@ namespace Disunity.Store.Policies {
         }
 
         private static bool DeleteOp(OrgMember membership) {
-            return membership != null && membership.Role == OrgMemberRole.Owner;
+            return membership?.Role == OrgMemberRole.Owner;
         }
 
         private MethodInfo GetHandler(OperationRequirement requirement) {
