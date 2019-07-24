@@ -4,7 +4,7 @@
 @inject IAuthorizationService AuthorizationService
 
 @{
-    var authorization = await AuthorizationService.AuthorizeAsync(User, Model, Operations.Update);
+    var authorization = await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update);
     var modalData = new {placeholder = "Enter Org display name"};
 }
 

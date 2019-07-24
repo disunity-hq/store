@@ -74,7 +74,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         }
 
         [HttpPost]
-        [OrgOperation("orgSlug", "Update")]
+        [OrgOperation("orgSlug", Operation.Update)]
         public async Task<IActionResult> PostAsync(string orgSlug) {
             if (!ModelState.IsValid) {
                 return BadRequest();

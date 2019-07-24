@@ -14,10 +14,10 @@ namespace Disunity.Store.Policies {
 
     public abstract class OperationAttribute : Attribute {
 
-        public readonly string Operation;
-        private readonly string RouteValue;
+        public readonly Operation Operation;
+        public readonly string RouteValue;
 
-        protected OperationAttribute(string routeValue, string operation) {
+        protected OperationAttribute(string routeValue, Operation operation) {
             RouteValue = routeValue;
             Operation = operation;
         }
@@ -33,21 +33,11 @@ namespace Disunity.Store.Policies {
             return GetResource(context, routeValue);
         }
 
-        public OperationAuthorizationRequirement GetRequirement() {
-            var type = typeof(Operations);
-
-            var fields = from field in type.GetFields(BindingFlags.Static | BindingFlags.Public)
-                         where field.Name == Operation
-                         select (OperationAuthorizationRequirement) field.GetValue(null);
-
-            return fields.FirstOrDefault();
-        }
-
     }
 
     public class OrgOperationAttribute : OperationAttribute {
 
-        public OrgOperationAttribute(string routeValue, string operation) : base(routeValue, operation) { }
+        public OrgOperationAttribute(string routeValue, Operation operation) : base(routeValue, operation) { }
 
         protected override object GetResource(AuthorizationFilterContext context, object routeValue) {
             var orgSlug = (string) routeValue;
