@@ -5,8 +5,8 @@ namespace Disunity.Store.Policies {
 
     public static class OperationsExtensions {
 
-        public static OperationAuthorizationRequirement ToRequirement(this Operation op) {
-            return new OperationAuthorizationRequirement() {Name = op.ToString()};
+        public static OperationRequirement ToRequirement(this Operation op) {
+            return new OperationRequirement(op);
         }
 
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ using Microsoft.Extensions.Logging;
 namespace Disunity.Store.Policies {
 
     [AsScoped(typeof(IAuthorizationHandler))]
-    public class OrgPolicyHandler : AuthorizationHandler<OperationAuthorizationRequirement, Org> {
+    public class OrgPolicyHandler : AuthorizationHandler<OperationRequirement, Org> {
 
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<OrgPolicyHandler> _logger;
@@ -31,36 +32,32 @@ namespace Disunity.Store.Policies {
             _logger = logger;
         }
 
-        private void ReadOp(AuthorizationHandlerContext context,
-                            OperationAuthorizationRequirement requirement,
-                            OrgMember membership) {
-            context.Succeed(requirement);
+        private static bool ReadOp(OrgMember membership) {
+            return true;
         }
 
-        private void CreateOp(AuthorizationHandlerContext context,
-                              OperationAuthorizationRequirement requirement,
-                              OrgMember membership) {
-            context.Succeed(requirement);
+        private static bool CreateOp(OrgMember membership) {
+            return true;
         }
 
-        private void UpdateOp(AuthorizationHandlerContext context,
-                              OperationAuthorizationRequirement requirement,
-                              OrgMember membership) {
-            if (membership != null) {
-                context.Succeed(requirement);
-            }
+        private static bool UpdateOp(OrgMember membership) {
+            return membership != null;
         }
 
-        private void DeleteOp(AuthorizationHandlerContext context,
-                              OperationAuthorizationRequirement requirement,
-                              OrgMember membership) {
-            if (membership != null && membership.Role == OrgMemberRole.Owner)
-                context.Succeed(requirement);
+        private static bool DeleteOp(OrgMember membership) {
+            return membership != null && membership.Role == OrgMemberRole.Owner;
         }
+
+        private MethodInfo GetHandler(OperationRequirement requirement) {
+            var name = $"{requirement.Operation.ToString()}Op";
+            var type = typeof(OrgPolicyHandler);
+            return type.GetMethod(name, BindingFlags.Public | BindingFlags.Static);
+        } 
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-                                                       OperationAuthorizationRequirement requirement,
+                                                       OperationRequirement requirement,
                                                        Org resource) {
+            _logger.LogDebug($"Handling OperationRequirement: {requirement.Operation.ToString()}");
             if (context.User.IsInRole(UserRoles.Admin.ToString())) {
                 context.Succeed(requirement);
                 return Task.CompletedTask;
@@ -68,21 +65,14 @@ namespace Disunity.Store.Policies {
 
             var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var membership = _dbContext.OrgMembers.SingleOrDefault(m => m.Org == resource && m.User.Id == userId);
+            var methodInfo = GetHandler(requirement);
 
-            var handlers =
-                new Dictionary<string,
-                    Action<AuthorizationHandlerContext,
-                        OperationAuthorizationRequirement,
-                        OrgMember>> {
-                    {"Read", ReadOp},
-                    {"Create", CreateOp},
-                    {"Update", UpdateOp},
-                    {"Delete", DeleteOp}
-                };
+            if (methodInfo != null) {
+                var authorized = (bool) methodInfo.Invoke(null, new object[] {membership});
 
-            if (handlers.ContainsKey(requirement.Name)) {
-                var handler = handlers[requirement.Name];
-                handler(context, requirement, membership);
+                if (authorized) {
+                    context.Succeed(requirement);
+                }
             }
 
             return Task.CompletedTask;

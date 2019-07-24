@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
@@ -8,8 +9,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -18,10 +21,10 @@ namespace Disunity.Store.Policies {
 
     public class OperationFilter : IAuthorizationFilter {
 
-        public void ProcessMethodAttribute(ILogger<OperationFilter> logger,
-                                           AuthorizationFilterContext context,
-                                           IAuthorizationService authService,
-                                           OperationAttribute attr) {
+        private static void ProcessMethodAttribute(ILogger<OperationFilter> logger,
+                                                   AuthorizationFilterContext context,
+                                                   IAuthorizationService authService,
+                                                   OperationAttribute attr) {
             var resource = attr.GetResource(context);
 
             if (resource == null) {
@@ -39,31 +42,35 @@ namespace Disunity.Store.Policies {
             }
         }
 
-        public void ProcessMethodAttributes(ILogger<OperationFilter> logger,
-                                            AuthorizationFilterContext context,
-                                            IAuthorizationService authService,
-                                            MethodInfo methodInfo) {
-            var attrs = methodInfo.GetCustomAttributes(typeof(OperationAttribute), true);
-
-            logger.LogDebug($"Found {attrs.Length} OperationAttributes.");
-
-            foreach (OperationAttribute attr in attrs) {
+        private static void ProcessAttributes(ILogger<OperationFilter> logger,
+                                              AuthorizationFilterContext context,
+                                              IAuthorizationService authService,
+                                              IEnumerable<OperationAttribute> attributes) {
+            foreach (var attr in attributes) {
                 ProcessMethodAttribute(logger, context, authService, attr);
             }
 
         }
 
+        private static IEnumerable<OperationAttribute> AttrsFromController(ActionDescriptor descriptor) {
+            var methodInfo = descriptor is ControllerActionDescriptor controllerDescriptor
+                ? controllerDescriptor.MethodInfo
+                : null;
+
+            if (methodInfo == null) {
+                return new OperationAttribute[] { };
+            }
+
+            var attrs = methodInfo.GetCustomAttributes(typeof(OperationAttribute), true);
+            return attrs.Select(a => (OperationAttribute) a);
+        }
+
+
         public void OnAuthorization(AuthorizationFilterContext context) {
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<OperationFilter>>();
             var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthorizationService>();
-            var desc = context.ActionDescriptor as ControllerActionDescriptor;
-
-            if (desc == null) {
-                logger.LogDebug($"ControllerActionDescriptor was null: {context.ActionDescriptor.DisplayName}");
-                return;
-            }
-
-            ProcessMethodAttributes(logger, context, authService, desc.MethodInfo);
+            var attrs = AttrsFromController(context.ActionDescriptor);
+            ProcessAttributes(logger, context, authService, attrs);
         }
 
     }
