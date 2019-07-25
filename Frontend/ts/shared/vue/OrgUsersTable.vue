@@ -5,22 +5,18 @@
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Role</th>
-          <th scope="col" class="smallCell" v-if="canManageRoles">
-            <button type="button" class="btn btn-light" v-on:click="addingMember = !addingMember">
-              <i class="fas fa-plus" />
-            </button>
-          </th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="membership in members" v-bind:key="membership.username">
           <td>{{ membership.userName }}</td>
           <td>{{membership.role}}</td>
-          <td class="smallCell" v-if="canManageRoles">
+          <td class="smallCell">
             <button
+              v-if="canManageRoles && membership.role !== 'Owner'"
               type="button"
-              class="btn btn-light"
-              v-if="membership.role !== 'Owner'"
+              class="btn btn-primary"
               v-on:click="removeMember(membership.userName)"
             >
               <i class="fas fa-minus" />
@@ -46,11 +42,20 @@
             </div>
           </td>
           <td class="smallCell">
-            <button type="button" class="btn btn-light" v-on:click="addMember">
-              <i class="fas fa-plus" />
+            <button type="button" class="btn btn-primary" v-on:click="addMember">
+              <i class="fas fa-save" />
             </button>
-            <button type="button" class="btn btn-light" v-on:click="addingMember = false">
-              <i class="fas fa-minus" />
+            <button type="button" class="btn btn-primary" v-on:click="addingMember = false">
+              <i class="fas fa-trash" />
+            </button>
+          </td>
+        </tr>
+        <tr v-else-if="canManageRoles">
+          <td></td>
+          <td></td>
+          <td key="member-add" style="text-align: right">
+            <button type="button" class="btn btn-primary" v-on:click="addingMember = !addingMember">
+              Add member
             </button>
           </td>
         </tr>
@@ -99,7 +104,7 @@ export default class OrgMembersTable extends Vue {
   public async created() {
     const addButton = new Button(
       {
-        iconCss: "fas fa-plus"
+        content: "Add member"
       },
       "#addUserButton"
     );
