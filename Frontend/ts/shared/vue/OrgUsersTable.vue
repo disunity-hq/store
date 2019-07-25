@@ -12,7 +12,15 @@
         <tr v-for="membership in members" v-bind:key="membership.username">
           <td>{{ membership.userName }}</td>
           <td>
-            <div v-if="canManageRoles"></div>
+            <ejs-inplaceeditor
+              v-if="canManageRoles && membership.role !== 'Owner'"
+              v-bind:id="membership.userName + 'RoleEditor'"
+              type="DropDownList"
+              mode="Inline"
+              :value="membership.role"
+              :model="rolesModel"
+              v-on:actionSuccess="changeRole($event, membership.userName)"
+            ></ejs-inplaceeditor>
             <span v-else>{{membership.role}}</span>
           </td>
           <td class="smallCell" v-if="canManageMembers">
@@ -75,6 +83,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import axios from "axios";
+import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
 import "./syncfusion";
 import ErrorReporter from "../ErrorReporter";
 
@@ -91,17 +100,20 @@ interface IMembership {
 
 @Component
 export default class OrgMembersTable extends Vue {
-  members: IMembership[] = [];
-  addingMember = false;
-
-  roles = Object.keys(MemberRole).filter(k => isNaN(Number(k)));
-
   @Prop({ type: Boolean, default: false }) readonly canManageRoles: boolean;
   @Prop({ type: Boolean, default: false }) readonly canManageMembers: boolean;
   @Prop({ type: String, required: true }) readonly orgSlug: string;
 
+  members: IMembership[] = [];
+  addingMember = false;
+
   userName: string = "";
   role: string = "Member";
+
+  readonly roles = Object.keys(MemberRole).filter(k => isNaN(Number(k)));
+  readonly rolesModel = {
+    dataSource: this.roles
+  };
 
   readonly baseUrl = `/api/v1/orgs/${this.orgSlug}/members`;
 
@@ -145,6 +157,25 @@ export default class OrgMembersTable extends Vue {
 
       if (response.status === 204) {
         this.members = this.members.filter(m => m.userName != username);
+      } else {
+        this.errorReporter.Empty();
+        this.errorReporter.Set(response.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  public async changeRole($event: ActionEventArgs, userName: string) {
+    const membership: IMembership = {
+      userName,
+      role: $event.value
+    };
+    try {
+      const response = await axios.put(this.baseUrl, membership);
+
+      if (response.status === 204) {
+        this.members.find(m => m.userName === userName).role = membership.role;
       } else {
         this.errorReporter.Empty();
         this.errorReporter.Set(response.data);
