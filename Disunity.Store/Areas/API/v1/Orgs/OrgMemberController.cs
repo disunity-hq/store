@@ -79,6 +79,14 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
             var org = await _dbContext.Orgs.SingleAsync(o => o.Slug == OrgSlug);
 
+            var existingMembership = await _dbContext.OrgMembers.SingleOrDefaultAsync(
+                m => m.User == user && m.Org == org);
+
+            if (existingMembership != null) {
+                ModelState.AddModelError("duplicateMembership", $"User is already a member of Org: {user.UserName}");
+                return GetResultFromModelState();
+            }
+
             var membership = new OrgMember() {
                 User = user,
                 Org = org,
