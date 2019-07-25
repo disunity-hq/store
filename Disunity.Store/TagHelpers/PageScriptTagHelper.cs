@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,10 +55,20 @@ namespace Disunity.Store.TagHelpers {
         }
 
         private string GetAddendum(string route) {
+            var paramLiterals = new List<string>();
+
+            foreach (var param in Params) {
+                if (param is string stringParam) {
+                    paramLiterals.Add($"'{stringParam}'");
+                } else {
+                    paramLiterals.Add(param.ToString().ToLowerInvariant());
+                }
+            }
+
             var template = $@"<script>
 
             try {{
-                InitPageScript({string.Join(",",Params)});
+                InitPageScript({string.Join(",",paramLiterals)});
             }}
             catch (error) {{
                 console.error('Page script failed to initialize for {route}');

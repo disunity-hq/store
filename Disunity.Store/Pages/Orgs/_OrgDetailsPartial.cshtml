@@ -9,8 +9,7 @@
     var canManageUsers = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMembers)).Succeeded;
     var canManageRoles = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMemberRoles)).Succeeded;
     var modalData = new {placeholder = "Enter Org display name"};
-
-    var scriptParams = new object[] {$"'{Model.Slug}'", canManageUsers.ToString().ToLowerInvariant(), canManageRoles.ToString().ToLowerInvariant()};
+    var scriptParams = new object[] {Model.Slug, canManageUsers, canManageRoles};
 }
 
 <h1>
