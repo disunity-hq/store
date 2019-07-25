@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table">
+    <table class="table no-top-border">
       <thead>
         <tr>
           <th scope="col">Username</th>
