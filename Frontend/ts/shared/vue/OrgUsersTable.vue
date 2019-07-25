@@ -189,22 +189,32 @@ export default class OrgMembersTable extends Vue {
 
 <style lang="scss" scoped>
 @import "~@syncfusion/ej2-vue-inplace-editor/styles/bootstrap.scss";
-#ctrl-member-add {
-  text-align: right;
+
+.e-inplaceeditor {
+  margin-left: 2em !important;
 }
 
-tr {
-  td:last-child {
-    text-align: right;
-    #btn-remove-member {
-      visibility: hidden;
+table {
+  text-align: center;
+  tr {
+    td:first-child {
+      width: 100%;
     }
-  }
-  
-  &:hover {
+    td:nth-child(2) {
+      min-width: 200px;
+    }
     td:last-child {
+      min-width: 16em;
       #btn-remove-member {
-        visibility: visible;
+        visibility: hidden;
+      }
+    }
+
+    &:hover {
+      td:last-child {
+        #btn-remove-member {
+          visibility: visible;
+        }
       }
     }
   }
