@@ -12,6 +12,70 @@
     <None Update="Shared\Data\Grammars\*.json" CopyToOutputDirectory="Always" />
     <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.Local.template.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Update="appsettings.Local.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Entities\TargetVersionDto.cs">
+      <DependentUpon>TargetVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetDto.cs">
+      <DependentUpon>Target.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgMemberDto.cs">
+      <DependentUpon>OrgMember.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgDto.cs">
+      <DependentUpon>Org.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModVersionDto.cs">
+      <DependentUpon>ModVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModTargetCompatibilityDto.cs">
+      <DependentUpon>ModTargetCompatibility.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDto.cs">
+      <DependentUpon>Mod.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDependencyDto.cs">
+      <DependentUpon>ModDependency.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModProfile.cs">
+      <DependentUpon>Mod.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetProfile.cs">
+      <DependentUpon>Target.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\UnityVersionProfile.cs">
+      <DependentUpon>UnityVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgProfile.cs">
+      <DependentUpon>Org.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDependencyProfile.cs">
+      <DependentUpon>ModDependency.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModTargetCompatibilityProfile.cs">
+      <DependentUpon>ModTargetCompatibility.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModVersionProfile.cs">
+      <DependentUpon>ModVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgMemberProfile.cs">
+      <DependentUpon>OrgMember.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetVersionProfile.cs">
+      <DependentUpon>TargetVersion.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
 

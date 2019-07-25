@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace Disunity.Store.Entities.DataTransferObjects {
+namespace Disunity.Store.Entities {
 
     public class ModVersionDto {
 

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Disunity.Store.Entities.DataTransferObjects {
+namespace Disunity.Store.Entities {
 
     public class ModDto {
 

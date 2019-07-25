@@ -1,4 +1,4 @@
-namespace Disunity.Store.Entities.DataTransferObjects {
+namespace Disunity.Store.Entities {
 
     public class ModDependencyDto {
 

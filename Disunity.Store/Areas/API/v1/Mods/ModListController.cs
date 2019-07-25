@@ -8,7 +8,6 @@ using AutoMapper.QueryableExtensions;
 
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
-using Disunity.Store.Entities.DataTransferObjects;
 using Disunity.Store.Extensions;
 
 using Microsoft.AspNetCore.Mvc;

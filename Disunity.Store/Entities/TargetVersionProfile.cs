@@ -1,14 +1,12 @@
 using AutoMapper;
 
 
-namespace Disunity.Store.Entities.DataTransferObjects.Profiles {
+namespace Disunity.Store.Entities {
 
-    public class TargetProfile : Profile {
+    public class TargetVersionProfile : Profile {
 
-        public TargetProfile() {
-            CreateMap<Target, TargetDto>();
-
-            // BUG Allegedly AutoMapper can figure this out on it's own. Not sure why it isnt'
+        public TargetVersionProfile() {
+            // Allegedly AutoMapper can figure this out on it's own. Not sure why it isnt'
             CreateMap<TargetVersion, TargetVersionDto>()
                 .ForMember(
                     v => v.MaxCompatibleVersion,
