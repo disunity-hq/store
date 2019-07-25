@@ -25,6 +25,7 @@
           </td>
           <td class="smallCell" v-if="canManageMembers">
             <button
+              id="btn-remove-member"
               v-if="canManageRoles && membership.role !== 'Owner'"
               type="button"
               class="btn btn-primary"
@@ -65,7 +66,6 @@
           <td></td>
           <td></td>
           <td key="member-add" id="ctrl-member-add">
-
             <button
               type="button"
               class="btn btn-primary"
@@ -191,5 +191,22 @@ export default class OrgMembersTable extends Vue {
 @import "~@syncfusion/ej2-vue-inplace-editor/styles/bootstrap.scss";
 #ctrl-member-add {
   text-align: right;
+}
+
+tr {
+  td:last-child {
+    text-align: right;
+    #btn-remove-member {
+      visibility: hidden;
+    }
+  }
+  
+  &:hover {
+    td:last-child {
+      #btn-remove-member {
+        visibility: visible;
+      }
+    }
+  }
 }
 </style>
