@@ -14,6 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@syncfusion/ej2": "^17.1.51",
+    "@syncfusion/ej2-vue-inplace-editor": "^17.2.35",
     "@types/jquery": "^3.3.29",
     "@types/jquery-validation-unobtrusive": "^3.2.32",
     "@types/node": "^12.0.10",

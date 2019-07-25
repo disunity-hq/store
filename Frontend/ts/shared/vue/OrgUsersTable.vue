@@ -11,8 +11,11 @@
       <tbody>
         <tr v-for="membership in members" v-bind:key="membership.username">
           <td>{{ membership.userName }}</td>
-          <td>{{membership.role}}</td>
-          <td class="smallCell">
+          <td>
+            <div v-if="canManageRoles"></div>
+            <span v-else>{{membership.role}}</span>
+          </td>
+          <td class="smallCell" v-if="canManageMembers">
             <button
               v-if="canManageRoles && membership.role !== 'Owner'"
               type="button"
@@ -54,9 +57,11 @@
           <td></td>
           <td></td>
           <td key="member-add" style="text-align: right">
-            <button type="button" class="btn btn-primary" v-on:click="addingMember = !addingMember">
-              Add member
-            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              v-on:click="addingMember = !addingMember"
+            >Add member</button>
           </td>
         </tr>
       </tbody>
@@ -69,7 +74,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import axios from "axios";
-import { Button } from "@syncfusion/ej2-buttons";
+import "./syncfusion";
 import ErrorReporter from "../ErrorReporter";
 
 enum MemberRole {
@@ -101,14 +106,7 @@ export default class OrgMembersTable extends Vue {
 
   readonly errorReporter = new ErrorReporter("#orgMembersErrors");
 
-  public async created() {
-    const addButton = new Button(
-      {
-        content: "Add member"
-      },
-      "#addUserButton"
-    );
-
+  public async mounted() {
     try {
       const members = (await axios.get<IMembership[]>(this.baseUrl)).data;
       if (Array.isArray(members)) {
@@ -156,3 +154,7 @@ export default class OrgMembersTable extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "~@syncfusion/ej2-vue-inplace-editor/styles/bootstrap.scss";
+</style>

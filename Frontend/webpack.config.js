@@ -27,6 +27,24 @@ for (let key in entries) {
   console.log(key);
 }
 
+const cssLoaders = [
+  'css-loader',
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: function() {
+        return [require('autoprefixer')];
+      }
+    }
+  },
+  {
+    loader: 'sass-loader',
+    options: {
+      includePaths: ['node_modules/@syncfusion']
+    }
+  }
+];
+
 module.exports = {
   entry: entries,
   output: {
@@ -54,22 +72,13 @@ module.exports = {
       },
       {
         test: /\.(css|scss|sass)$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
+        oneOf: [
           {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function() {
-                return [require('autoprefixer')];
-              }
-            }
+            resourceQuery: /^\?vue/,
+            use: ['vue-style-loader', ...cssLoaders]
           },
           {
-            loader: 'sass-loader',
-            options: {
-              includePaths: ['node_modules/@syncfusion']
-            }
+            use: [MiniCssExtractPlugin.loader, ...cssLoaders]
           }
         ]
       }
