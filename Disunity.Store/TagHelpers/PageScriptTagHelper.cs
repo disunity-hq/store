@@ -31,6 +31,8 @@ namespace Disunity.Store.TagHelpers {
         /// </summary>
         public bool InitScript { get; set; } = true;
 
+        public object[] Params { get; set; } = new object[0];
+
         public PageScriptTagHelper(IHostingEnvironment env, IHttpContextAccessor context,
                                    ILogger<PageScriptTagHelper> logger) {
             _env = env;
@@ -55,7 +57,7 @@ namespace Disunity.Store.TagHelpers {
             var template = $@"<script>
 
             try {{
-                InitPageScript();
+                InitPageScript({string.Join(",",Params)});
             }}
             catch (error) {{
                 console.error('Page script failed to initialize for {route}');

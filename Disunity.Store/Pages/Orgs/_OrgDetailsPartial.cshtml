@@ -9,6 +9,8 @@
     var canManageUsers = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMembers)).Succeeded;
     var canManageRoles = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMemberRoles)).Succeeded;
     var modalData = new {placeholder = "Enter Org display name"};
+
+    var scriptParams = new object[] {$"'{Model.Slug}'", canManageUsers.ToString().ToLowerInvariant(), canManageRoles.ToString().ToLowerInvariant()};
 }
 
 <h1>
@@ -28,31 +30,7 @@
     }
 </h1>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Role</th>
-        @if (canManageUsers) {
-            <th>
-                <ejs-button id="addUserButton" iconCss="fas fa-plus"></ejs-button>
-            </th>
-        }
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var membership in Model.Members) {
-        <tr>
-            <td>@membership.User.ShadowOrg.DisplayName</td>
-            <td>@membership.Role</td>
-            @if (canManageUsers) {
-                <td>
-                    @if (membership.Role != OrgMemberRole.Owner) {
-                        <ejs-button id="addUserButton" iconCss="fas fa-minus"></ejs-button>
-                    }
-                </td>
-            }
-        </tr>
-    }
-    </tbody>
-</table>
+
+<div id="usersTable"></div>
+
+<page-script path="users/details" params="@scriptParams"/>

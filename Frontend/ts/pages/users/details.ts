@@ -2,12 +2,17 @@ import Vue from 'vue';
 
 import OrgUsersTable from 'shared/vue/OrgUsersTable.vue';
 
-export function InitPageScript() {
-  new Vue({
+export function InitPageScript(
+  orgSlug: string,
+  canManageMembers: boolean,
+  canManageRoles: boolean
+) {
+  new OrgUsersTable({
     el: '#usersTable',
-    template: '<OrgUsersTable/>',
-    components: {
-      OrgUsersTable
+    propsData: {
+      orgSlug,
+      canManageMembers,
+      canManageRoles
     }
   });
 }

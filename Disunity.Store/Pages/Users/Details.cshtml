@@ -1,5 +1,9 @@
 @page "/u/{userSlug:user}"
+@using Disunity.Store.Policies
+@using Microsoft.AspNetCore.Authorization
 @model Disunity.Store.Pages.Users.Details
+@inject IAuthorizationService AuthorizationService
+
 
 @{
     ViewData["Title"] = Model.Org.DisplayName;
@@ -7,10 +11,4 @@
 
 <partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
 
-<div id="usersTable"></div>
-
 <partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>
-
-@section Scripts {
-    <page-script/>
-}

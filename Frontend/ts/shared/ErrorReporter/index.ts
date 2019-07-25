@@ -1,5 +1,5 @@
 import * as ejs from '@vendor/ejs';
-
+import * as jQuery from 'jquery';
 import ManifestSchemaReport from './ManifestSchemaReport';
 import UnauthorizedReport from './UnauthorizedReport';
 import IErrorReport from './IErrorReport';
