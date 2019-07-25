@@ -56,7 +56,8 @@
         <tr v-else-if="canManageRoles">
           <td></td>
           <td></td>
-          <td key="member-add" style="text-align: right">
+          <td key="member-add" id="ctrl-member-add">
+
             <button
               type="button"
               class="btn btn-primary"
@@ -157,4 +158,7 @@ export default class OrgMembersTable extends Vue {
 
 <style lang="scss" scoped>
 @import "~@syncfusion/ej2-vue-inplace-editor/styles/bootstrap.scss";
+#ctrl-member-add {
+  text-align: right;
+}
 </style>
