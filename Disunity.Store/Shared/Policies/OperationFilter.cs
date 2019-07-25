@@ -29,7 +29,7 @@ namespace Disunity.Store.Policies {
 
             if (resource == null) {
                 logger.LogDebug("Resource was null.");
-                context.Result = new ForbidResult();
+                context.Result = new NotFoundResult();
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace Disunity.Store.Policies {
             logger.LogDebug($"Authorization succeeded: {authorization.Succeeded}");
 
             if (!authorization.Succeeded) {
-                context.Result = new ForbidResult();
+                context.Result = attr.API ? (IActionResult) new StatusCodeResult(403) : new ForbidResult();
             }
         }
 

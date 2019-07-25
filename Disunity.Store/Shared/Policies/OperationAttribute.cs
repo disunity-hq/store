@@ -16,10 +16,12 @@ namespace Disunity.Store.Policies {
 
         public readonly Operation Operation;
         public readonly string RouteValue;
+        public readonly bool API;
 
-        protected OperationAttribute(string routeValue, Operation operation) {
+        protected OperationAttribute(string routeValue, Operation operation, bool api = true) {
             RouteValue = routeValue;
             Operation = operation;
+            API = api;
         }
 
         protected abstract object GetResource(AuthorizationFilterContext context, object routeValue);
