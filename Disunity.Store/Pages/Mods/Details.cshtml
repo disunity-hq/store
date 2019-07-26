@@ -1,12 +1,17 @@
 @page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
 @using Bogus.Extensions
+@using Disunity.Store.Policies
+@using Microsoft.AspNetCore.Authorization
 @model Disunity.Store.Pages.Mods.Details
 @addTagHelper *, Syncfusion.EJ2
+@inject IAuthorizationService AuthorizationService
 
 @{
     var ownerRoute = new Dictionary<string, string>() {
         {"userSlug", Model.ModVersion.Mod.Owner.Slug}
     };
+
+    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model.ModVersion.Mod, Operation.Update)).Succeeded;
 }
 
 <div class="d-flex flex-row mb-5 align-items-start">

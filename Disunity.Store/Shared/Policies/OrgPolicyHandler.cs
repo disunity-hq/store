@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 namespace Disunity.Store.Policies {
 
     [AsScoped(typeof(IAuthorizationHandler))]
-    public class OrgPolicyHandler : AuthorizationHandler<OperationRequirement, Org> {
+    public class OrgPolicyHandler : OperationPolicyHandler<Org> {
 
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<OrgPolicyHandler> _logger;
@@ -56,19 +56,12 @@ namespace Disunity.Store.Policies {
             return membership?.Role == OrgMemberRole.Owner;
         }
 
-        private MethodInfo GetHandler(OperationRequirement requirement) {
-            var name = $"{requirement.Operation.ToString()}Op";
-            var type = typeof(OrgPolicyHandler);
-            return type.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-        }
-
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                        OperationRequirement requirement,
                                                        Org resource) {
             _logger.LogDebug($"Handling OperationRequirement: {requirement.Operation.ToString()}");
 
-            if (context.User.IsInRole(UserRoles.Admin.ToString())) {
-                context.Succeed(requirement);
+            if (CheckSuperUser(context, requirement)) {
                 return Task.CompletedTask;
             }
 

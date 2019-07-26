@@ -44,7 +44,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         /// </summary>
         /// <returns>A JSON array of all the members and their roles within this org</returns>
         [HttpGet]
-        [OrgOperation("orgSlug", Operation.Read)]
+        [OrgOperation(Operation.Read, "orgSlug")]
         public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetMembersAsync() {
             var memberships = await _dbContext.OrgMembers
                                               .Include(m => m.User)
@@ -63,7 +63,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         /// <response code="204">Indicates that the user was added successfully</response>
         /// <response code="400">Returns information about why the request was malformed</response>
         [HttpPost]
-        [OrgOperation("orgSlug", Operation.ManageMembers)]
+        [OrgOperation(Operation.ManageMembers, "orgSlug")]
         public async Task<IActionResult> AddOrgMember([FromBody] OrgMemberDto membershipDto) {
             if (membershipDto.Role == OrgMemberRole.Owner) {
                 ModelState.AddModelError("invalidRole", "Cannot add extra owner's to an organization");
@@ -106,7 +106,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpDelete("{username:slug}")]
-        [OrgOperation("orgSlug", Operation.ManageMembers)]
+        [OrgOperation(Operation.ManageMembers, "orgSlug")]
         public async Task<IActionResult> RemoveOrgMember([FromRoute] string username) {
             var membership =
                 await _dbContext.OrgMembers.SingleOrDefaultAsync(
@@ -121,14 +121,14 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
             return NoContent();
         }
-        
+
         /// <summary>
         /// Update a users role within an org
         /// </summary>
         /// <param name="membershipDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [OrgOperation("orgSlug", Operation.ManageMemberRoles)]
+        [OrgOperation(Operation.ManageMemberRoles, "orgSlug")]
         public async Task<IActionResult> UpdateMemberRole([FromBody] OrgMemberDto membershipDto) {
             var membership =
                 await _dbContext.OrgMembers.SingleOrDefaultAsync(
@@ -139,7 +139,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             }
 
             membership.Role = membershipDto.Role;
-            
+
             await _dbContext.SaveChangesAsync();
 
             return NoContent();

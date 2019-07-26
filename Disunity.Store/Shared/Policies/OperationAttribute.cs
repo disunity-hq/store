@@ -15,36 +15,51 @@ namespace Disunity.Store.Policies {
     public abstract class OperationAttribute : Attribute {
 
         public readonly Operation Operation;
-        public readonly string RouteValue;
+        public readonly string[] RouteValues;
         public readonly bool API;
 
-        protected OperationAttribute(string routeValue, Operation operation, bool api = true) {
-            RouteValue = routeValue;
+        protected OperationAttribute(Operation operation, string[] routeValues, bool api = true) {
+            RouteValues = routeValues;
             Operation = operation;
             API = api;
         }
 
-        protected abstract object GetResource(AuthorizationFilterContext context, object routeValue);
+        protected abstract object GetResource(AuthorizationFilterContext context, object[] routeValues);
 
-        private object GetRouteValue(RouteValueDictionary values) {
-            return values.ContainsKey(RouteValue) ? values[RouteValue] : null;
+        private object[] GetRouteValues(RouteValueDictionary values) {
+            return RouteValues.Select(key => values.ContainsKey(key) ? values[key] : null).ToArray();
         }
 
         public object GetResource(AuthorizationFilterContext context) {
-            var routeValue = GetRouteValue(context.RouteData.Values);
-            return GetResource(context, routeValue);
+            var routeValues = GetRouteValues(context.RouteData.Values);
+            return GetResource(context, routeValues);
         }
 
     }
 
     public class OrgOperationAttribute : OperationAttribute {
 
-        public OrgOperationAttribute(string routeValue, Operation operation) : base(routeValue, operation) { }
+        public OrgOperationAttribute(Operation operation, string routeValues) :
+            base(operation, new[] {routeValues}) { }
 
-        protected override object GetResource(AuthorizationFilterContext context, object routeValue) {
-            var orgSlug = (string) routeValue;
+        protected override object GetResource(AuthorizationFilterContext context, object[] routeValues) {
+            var orgSlug = (string) routeValues[0];
             var dbContext = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
             return dbContext.Orgs.SingleOrDefault(o => o.Slug == orgSlug);
+        }
+
+    }
+
+    public class ModOperationAttribute : OperationAttribute {
+
+        public ModOperationAttribute(Operation operation, string orgSlug, string modSlug) :
+            base(operation, new[] {orgSlug, modSlug}) { }
+
+        protected override object GetResource(AuthorizationFilterContext context, object[] routeValues) {
+            var orgSlug = routeValues[0] as string;
+            var modSlug = routeValues[1] as string;
+            var dbContext = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
+            return dbContext.Mods.SingleOrDefault(m => m.Slug == modSlug && m.Owner.Slug == orgSlug);
         }
 
     }
