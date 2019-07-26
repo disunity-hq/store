@@ -26,7 +26,7 @@ export default class Error extends Vue {
     validator: function(value: Object) {
       if (!value.hasOwnProperty("message")) {
         console.error(
-          "Error component prop `content` object value missing required `message` property."
+          "Component prop `Error.content` object value missing required `message` property."
         );
         return false;
       }
