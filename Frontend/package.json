@@ -16,6 +16,7 @@
     "@syncfusion/ej2": "^17.1.51",
     "@syncfusion/ej2-vue-dropdowns": "^17.2.36",
     "@syncfusion/ej2-vue-inplace-editor": "^17.2.35",
+    "@syncfusion/ej2-vue-popups": "^17.2.35",
     "@types/jquery": "^3.3.29",
     "@types/jquery-validation-unobtrusive": "^3.2.32",
     "@types/node": "^12.0.10",
