@@ -1,31 +1,11 @@
 <template>
-  <div :set="id = Math.floor(Math.random() * 6) + 1">
-    <div class="error">
-      <div :id="'error' + id" class="error-name">
-        <ejs-tooltip
-          class="tooltipcontainer"
-          mouseTrail=true
-          :content="Tooltip()"
-          :target="'#error' + id"
-        >{{ name }}</ejs-tooltip>
-      </div>
-      <div class="error-message">{{ message }}</div>
-      <div class="error-copy">
-        <ejs-tooltip
-          class="tooltipcontainer"
-          mouseTrail=true
-          content="Copy error"
-          :target="'#copy' + id"
-        >
-          <button
-            :id="'copy' + id"
-            class="btn-primary"
-            v-on:click="CopyError(name, context, message)"
-          >
-            <i class="fas fa-copy" />
-          </button>
-        </ejs-tooltip>
-      </div>
+  <div class="error" :set='message = Message()'>
+    <div class="error-name">{{ name }}</div>
+    <div class="error-message">{{ message }}</div>
+    <div class="error-copy">
+      <button class="btn-primary" v-on:click="CopyError(name, context, message)">
+        <i class="fas fa-copy" />
+      </button>
     </div>
   </div>
 </template>
@@ -40,10 +20,28 @@ import "../syncfusion";
 export default class Error extends Vue {
   @Prop({ type: String, required: true }) readonly name: string;
   @Prop({ type: String, required: false }) readonly context: string;
-  @Prop({ type: String, required: true }) readonly message: string;
+  @Prop({
+    type: Object,
+    required: true,
+    validator: function(value: Object) {
+      if (!value.hasOwnProperty("message")) {
+        console.error(
+          "Error component prop `content` object value missing required `message` property."
+        );
+        return false;
+      }
+
+      return true;
+    }
+  })
+  readonly content: Object;
 
   public async CopyError(name: string, context: string, message: string) {
     copy(`${name}${context ? "@" + context : ""}: ${message}`);
+  }
+
+  public Message(): string {
+    return this.content["message"];
   }
 
   public Tooltip() {

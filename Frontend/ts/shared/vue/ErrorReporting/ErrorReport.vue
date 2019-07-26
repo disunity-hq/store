@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <Error name="GenericError" context="FooBar" message="This is error content" />
+    <Error name="GenericError" context="FooBar" :content="{ message: 'This is error content' }" />
   </div>
 </template>
 
