@@ -233,14 +233,14 @@ table {
     td:last-child {
       min-width: 16em;
       #btn-remove-member {
-        visibility: hidden;
+        opacity: .1;
       }
     }
 
     &:hover {
       td:last-child {
         #btn-remove-member {
-          visibility: visible;
+          opacity: 1;
         }
       }
     }
