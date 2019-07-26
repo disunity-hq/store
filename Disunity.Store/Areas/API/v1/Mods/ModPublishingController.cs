@@ -6,6 +6,7 @@ using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Extensions;
 using Disunity.Store.Policies;
+using Disunity.Store.Storage;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             var modVersion = await GetModVersionAsync();
 
             if (modVersion == null || modVersion.IsActive != false) {
+                _logger.LogInformation($"ModVersion found {modVersion != null}. Is Active {modVersion?.IsActive}");
                 return NotFound();
             }
 
@@ -57,13 +59,12 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             if (modVersion.IsActive == true) {
                 return Forbid();
             }
+            
+            _dbContext.ModVersions.Remove(modVersion);
+            await _dbContext.SaveChangesAsync();
 
-            var versionEntry = _dbContext.Entry(modVersion);
-            versionEntry.State = EntityState.Deleted;
-
-            if (modVersion.Mod.Latest == modVersion) {
-                var modEntry = _dbContext.Entry(modVersion.Mod);
-                modEntry.State = EntityState.Deleted;
+            if (modVersion.Mod.Latest == null) {
+                _dbContext.Mods.Remove(modVersion.Mod);
             }
 
             await _dbContext.SaveChangesAsync();

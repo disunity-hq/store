@@ -6,9 +6,13 @@ using System.Linq;
 
 using Disunity.Store.Data;
 using Disunity.Store.Extensions;
+using Disunity.Store.Storage;
+
+using EFCoreHooks.Attributes;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Entities {
@@ -63,10 +67,19 @@ namespace Disunity.Store.Entities {
 
     public partial class ModVersion {
 
+        [OnAfterDelete]
+        public static void CleanupStorageProvider(ModVersion modVersion, IServiceProvider services) {
+            using (var scope = services.CreateScope()) {
+                var storageProvider = scope.ServiceProvider.GetRequiredService<IStorageProvider>();
+                storageProvider.DeleteFile(modVersion.FileId).Wait();
+            }
+        }
+
         public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
 
             public void Configure(EntityTypeBuilder<ModVersion> builder) {
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
+                builder.Property(v => v.IsActive).HasDefaultValue(false);
 
                 builder.HasIndex(v => new {v.ModId, v.VersionNumberId}).IsUnique();
 

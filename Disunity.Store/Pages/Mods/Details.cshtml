@@ -6,6 +6,8 @@
     var ownerRoute = new Dictionary<string, string>() {
         {"userSlug", Model.ModVersion.Mod.Owner.Slug}
     };
+
+    var pageArgs = new string[] {Model.OwnerSlug, Model.ModSlug, Model.ModVersion.VersionNumber};
 }
 
 @section Growler {
@@ -51,10 +53,12 @@
             </a>
         </div>
 
-        <div class="d-flex flex-row mt-1">
-            <ejs-button id="publishButton" content="Publish" isPrimary="true" iconCss="fas fa-upload" cssClass="e-success flex-grow-1 m-1"></ejs-button>
-            <ejs-button id="deleteButton" content="Delete" isPrimary="false" iconCss="fas fa-trash" cssClass="e-danger flex-grow-1 m-1"></ejs-button>
-        </div>
+        @if (Model.ModVersion.IsActive != true) {
+            <div class="d-flex flex-row mt-1">
+                <ejs-button id="publishButton" content="Publish" isPrimary="true" iconCss="fas fa-upload" cssClass="e-success flex-grow-1 m-1"></ejs-button>
+                <ejs-button id="deleteButton" content="Delete" isPrimary="false" iconCss="fas fa-trash" cssClass="e-danger flex-grow-1 m-1"></ejs-button>
+            </div>
+        }
         <div class="d-flex justify-content-center mt-3">
             <span class="text-center" style="flex-basis: 90%">
                 @Model.ModVersion.Description
@@ -98,5 +102,5 @@
 </ejs-accordion>
 
 @section Scripts {
-    <page-script init-script="false"/>
+    <page-script init-script="true" params="@pageArgs"/>
 }

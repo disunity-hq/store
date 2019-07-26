@@ -9,6 +9,7 @@ using Disunity.Store.Artifacts;
 using Disunity.Store.Data;
 using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
+using Disunity.Store.Storage;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,6 @@ namespace Disunity.Store.Entities.Factories {
         public ModVersionFactory(ApplicationDbContext context, IVersionNumberFactory versionNumberFactory) {
             _context = context;
             _versionNumberFactory = versionNumberFactory;
-
         }
 
         [ScopedFactory]
@@ -39,6 +39,21 @@ namespace Disunity.Store.Entities.Factories {
 
         public async Task<ModVersion> FromArchiveAsync(Archive archive) {
             var manifest = archive.Manifest;
+
+            var existingVersion = await _context.ModVersions
+                                                .Where(v => v.Mod.Owner.Slug == manifest.OrgID &&
+                                                            v.Mod.Slug == manifest.ModID)
+                                                .FindExactVersion(manifest.Version)
+                                                .SingleOrDefaultAsync();
+
+            if (existingVersion != null) {
+                if (existingVersion.IsActive == true) {
+                    throw new InvalidOperationException(
+                        $"Cannot create mod version {manifest.OrgID}/{manifest.ModID}@{manifest.Version} as it already exists");
+                } else {
+                    _context.ModVersions.Remove(existingVersion);
+                }
+            }
 
             var mod = await _context.Mods.FirstOrDefaultAsync(m => m.Slug == manifest.ModID);
             var owner = await _context.Orgs.FirstOrDefaultAsync(o => o.Slug == manifest.OrgID);
@@ -63,7 +78,7 @@ namespace Disunity.Store.Entities.Factories {
                 WebsiteUrl = manifest.URL,
                 VersionNumber = await _versionNumberFactory.FindOrCreateVersionNumber(manifest.Version),
             };
-            
+
             var requiredDeps = manifest.Dependencies
                                        .Select(DependencyDictToModDependency(
                                                    modVersion, ModDependencyType.Dependency));

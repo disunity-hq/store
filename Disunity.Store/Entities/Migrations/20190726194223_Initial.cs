@@ -358,7 +358,7 @@ namespace Disunity.Store.Entities.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ModId = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
-                    IsActive = table.Column<bool>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: true, defaultValue: false),
                     Downloads = table.Column<int>(nullable: true, defaultValue: 0),
                     VersionNumberId = table.Column<int>(nullable: false),
                     WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),

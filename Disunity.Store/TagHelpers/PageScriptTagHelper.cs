@@ -58,17 +58,25 @@ namespace Disunity.Store.TagHelpers {
             var paramLiterals = new List<string>();
 
             foreach (var param in Params) {
-                if (param is string stringParam) {
-                    paramLiterals.Add($"'{stringParam}'");
-                } else {
-                    paramLiterals.Add(param.ToString().ToLowerInvariant());
+                switch (param) {
+                    case null:
+                        paramLiterals.Add("null");
+                        break;
+
+                    case string stringParam:
+                        paramLiterals.Add($"'{stringParam}'");
+                        break;
+
+                    default:
+                        paramLiterals.Add(param.ToString().ToLowerInvariant());
+                        break;
                 }
             }
 
             var template = $@"<script>
 
             try {{
-                InitPageScript({string.Join(",",paramLiterals)});
+                InitPageScript({string.Join(",", paramLiterals)});
             }}
             catch (error) {{
                 console.error('Page script failed to initialize for {route}');

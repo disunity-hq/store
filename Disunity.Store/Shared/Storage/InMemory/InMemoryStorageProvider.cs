@@ -60,6 +60,16 @@ namespace Disunity.Store.Storage.InMemory {
             return Task.FromResult(result);
         }
 
+        public Task DeleteFile(string fileId) {
+            var guid = Guid.Parse(fileId);
+
+            if (_files.ContainsKey(guid)) {
+                _files.Remove(guid);
+            }
+
+            return Task.CompletedTask;
+        }
+
     }
 
 }

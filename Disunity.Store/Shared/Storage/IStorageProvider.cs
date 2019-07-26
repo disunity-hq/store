@@ -21,6 +21,8 @@ namespace Disunity.Store.Storage {
         
         Task<IActionResult> GetDownloadAction(string fileId);
 
+        Task DeleteFile(string fileId);
+
     }
 
 }

@@ -85,6 +85,20 @@ namespace Disunity.Store.Storage.Backblaze {
             return Task.FromResult<IActionResult>(new RedirectResult(GetDownloadUrl(fileId)));
         }
 
+        public async Task DeleteFile(string fileId) {
+            B2File fileInfo = null;
+
+            try {
+                fileInfo = await _client.Files.GetInfo(fileId);
+            }
+            catch {
+                // ignored
+            }
+
+            if (fileInfo != null)
+                await _client.Files.Delete(fileId, fileInfo.FileName);
+        }
+
         public string GetDownloadUrl(string fileId) {
             return $"{_b2Options.DownloadUrl}/b2api/v2/b2_download_file_by_id?fileId={fileId}";
         }

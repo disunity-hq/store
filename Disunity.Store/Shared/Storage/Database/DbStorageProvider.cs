@@ -62,6 +62,18 @@ namespace Disunity.Store.Storage.Database {
                 {FileDownloadName = file.FileName};
         }
 
+        public async Task DeleteFile(string fileId) {
+            var file = await _context.StoredFiles.FirstOrDefaultAsync(f => f.Id == Guid.Parse(fileId));
+
+            if (file == null) {
+                return;
+            }
+
+            _context.StoredFiles.Remove(file);
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 
 }

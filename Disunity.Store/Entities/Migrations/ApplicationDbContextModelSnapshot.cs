@@ -203,7 +203,9 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(1024);
 
-                    b.Property<bool?>("IsActive");
+                    b.Property<bool?>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
                     b.Property<int>("ModId");
 
@@ -290,7 +292,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasIndex("OrgId", "Role")
                         .IsUnique()
-                        .HasFilter("\"Role\" = owner");
+                        .HasFilter("\"Role\" = 'owner'");
 
                     b.ToTable("OrgMembers");
                 });
