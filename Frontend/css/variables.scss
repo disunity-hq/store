@@ -12,7 +12,8 @@ $gray-800: #303030;
 $gray-900: #222;
 $black:    #000;
 
-$blue:    #1890ff;
+$disunity:    #1890ff;
+$blue:    lighten($disunity, 8%);
 $indigo:  #6610f2;
 $purple:  #6f42c1;
 $pink:    #e83e8c;
