@@ -82,14 +82,17 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                 if (user == null) {
                     return Unauthorized();
                 }
-                
+
                 var uploadedFile = await _storage.UploadArchive(archive);
 
                 var modVersion = await _modVersionFactory(archive);
                 modVersion.FileId = uploadedFile.FileId;
 
                 await _context.SaveChangesAsync();
-                
+
+                _logger.LogInformation(
+                    $"orgSlug = {modVersion.Mod.Owner.Slug} modSlug = {modVersion.Mod.Slug} versionNumber = {modVersion.VersionNumber}");
+
                 return new JsonResult(new {archive.Manifest.DisplayName});
             }
             catch (Exception e) {

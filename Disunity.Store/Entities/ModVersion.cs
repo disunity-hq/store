@@ -66,7 +66,6 @@ namespace Disunity.Store.Entities {
         public class ModVersionConfiguration : IEntityTypeConfiguration<ModVersion> {
 
             public void Configure(EntityTypeBuilder<ModVersion> builder) {
-                builder.Property(v => v.IsActive).HasDefaultValue(true);
                 builder.Property(v => v.Downloads).HasDefaultValue(0);
 
                 builder.HasIndex(v => new {v.ModId, v.VersionNumberId}).IsUnique();

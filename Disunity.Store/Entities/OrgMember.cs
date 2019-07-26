@@ -37,6 +37,7 @@ namespace Disunity.Store.Entities {
             var oldOwner = context.OrgMembers.SingleOrDefault(m => m.OrgId == membership.OrgId &&
                                                                    m.UserId == membership.UserId &&
                                                                    m.Role == OrgMemberRole.Owner);
+
             if (oldOwner != null) {
                 oldOwner.Role = OrgMemberRole.Admin;
             }
@@ -48,7 +49,7 @@ namespace Disunity.Store.Entities {
                 builder.HasKey(m => new {m.UserId, m.OrgId});
 
                 builder.HasIndex(m => new {m.OrgId, m.Role})
-                       .HasFilter("[Role] = owner")
+                       .HasFilter("\"Role\" = 'owner'")
                        .IsUnique();
 
                 builder.HasOne(m => m.Org)

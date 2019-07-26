@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Extensions;
+using Disunity.Store.Policies;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,7 @@ namespace Disunity.Store.Pages.Mods {
 
         private readonly ILogger<Details> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
         [FromRoute] public string OwnerSlug { get; set; }
         [FromRoute] public string ModSlug { get; set; }
@@ -55,9 +57,10 @@ namespace Disunity.Store.Pages.Mods {
 
         public int ModVersionIndex { get; set; }
 
-        public Details(ILogger<Details> logger, ApplicationDbContext context) {
+        public Details(ILogger<Details> logger, ApplicationDbContext context, IAuthorizationService authorizationService) {
             _logger = logger;
             _context = context;
+            _authorizationService = authorizationService;
 
         }
 
@@ -84,6 +87,12 @@ namespace Disunity.Store.Pages.Mods {
 
             if (ModVersion == null) {
                 _logger.LogInformation($"No modversion found for {OwnerSlug}/{ModSlug}@{VersionNumber}");
+                return NotFound();
+            }
+
+            var canViewUnpublished = (await _authorizationService.AuthorizeAsync(User, ModVersion.Mod, Operation.Read)).Succeeded;
+
+            if (ModVersion.IsActive == false && !canViewUnpublished) {
                 return NotFound();
             }
 

@@ -16,12 +16,6 @@ namespace Disunity.Store.Entities {
 
     public class Mod : ICreatedAt {
 
-        public Mod() {
-            IsActive = true;
-            IsDeprecated = false;
-            IsPinned = false;
-        }
-
         public int Id { get; set; }
 
         public int? OwnerId { get; set; }

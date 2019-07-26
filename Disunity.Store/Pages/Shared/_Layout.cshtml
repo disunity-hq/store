@@ -11,6 +11,7 @@
 
     <div class="container" id="content">
         <div id="gutter">
+            @RenderSection("Gutter", false)
             @if (ViewData["ShowBreadcrumbs"] is bool showBreadcrumbs && showBreadcrumbs) {
                 <breadcrumb></breadcrumb>
             }
@@ -18,6 +19,7 @@
 
         <div id="growler">
             <partial name="_CookieConsentPartial"/>
+            @RenderSection("Growler", false)
         </div>
 
         <main role="main" class="mb-5">

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Disunity.Store.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190724051826_Initial")]
+    [Migration("20190726065322_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,9 +205,7 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(1024);
 
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool?>("IsActive");
 
                     b.Property<int>("ModId");
 
@@ -292,7 +290,9 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasKey("UserId", "OrgId");
 
-                    b.HasIndex("OrgId");
+                    b.HasIndex("OrgId", "Role")
+                        .IsUnique()
+                        .HasFilter("\"Role\" = owner");
 
                     b.ToTable("OrgMembers");
                 });

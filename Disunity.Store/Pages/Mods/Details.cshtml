@@ -1,17 +1,19 @@
 @page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
-@using Bogus.Extensions
-@using Disunity.Store.Policies
-@using Microsoft.AspNetCore.Authorization
 @model Disunity.Store.Pages.Mods.Details
 @addTagHelper *, Syncfusion.EJ2
-@inject IAuthorizationService AuthorizationService
 
 @{
     var ownerRoute = new Dictionary<string, string>() {
         {"userSlug", Model.ModVersion.Mod.Owner.Slug}
     };
+}
 
-    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model.ModVersion.Mod, Operation.Update)).Succeeded;
+@section Growler {
+    @if (Model.ModVersion.IsActive != true) {
+        <div class="alert alert-danger">
+            This version is UNPUBLISHED. You may publish it when ready or delete it unti it has been published.
+        </div>
+    }
 }
 
 <div class="d-flex flex-row mb-5 align-items-start">
@@ -47,6 +49,11 @@
             <a href="disunity://v1/install/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber" class="flex-grow-1 d-flex flex-row m-1">
                 <ejs-button id="installButton" content="Install" isPrimary="true" cssClass="e-primary flex-grow-1"></ejs-button>
             </a>
+        </div>
+
+        <div class="d-flex flex-row mt-1">
+            <ejs-button id="publishButton" content="Publish" isPrimary="true" iconCss="fas fa-upload" cssClass="e-success flex-grow-1 m-1"></ejs-button>
+            <ejs-button id="deleteButton" content="Delete" isPrimary="false" iconCss="fas fa-trash" cssClass="e-danger flex-grow-1 m-1"></ejs-button>
         </div>
         <div class="d-flex justify-content-center mt-3">
             <span class="text-center" style="flex-basis: 90%">

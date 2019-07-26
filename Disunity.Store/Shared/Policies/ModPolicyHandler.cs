@@ -27,7 +27,7 @@ namespace Disunity.Store.Policies {
         }
 
         private static bool ReadOp(OrgMember membership) {
-            return true;
+            return membership != null;
         }
 
         private static bool CreateOp(OrgMember membership) {

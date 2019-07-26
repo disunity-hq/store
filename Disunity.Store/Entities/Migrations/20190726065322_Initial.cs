@@ -358,7 +358,7 @@ namespace Disunity.Store.Entities.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ModId = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
-                    IsActive = table.Column<bool>(nullable: true, defaultValue: true),
+                    IsActive = table.Column<bool>(nullable: true),
                     Downloads = table.Column<int>(nullable: true, defaultValue: 0),
                     VersionNumberId = table.Column<int>(nullable: false),
                     WebsiteUrl = table.Column<string>(maxLength: 1024, nullable: false),
@@ -668,9 +668,11 @@ namespace Disunity.Store.Entities.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrgMembers_OrgId",
+                name: "IX_OrgMembers_OrgId_Role",
                 table: "OrgMembers",
-                column: "OrgId");
+                columns: new[] { "OrgId", "Role" },
+                unique: true,
+                filter: "\"Role\" = 'owner'");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orgs_Slug",
