@@ -37,7 +37,7 @@ import copy from "copy-to-clipboard";
 import "../syncfusion";
 
 @Component
-export default class OrgMembersTable extends Vue {
+export default class Error extends Vue {
   @Prop({ type: String, required: true }) readonly name: string;
   @Prop({ type: String, required: false }) readonly context: string;
   @Prop({ type: String, required: true }) readonly message: string;

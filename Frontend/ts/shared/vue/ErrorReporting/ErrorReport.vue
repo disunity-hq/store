@@ -15,7 +15,7 @@ import { Component, Prop } from "vue-property-decorator";
     Error
   }
 })
-export default class OrgMembersTable extends Vue {
+export default class ErrorReport extends Vue {
   @Prop({ type: String, required: true }) readonly title: string;
 }
 </script>
