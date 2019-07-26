@@ -75,12 +75,14 @@
         </tr>
       </tbody>
     </table>
+    <ErrorReport title="There were errors" />
     <div id="orgMembersErrors"></div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import ErrorReport from "shared/vue/ErrorReporting/ErrorReport.vue";
 import { Component, Prop } from "vue-property-decorator";
 import axios from "axios";
 import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
@@ -98,7 +100,11 @@ interface IMembership {
   role: string;
 }
 
-@Component
+@Component({
+  components: {
+    ErrorReport
+  }
+})
 export default class OrgMembersTable extends Vue {
   @Prop({ type: Boolean, default: false }) readonly canManageRoles: boolean;
   @Prop({ type: Boolean, default: false }) readonly canManageMembers: boolean;
