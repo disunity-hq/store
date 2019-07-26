@@ -38,12 +38,11 @@
         <tr v-if="addingMember">
           <td>
             <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter Username..."
-                v-model="userName"
-              />
+              <ejs-autocomplete
+                autofill="true"
+                v-on:filtering="getUsernames($event)"
+                v-on:change="userName=$event.value"
+              ></ejs-autocomplete>
             </div>
           </td>
           <td>
@@ -84,8 +83,10 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import axios from "axios";
 import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
+import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import "./syncfusion";
 import ErrorReporter from "../ErrorReporter";
+import { FilteringEventArgs } from "@syncfusion/ej2-dropdowns";
 
 enum MemberRole {
   Member,
@@ -116,10 +117,11 @@ export default class OrgMembersTable extends Vue {
   };
 
   readonly baseUrl = `/api/v1/orgs/${this.orgSlug}/members`;
-
   readonly errorReporter = new ErrorReporter("#orgMembersErrors");
 
   public async mounted() {
+    (DataManager as any).foo = "bar";
+
     try {
       const members = (await axios.get<IMembership[]>(this.baseUrl)).data;
       if (Array.isArray(members)) {
@@ -135,6 +137,7 @@ export default class OrgMembersTable extends Vue {
       userName: this.userName,
       role: this.role
     };
+
     try {
       const response = await axios.post(this.baseUrl, membership);
       if (response.status === 204) {
@@ -182,6 +185,24 @@ export default class OrgMembersTable extends Vue {
       }
     } catch (e) {
       console.error(e);
+    }
+  }
+
+  public async getUsernames($event: FilteringEventArgs) {
+    $event.preventDefaultAction = true;
+    // this.userName = $event.text;
+
+    if ($event.text.length < 3) {
+      $event.cancel = true;
+      return;
+    }
+
+    const response = await axios.get(
+      `/api/v1/users/autocomplete/?username=${$event.text}`
+    );
+
+    if (response.status === 200) {
+      $event.updateData(response.data);
     }
   }
 }
