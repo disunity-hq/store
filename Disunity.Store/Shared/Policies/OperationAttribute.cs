@@ -52,7 +52,7 @@ namespace Disunity.Store.Policies {
 
     public class ModOperationAttribute : OperationAttribute {
 
-        public ModOperationAttribute(Operation operation, string orgSlug, string modSlug) :
+        public ModOperationAttribute(Operation operation, string orgSlug = "orgSlug", string modSlug = "modSlug") :
             base(operation, new[] {orgSlug, modSlug}) { }
 
         protected override object GetResource(AuthorizationFilterContext context, object[] routeValues) {
