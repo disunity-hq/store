@@ -10,6 +10,8 @@
     ViewData["headerText0"] = "Header 1";
     ViewData["headerText1"] = "Header 2";
     ViewData["headerText2"] = "Header 3";
+    var modalData = new {placeholder = "Enter Org display name"};
+    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update)).Succeeded;
 }
 
 <nav>
@@ -19,11 +21,25 @@
     </div>
 </nav>
 
-<div class="tab-content" id="nav-tabContent">
+<div class="tab-content lift-5em" id="nav-tabContent">
+    <h1>
+        <ejs-inplaceeditor id="element" type="Text"
+                           mode="Inline"
+                           name="DisplayName"
+                           disabled="@canEdit"
+                           value="@Model.Org.DisplayName"
+                           model="@modalData"
+                           url="/api/v1/orgs/@Model.Org.Slug"
+                           primaryKey="@Model.Org.Slug"
+                           adaptor="UrlAdaptor"
+                           data-underline="false">
+        </ejs-inplaceeditor>
+    </h1>
+
     <div class="tab-pane fade show active" id="mods" role="tabpanel" aria-labelledby="nav-mods-tab">
         <partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>
     </div>
-    <div class="tab-pane fade lift-5em" id="users" role="tabpanel" aria-labelledby="nav-mods-tab">
+    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="nav-mods-tab">
         <partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
     </div>
 </div>

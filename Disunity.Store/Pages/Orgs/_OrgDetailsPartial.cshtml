@@ -12,24 +12,6 @@
     var scriptParams = new object[] {Model.Slug, canManageUsers, canManageRoles};
 }
 
-<h1>
-    @if (canEdit) {
-        <ejs-inplaceeditor id="element" type="Text"
-                           mode="Inline"
-                           name="DisplayName"
-                           value="@Model.DisplayName"
-                           model="@modalData"
-                           url="/api/v1/orgs/@Model.Slug"
-                           primaryKey="@Model.Slug"
-                           adaptor="UrlAdaptor"
-                           data-underline="false">
-        </ejs-inplaceeditor>
-    } else {
-        @Model.DisplayName
-    }
-</h1>
-
-
 <div id="usersTable"></div>
 
 <page-script path="users/details" params="@scriptParams"/>
