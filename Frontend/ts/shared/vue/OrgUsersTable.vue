@@ -225,10 +225,10 @@ table {
   text-align: center;
   tr {
     td:first-child {
-      width: 100%;
+      width: 50%;
     }
     td:nth-child(2) {
-      min-width: 200px;
+      width: 50%;
     }
     td:last-child {
       min-width: 16em;
