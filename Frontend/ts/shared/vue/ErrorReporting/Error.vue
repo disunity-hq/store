@@ -1,12 +1,12 @@
 <template>
-  <div class="error" :set='message = Message()'>
-    <div class="error-name">{{ name }}</div>
+  <div class="error" :set="message = Message()" :set2="id = 'e' + Math.floor(Math.random() * 1000)">
+    <ejs-tooltip class="error-name" mouseTrail="true" :content="Tooltip()" :target="'#' + id">
+      <div :id="id">{{ name }}</div>
+    </ejs-tooltip>
     <div class="error-message">{{ message }}</div>
-    <div class="error-copy">
-      <button class="btn-primary" v-on:click="CopyError(name, context, message)">
-        <i class="fas fa-copy" />
-      </button>
-    </div>
+    <button class="error-copy btn-primary" v-on:click="CopyError(name, context, message)">
+      <i class="fas fa-copy" />
+    </button>
   </div>
 </template>
 
@@ -55,7 +55,8 @@ export default class Error extends Vue {
 @import "css/variables.scss";
 
 .error {
-  height: 4em;
+  cursor: pointer;
+  height: 3em;
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
@@ -78,12 +79,12 @@ export default class Error extends Vue {
     flex-grow: 1;
     padding-left: 2em;
     text-align: left;
-    background-color: $gray-400;
+    background-color: $gray-200;
   }
 
   .error-copy {
     display: none;
-    width: 4em;
+    width: 3em;
     .e-tooltip {
       width: 100%;
       height: 100%;
