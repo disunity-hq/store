@@ -7,8 +7,23 @@
 
 @{
     ViewData["Title"] = Model.Org.DisplayName;
+    ViewData["headerText0"] = "Header 1";
+    ViewData["headerText1"] = "Header 2";
+    ViewData["headerText2"] = "Header 3";
 }
 
-<partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a data-toggle="tab" class="nav-item nav-link active" href="#mods" id="nav-mods-tab" role="tab" aria-controls="mods" aria-selected="true">Mods</a>
+        <a data-toggle="tab" class="nav-item nav-link" href="#users" id="nav-users-tab" role="tab" aria-controls="users" aria-selected="false">Users</a>
+    </div>
+</nav>
 
-<partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="mods" role="tabpanel" aria-labelledby="nav-mods-tab">
+        <partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>
+    </div>
+    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="nav-mods-tab">
+        <partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
+    </div>
+</div>

@@ -38,3 +38,7 @@
     white-space: nowrap;
   }
 }
+
+.nav-link.active {
+  color: $blue !important;
+}
