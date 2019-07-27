@@ -24,7 +24,7 @@ namespace Disunity.Store.Pages.Users {
 
         [FromRoute] public string UserSlug { get; set; }
 
-        public Org Org { get; set; }
+        public UserIdentity UserIdentity { get; set; }
 
         public Details(ILogger<Details> logger, ApplicationDbContext context) {
             _logger = logger;
@@ -32,16 +32,18 @@ namespace Disunity.Store.Pages.Users {
         }
 
         public async Task OnGetAsync() {
-            Org = await _context.Orgs
-                                .Include(o => o.Mods)
-                                .ThenInclude(m => m.Latest)
-                                .ThenInclude(v => v.VersionNumber)
-                                .Include(o => o.Members)
-                                .ThenInclude(m => m.User)
-                                .ThenInclude(u => u.ShadowOrg)
-                                .FirstOrDefaultAsync(o => o.Slug == UserSlug);
+            UserIdentity = await _context.Users
+                                         .Include(u => u.ShadowOrg)
+                                         .ThenInclude(o => o.Mods)
+                                         .ThenInclude(m => m.Latest)
+                                         .ThenInclude(v => v.VersionNumber)
+                                         .Include(u => u.ShadowOrg)
+                                         .ThenInclude(o => o.Members)
+                                         .ThenInclude(m => m.User)
+                                         .ThenInclude(u => u.ShadowOrg)
+                                         .FirstOrDefaultAsync(o => o.ShadowOrg.Slug == UserSlug);
 
-            ViewData["BreadcrumbNode"] = new RazorPageBreadcrumbNode("/Users/Details", Org.DisplayName) {
+            ViewData["BreadcrumbNode"] = new RazorPageBreadcrumbNode("/Users/Details", UserIdentity.ShadowOrg.Slug) {
                 RouteValues = new {UserSlug}
             };
 
