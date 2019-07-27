@@ -7,9 +7,6 @@
 
 @{
     ViewData["Title"] = Model.Org.DisplayName;
-    ViewData["headerText0"] = "Header 1";
-    ViewData["headerText1"] = "Header 2";
-    ViewData["headerText2"] = "Header 3";
     var modalData = new {placeholder = "Enter Org display name"};
     var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update)).Succeeded;
 }

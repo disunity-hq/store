@@ -8,12 +8,30 @@
     };
 
     var pageArgs = new string[] {Model.OwnerSlug, Model.ModSlug, Model.ModVersion.VersionNumber};
+    var latestRouteData = new Dictionary<string, string>() {
+        {"ownerSlug", Model.OwnerSlug},
+        {"modSlug", Model.ModSlug},
+        {"versionNumber", Model.ModVersion.Mod.Latest.VersionNumber}
+    };
 }
 
 @section Growler {
     @if (Model.ModVersion.IsActive != true) {
         <div class="alert alert-danger">
             This version is UNPUBLISHED. You may publish it when ready or delete it unti it has been published.
+        </div>
+    }
+    @if (Model.ModVersion != Model.ModVersion.Mod.Latest) {
+        <div class="alert alert-warning alert-dismissible">
+            <div>
+                You are viewing an old version of @(Model.ModVersion.Mod.Latest.DisplayName).
+            </div>
+
+            <a asp-page="/Mods/Details" asp-all-route-data="@latestRouteData">
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">Latest</span>
+                </button>
+            </a>
         </div>
     }
 }
@@ -31,7 +49,7 @@
         <div class="d-flex flex-row justify-content-between mb-1">
             <div class="d-flex flex-row">
                 <span class="badge m-1 p-1" style="font-size:15px;">
-                    <span class="fas fa-download"></span> @Model.ModVersion.Downloads
+                    <span class="fas fa-download"></span> @Model.ModVersion.Mod.TotalDownloads
                 </span>
                 <span class="badge m-1 p-1" style="font-size:15px;">
                     <span class="fas fa-heart" style="color:darkred"></span> @Model.ModVersion.Downloads

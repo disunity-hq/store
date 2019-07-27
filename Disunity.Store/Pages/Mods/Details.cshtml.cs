@@ -57,7 +57,8 @@ namespace Disunity.Store.Pages.Mods {
 
         public int ModVersionIndex { get; set; }
 
-        public Details(ILogger<Details> logger, ApplicationDbContext context, IAuthorizationService authorizationService) {
+        public Details(ILogger<Details> logger, ApplicationDbContext context,
+                       IAuthorizationService authorizationService) {
             _logger = logger;
             _context = context;
             _authorizationService = authorizationService;
@@ -77,7 +78,7 @@ namespace Disunity.Store.Pages.Mods {
                                                    .Include(v => v.ModDependencies)
                                                    .ThenInclude(d => d.MaxVersion).ThenInclude(v => v.VersionNumber)
                                                    .Where(v => v.Mod.Owner.Slug == OwnerSlug && v.Mod.Slug == ModSlug)
-                                                   .OrderByVersionDescending();
+                                                   .OrderByVersion();
 
             if (!string.IsNullOrEmpty(VersionNumber)) {
                 query = query.FindExactVersion(VersionNumber);
@@ -85,12 +86,18 @@ namespace Disunity.Store.Pages.Mods {
 
             ModVersion = await query.FirstOrDefaultAsync();
 
+            if (string.IsNullOrEmpty(VersionNumber)) {
+                _logger.LogDebug(
+                    $"No version specified, picking {ModVersion.VersionNumber} from {string.Join(", ", query.Select(v => v.VersionNumber))}");
+            }
+
             if (ModVersion == null) {
                 _logger.LogInformation($"No modversion found for {OwnerSlug}/{ModSlug}@{VersionNumber}");
                 return NotFound();
             }
 
-            var canViewUnpublished = (await _authorizationService.AuthorizeAsync(User, ModVersion.Mod, Operation.Read)).Succeeded;
+            var canViewUnpublished = (await _authorizationService.AuthorizeAsync(User, ModVersion.Mod, Operation.Read))
+                .Succeeded;
 
             if (ModVersion.IsActive == false && !canViewUnpublished) {
                 return NotFound();
@@ -120,7 +127,7 @@ namespace Disunity.Store.Pages.Mods {
             var versionNumbers = await _context.ModVersions
                                                .Where(v => v.ModId == ModVersion.ModId)
                                                .Include(v => v.VersionNumber)
-                                               .OrderByVersionDescending()
+                                               .OrderByVersion()
                                                .Select(v => ModVersionToDropdownListItem(v)).ToListAsync();
 
             ViewData["ModVersions"] = versionNumbers;
@@ -149,8 +156,9 @@ namespace Disunity.Store.Pages.Mods {
             if (version == ModVersion.Mod.Latest) {
                 versionNumber += " - Latest";
             }
+
             if (version == ModVersion) {
-                versionNumber += " - This Mod";
+                versionNumber += " - This Version";
             }
 
             return new DropdownListItem {

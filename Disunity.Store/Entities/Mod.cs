@@ -34,6 +34,8 @@ namespace Disunity.Store.Entities {
 
         [InverseProperty("Mod")] public List<ModVersion> Versions { get; set; }
 
+        [NotMapped] public int TotalDownloads => Versions.Select(v => v.Downloads).Sum() ?? 0;
+
         [OnAfterCreate(typeof(ModVersion))]
         public static void OnBeforeCreateModVersion(ModVersion entity, ApplicationDbContext context) {
             var mod = context.Mods.FirstOrDefault(m => m.Id == entity.ModId);
