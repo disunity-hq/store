@@ -76,7 +76,7 @@ namespace Disunity.Store.Data.Seeds {
                 }
 
                 names.Add(displayName);
-                
+
                 var slug = _slugifier.Slugify(displayName);
                 var description = _unparser.Generate("#description.capitalize#");
                 var iconUrl = _iconRandomizer.GetIconUrl();
@@ -91,6 +91,7 @@ namespace Disunity.Store.Data.Seeds {
                     IconUrl = iconUrl,
                     VersionNumber = attachedVersion,
                     WebsiteUrl = website,
+                    IsActive = true,
                     TargetCompatibilities = new List<ModTargetCompatibility>()
                         {new ModTargetCompatibility() {Target = target}}
                 };
