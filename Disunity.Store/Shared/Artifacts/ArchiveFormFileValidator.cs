@@ -5,17 +5,13 @@ using System.Net;
 
 using BindingAttributes;
 
+using Disunity.Store.Exceptions;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Store.Artifacts {
-
-    public class ArchiveFormFileValidationError : Exception {
-
-        public ArchiveFormFileValidationError(string message) : base(message) { }
-
-    }
 
     public static class ArchiveFormFileValidator {
 
@@ -45,21 +41,21 @@ namespace Disunity.Store.Artifacts {
             var fileMimeType = formFile.ContentType.ToLower();
             if (!mimeTypes.Contains(fileMimeType)) {
                 var msg = $"The file {fileName} must be of type {string.Join(", or ", mimeTypes.Select(s => $"`{s}`"))}. Type `{fileMimeType}` was provided";
-                throw new ArchiveFormFileValidationError(msg);
+                throw new ArchiveFormFileValidationException(msg);
             }
         }
 
         private static void CheckEmpty(IFormFile formFile, string fileName) {
             if (formFile.Length == 0) {
                 var msg = $"The file {fileName} is empty.";
-                throw new ArchiveFormFileValidationError(msg);
+                throw new ArchiveFormFileValidationException(msg);
             }
         }
 
         private static void CheckSize(IFormFile formFile, string fileName) {
             if (formFile.Length > 1048576) {
                 var msg = $"The file {fileName} exceeds 1 MB.";
-                throw new ArchiveFormFileValidationError(msg);
+                throw new ArchiveFormFileValidationException(msg);
             }
         }
 

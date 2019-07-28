@@ -103,7 +103,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
 //                if (e is ManifestSchemaException schemaExc) {
 //                    Errors = schemaExc.Errors.Select(FormatSchemaError).ToArray();
-//                } else if (e is ArchiveFormFileValidationError formFileError) {
+//                } else if (e is ArchiveFormFileValidationException formFileError) {
 //                    Errors = new[] {formFileError.Message};
 //                } else if (e is ArchiveLoadException archiveExc) {
 //                    Errors = new[] {archiveExc.Message};
