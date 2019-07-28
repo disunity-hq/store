@@ -1,5 +1,9 @@
 using System.IO;
 using System.Threading.Tasks;
+
+using Disunity.Store.Policies;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +14,7 @@ using SmartBreadcrumbs.Attributes;
 
 namespace Disunity.Store.Pages.Mods {
 
+    [Authorize]
     [Breadcrumb("Mod upload", FromPage = typeof(IndexModel))]
     public class Upload : PageModel {
 
