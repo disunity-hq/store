@@ -1,25 +1,42 @@
-<template>
-  <div>
-    <h1>{{ title }}</h1>
-    <Error name="GenericError" context="FooBar" :content="{ message: 'This is error content' }" />
+<template v-if="errors.length > 0">
+  <div class="error-report">
+    <div v-for="(group, name) in GroupedErrors" :key="name">
+        <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaException'" />
+        <ErrorGroup :errors="group" v-else />
+    </div>
   </div>
 </template>
 
+
 <script lang="ts">
 import Vue from "vue";
-import Error from 'shared/vue/ErrorReporting/Error.vue';
 import { Component, Prop } from "vue-property-decorator";
+import ErrorGroup from "shared/vue/ErrorReporting/ErrorGroup.vue";
+import SchemaExceptionGroup from "shared/vue/ErrorReporting/SchemaExceptionGroup.vue";
 
-@Component({
-  components: {
-    Error
-  }
-})
+
+@Component({ components: { ErrorGroup, SchemaExceptionGroup } })
 export default class ErrorReport extends Vue {
-  @Prop({ type: String, required: true }) readonly title: string;
+  @Prop({ type: Array, required: false, default: () => [] }) errors: any[];
+
+  groupBy<T extends any, K extends keyof T>(array: T[], key: K): Record<T[K], T[]> {
+    return array.reduce(
+      (objectsByKeyValue, obj) => {
+        const value = obj[key];
+        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+        return objectsByKeyValue;
+      },
+      {} as Record<T[K], T[]>
+    );
+  }
+
+  get GroupedErrors() {
+    return this.groupBy<any, string>(this.errors, "name");
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@syncfusion/ej2-vue-inplace-editor/styles/bootstrap.scss";
 </style>
+

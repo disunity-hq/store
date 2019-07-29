@@ -21,6 +21,8 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json.Schema;
 
+using AggregateException = Disunity.Store.Exceptions.AggregateException;
+
 
 namespace Disunity.Store.Areas.API.v1.Mods {
 
@@ -97,20 +99,13 @@ namespace Disunity.Store.Areas.API.v1.Mods {
                 return new JsonResult(new {archive.Manifest.DisplayName});
             }
             catch (Exception e) {
-                var Type = e.GetType().Name;
-                var Errors = new object[] { };
+                Exception[] errors = { e };
 
-                if (e is ManifestSchemaException schemaExc) {
-                    Errors = schemaExc.Errors.Select(FormatSchemaError).ToArray();
-                } else if (e is ArchiveFormFileValidationException formFileError) {
-                    Errors = new[] {formFileError.Message};
-                } else if (e is ArchiveLoadException archiveExc) {
-                    Errors = new[] {archiveExc.Message};
-                } else {
-                    _logger.LogError(e, "");
+                if (e is AggregateException schemaExc) {
+                    errors = schemaExc.ToArray();
                 }
 
-                return BadRequest(new {Type, Errors});
+                return BadRequest(new {errors});
             }
         }
 

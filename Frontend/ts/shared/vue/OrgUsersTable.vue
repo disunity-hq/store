@@ -74,8 +74,7 @@
         </tr>
       </tbody>
     </table>
-    <ErrorReport title="There were errors" />
-    <div id="orgMembersErrors"></div>
+    <ErrorReport :errors="this.errors" />
   </div>
 </template>
 
@@ -87,7 +86,7 @@ import axios from "axios";
 import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import "./syncfusion";
-import ErrorReporter from "../ErrorReporter";
+import Error from "../ErrorReporter";
 import { FilteringEventArgs } from "@syncfusion/ej2-dropdowns";
 
 enum MemberRole {
@@ -123,7 +122,6 @@ export default class OrgMembersTable extends Vue {
   };
 
   readonly baseUrl = `/api/v1/orgs/${this.orgSlug}/members`;
-  readonly errorReporter = new ErrorReporter("#orgMembersErrors");
 
   public async mounted() {
     (DataManager as any).foo = "bar";
@@ -152,8 +150,7 @@ export default class OrgMembersTable extends Vue {
         this.userName = "";
         this.role = "Member";
       } else {
-        this.errorReporter.Empty();
-        this.errorReporter.Set(response.data);
+        // TODO use ErrorReport
       }
     } catch (e) {
       console.error(e);
@@ -167,8 +164,7 @@ export default class OrgMembersTable extends Vue {
       if (response.status === 204) {
         this.members = this.members.filter(m => m.userName != username);
       } else {
-        this.errorReporter.Empty();
-        this.errorReporter.Set(response.data);
+        // TODO use ErrorReport
       }
     } catch (e) {
       console.error(e);
@@ -186,8 +182,7 @@ export default class OrgMembersTable extends Vue {
       if (response.status === 204) {
         this.members.find(m => m.userName === userName).role = membership.role;
       } else {
-        this.errorReporter.Empty();
-        this.errorReporter.Set(response.data);
+        // TODO use ErrorReport
       }
     } catch (e) {
       console.error(e);
@@ -233,7 +228,7 @@ table {
     td:last-child {
       min-width: 16em;
       #btn-remove-member {
-        opacity: .1;
+        opacity: 0.1;
       }
     }
 
