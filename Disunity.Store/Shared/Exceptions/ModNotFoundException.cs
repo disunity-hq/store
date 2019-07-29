@@ -3,9 +3,10 @@ using System;
 
 namespace Disunity.Store.Exceptions {
 
-    public class ModNotFoundException : Exception {
+    public class ModNotFoundException : BaseApiException {
 
-        public ModNotFoundException(string message) : base(message) { }
+        public ModNotFoundException(string message, string name = null, string context = null)
+            : base(message, name, context) { }
 
     }
 
