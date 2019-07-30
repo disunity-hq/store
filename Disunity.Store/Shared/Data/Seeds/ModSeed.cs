@@ -23,7 +23,7 @@ using EnumerableExtensions = Microsoft.EntityFrameworkCore.Internal.EnumerableEx
 namespace Disunity.Store.Data.Seeds {
 
     [AsScoped(typeof(ISeeder))]
-    [DependsOn(typeof(TargetSeed), typeof(UserRoleSeed))]
+    [DependsOn(typeof(TargetSeed), typeof(UserRoleSeed), typeof(DisunityVersionSeed))]
     public class ModSeed : ISeeder {
 
         private readonly ApplicationDbContext _context;
@@ -61,7 +61,7 @@ namespace Disunity.Store.Data.Seeds {
             var orgs = _context.Orgs.ToList();
             var targets = await _context.Targets.ToListAsync();
             var names = new HashSet<string>();
-
+            var disunityVersion = await _context.DisunityVersions.FirstOrDefaultAsync();
 
             for (var i = 0; i < 45; i++) {
                 var org = orgs.PickRandom();
@@ -92,8 +92,11 @@ namespace Disunity.Store.Data.Seeds {
                     VersionNumber = attachedVersion,
                     WebsiteUrl = website,
                     IsActive = true,
-                    TargetCompatibilities = new List<ModTargetCompatibility>()
-                        {new ModTargetCompatibility() {Target = target}}
+                    TargetCompatibilities = new List<ModTargetCompatibility>
+                        {new ModTargetCompatibility() {Target = target}},
+                    DisunityCompatibilities = new List<ModDisunityCompatibility> {
+                        new ModDisunityCompatibility() {MinCompatibleVersion = disunityVersion}
+                    }
                 };
 
                 var mod = new Mod() {
