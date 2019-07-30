@@ -100,7 +100,6 @@ namespace Disunity.Store.Data.Seeds {
                     Owner = org,
                     Slug = slug,
                     Versions = new List<ModVersion>() {modVersion},
-                    DisplayName = displayName
                 };
 
                 _context.Mods.Add(mod);

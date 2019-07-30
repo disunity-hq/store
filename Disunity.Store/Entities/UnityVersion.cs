@@ -11,8 +11,7 @@ namespace Disunity.Store.Entities {
 
     public class UnityVersion: IVersionModel {
 
-        public int ID { get; set; }
-
+        public int Id { get; set; }
 
         public int VersionNumberId { get; set; }
         public VersionNumber VersionNumber { get; set; }

@@ -20,7 +20,7 @@ namespace Disunity.Store.Entities {
         public int ShadowOrgId { get; set; }
         public Org ShadowOrg { get; set; }
 
-        public class UserIdenityConfiguration : IEntityTypeConfiguration<UserIdentity> {
+        public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity> {
 
             public void Configure(EntityTypeBuilder<UserIdentity> builder) { }
 

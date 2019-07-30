@@ -47,6 +47,7 @@ namespace Disunity.Store.Entities {
 
         [InverseProperty("Dependent")] public List<ModDependency> ModDependencies { get; set; }
         [InverseProperty("Version")] public List<ModTargetCompatibility> TargetCompatibilities { get; set; }
+        [InverseProperty("Version")] public List<ModDisunityCompatibility> DisunityCompatibilities { get; set; }
 
         [NotMapped]
         public List<ModDependency> Dependencies =>

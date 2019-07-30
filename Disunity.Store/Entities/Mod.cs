@@ -21,7 +21,7 @@ namespace Disunity.Store.Entities {
         public int? OwnerId { get; set; }
         public Org Owner { get; set; }
 
-        [Required] [MaxLength(128)] public string DisplayName { get; set; }
+        public string DisplayName => Latest?.DisplayName;
 
         [Required] [MaxLength(128)] public string Slug { get; set; }
 
@@ -55,9 +55,6 @@ namespace Disunity.Store.Entities {
                 builder.Property(m => m.IsActive).HasDefaultValue(true);
                 builder.Property(m => m.IsDeprecated).HasDefaultValue(false);
                 builder.Property(m => m.IsPinned).HasDefaultValue(false);
-
-                // Ensure name is unique with the org
-                builder.HasAlternateKey(m => new {m.OwnerId, Name = m.DisplayName});
 
                 // Ensure slug is unique within the org
                 builder.HasAlternateKey(m => new {m.OwnerId, m.Slug});

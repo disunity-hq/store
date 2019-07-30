@@ -12,15 +12,15 @@ namespace Disunity.Store.Entities {
 
     public class DisunityVersion : IVersionModel {
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        [DataType(DataType.Url)] public string URL { get; set; }
+        [DataType(DataType.Url)] public string Url { get; set; }
 
         [Required] public int VersionNumberId { get; set; }
 
         public VersionNumber VersionNumber { get; set; }
-
-        [InverseProperty("Version")] public DisunityVersionCompatibility CompatibileUnityVersion { get; set; }
+        
+        [InverseProperty("Version")] public DisunityVersionCompatibility CompatibleUnityVersion { get; set; }
 
         public class DisunityVersionConfiguration : IEntityTypeConfiguration<DisunityVersion> {
 

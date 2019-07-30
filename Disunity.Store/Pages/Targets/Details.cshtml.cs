@@ -43,7 +43,7 @@ namespace Disunity.Store.Pages.Targets
             }
             else
             {
-                TargetVersion = await _context.TargetVersions.SingleOrDefaultAsync(v => v.TargetId == Target.ID && v.VersionNumber == VersionNumber);
+                TargetVersion = await _context.TargetVersions.SingleOrDefaultAsync(v => v.TargetId == Target.Id && v.VersionNumber == VersionNumber);
                 if (TargetVersion == null)
                 {
                     return NotFound();

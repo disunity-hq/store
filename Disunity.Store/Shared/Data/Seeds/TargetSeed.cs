@@ -75,7 +75,6 @@ namespace Disunity.Store.Data.Seeds {
 
                 var target = new Target() {
                     Slug = slug,
-                    DisplayName = displayName,
                     Versions = new List<TargetVersion>() {
                         targetVersion
                     }

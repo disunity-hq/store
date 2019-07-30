@@ -24,14 +24,14 @@ namespace Disunity.Store.Entities.Migrations
 
             modelBuilder.Entity("Disunity.Store.Entities.DisunityVersion", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("URL");
+                    b.Property<string>("Url");
 
                     b.Property<int>("VersionNumberId");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("VersionNumberId")
                         .IsUnique();
@@ -69,10 +69,6 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(128);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -94,17 +90,15 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<int?>("TargetID");
+                    b.Property<int?>("TargetId");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("OwnerId", "DisplayName");
 
                     b.HasAlternateKey("OwnerId", "Slug");
 
                     b.HasIndex("LatestId");
 
-                    b.HasIndex("TargetID");
+                    b.HasIndex("TargetId");
 
                     b.ToTable("Mods");
                 });
@@ -315,12 +309,8 @@ namespace Disunity.Store.Entities.Migrations
 
             modelBuilder.Entity("Disunity.Store.Entities.Target", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(128);
 
                     b.Property<int?>("LatestId");
 
@@ -328,7 +318,7 @@ namespace Disunity.Store.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("LatestId")
                         .IsUnique();
@@ -401,12 +391,12 @@ namespace Disunity.Store.Entities.Migrations
 
             modelBuilder.Entity("Disunity.Store.Entities.UnityVersion", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("VersionNumberId");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("VersionNumberId")
                         .IsUnique();
@@ -616,7 +606,7 @@ namespace Disunity.Store.Entities.Migrations
                         .HasForeignKey("MinCompatibleVersionId");
 
                     b.HasOne("Disunity.Store.Entities.DisunityVersion", "Version")
-                        .WithOne("CompatibileUnityVersion")
+                        .WithOne("CompatibleUnityVersion")
                         .HasForeignKey("Disunity.Store.Entities.DisunityVersionCompatibility", "VersionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -634,7 +624,7 @@ namespace Disunity.Store.Entities.Migrations
 
                     b.HasOne("Disunity.Store.Entities.Target")
                         .WithMany("CompatibleMods")
-                        .HasForeignKey("TargetID");
+                        .HasForeignKey("TargetId");
                 });
 
             modelBuilder.Entity("Disunity.Store.Entities.ModDependency", b =>
@@ -669,7 +659,7 @@ namespace Disunity.Store.Entities.Migrations
                         .HasForeignKey("MinCompatibleVersionId");
 
                     b.HasOne("Disunity.Store.Entities.ModVersion", "Version")
-                        .WithMany()
+                        .WithMany("DisunityCompatibilities")
                         .HasForeignKey("VersionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

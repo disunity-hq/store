@@ -31,15 +31,18 @@ namespace Disunity.Store.Entities {
 
 
         [OnBeforeCreate(typeof(UserIdentity), WatchDescendants = false)]
-        public static void OnBeforeCreateUser(UserIdentity user, ApplicationDbContext context) {
+        public static void OnBeforeCreateUser(UserIdentity user, IServiceProvider services) {
 
             if (user.ShadowOrg != null) {
                 return;
             }
 
+            var slugifier = services.GetRequiredService<ISlugifier>();
+
             user.ShadowOrg = new Org() {
                 DisplayName = user.UserName,
-                Slug = user.UserName,
+                Slug = slugifier.Slugify(user.UserName),
+                ShowUsers = false,
                 Members = new List<OrgMember>()
                     {new OrgMember() {Role = OrgMemberRole.Owner, User = user}}
             };

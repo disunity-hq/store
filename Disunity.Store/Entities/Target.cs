@@ -21,13 +21,13 @@ namespace Disunity.Store.Entities
     public class Target
     {
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public int? LatestId { get; set; }
 
         public TargetVersion Latest { get; set; }
 
-        [Required] [MaxLength(128)] public string DisplayName { get; set; }
+        public string DisplayName => Latest?.DisplayName;
 
         [Required] [MaxLength(128)] public string Slug { get; set; }
 
@@ -42,7 +42,7 @@ namespace Disunity.Store.Entities
         public static void UpdateLatestVersion(TargetVersion newVersion, ApplicationDbContext context,
                                                IServiceProvider services)
         {
-            var target = context.Targets.FirstOrDefault(t => t.ID == newVersion.TargetId);
+            var target = context.Targets.FirstOrDefault(t => t.Id == newVersion.TargetId);
 
             if (target == null)
             {

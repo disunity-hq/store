@@ -130,14 +130,14 @@ namespace Disunity.Store.Entities.Migrations
                 name: "DisunityVersions",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    URL = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
                     VersionNumberId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DisunityVersions", x => x.ID);
+                    table.PrimaryKey("PK_DisunityVersions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DisunityVersions_VersionNumbers_VersionNumberId",
                         column: x => x.VersionNumberId,
@@ -150,13 +150,13 @@ namespace Disunity.Store.Entities.Migrations
                 name: "UnityVersions",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     VersionNumberId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UnityVersions", x => x.ID);
+                    table.PrimaryKey("PK_UnityVersions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UnityVersions_VersionNumbers_VersionNumberId",
                         column: x => x.VersionNumberId,
@@ -292,19 +292,19 @@ namespace Disunity.Store.Entities.Migrations
                         name: "FK_DisunityVersionCompatibilities_UnityVersions_MaxCompatibleV~",
                         column: x => x.MaxCompatibleVersionId,
                         principalTable: "UnityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DisunityVersionCompatibilities_UnityVersions_MinCompatibleV~",
                         column: x => x.MinCompatibleVersionId,
                         principalTable: "UnityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DisunityVersionCompatibilities_DisunityVersions_VersionId",
                         column: x => x.VersionId,
                         principalTable: "DisunityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -325,13 +325,13 @@ namespace Disunity.Store.Entities.Migrations
                         name: "FK_ModDisunityCompatibilities_DisunityVersions_MaxCompatibleVe~",
                         column: x => x.MaxCompatibleVersionId,
                         principalTable: "DisunityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ModDisunityCompatibilities_DisunityVersions_MinCompatibleVe~",
                         column: x => x.MinCompatibleVersionId,
                         principalTable: "DisunityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -409,19 +409,17 @@ namespace Disunity.Store.Entities.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     OwnerId = table.Column<int>(nullable: false),
-                    DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     Slug = table.Column<string>(maxLength: 128, nullable: false),
                     IsActive = table.Column<bool>(nullable: true, defaultValue: true),
                     IsDeprecated = table.Column<bool>(nullable: true, defaultValue: false),
                     IsPinned = table.Column<bool>(nullable: true, defaultValue: false),
                     LatestId = table.Column<int>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    TargetID = table.Column<int>(nullable: true)
+                    TargetId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mods", x => x.Id);
-                    table.UniqueConstraint("AK_Mods_OwnerId_DisplayName", x => new { x.OwnerId, x.DisplayName });
                     table.UniqueConstraint("AK_Mods_OwnerId_Slug", x => new { x.OwnerId, x.Slug });
                     table.ForeignKey(
                         name: "FK_Mods_ModVersions_LatestId",
@@ -481,15 +479,14 @@ namespace Disunity.Store.Entities.Migrations
                 name: "Targets",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     LatestId = table.Column<int>(nullable: true),
-                    DisplayName = table.Column<string>(maxLength: 128, nullable: false),
                     Slug = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Targets", x => x.ID);
+                    table.PrimaryKey("PK_Targets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Targets_TargetVersions_LatestId",
                         column: x => x.LatestId,
@@ -515,13 +512,13 @@ namespace Disunity.Store.Entities.Migrations
                         name: "FK_TargetVersionCompatibilities_UnityVersions_MaxCompatibleVer~",
                         column: x => x.MaxCompatibleVersionId,
                         principalTable: "UnityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TargetVersionCompatibilities_UnityVersions_MinCompatibleVer~",
                         column: x => x.MinCompatibleVersionId,
                         principalTable: "UnityVersions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TargetVersionCompatibilities_TargetVersions_VersionId",
@@ -632,9 +629,9 @@ namespace Disunity.Store.Entities.Migrations
                 column: "LatestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mods_TargetID",
+                name: "IX_Mods_TargetId",
                 table: "Mods",
-                column: "TargetID");
+                column: "TargetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ModTargetCompatibilities_MaxCompatibleVersionId",
@@ -763,11 +760,11 @@ namespace Disunity.Store.Entities.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Mods_Targets_TargetID",
+                name: "FK_Mods_Targets_TargetId",
                 table: "Mods",
-                column: "TargetID",
+                column: "TargetId",
                 principalTable: "Targets",
-                principalColumn: "ID",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
@@ -775,7 +772,7 @@ namespace Disunity.Store.Entities.Migrations
                 table: "ModTargetCompatibilities",
                 column: "TargetId",
                 principalTable: "Targets",
-                principalColumn: "ID",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -799,7 +796,7 @@ namespace Disunity.Store.Entities.Migrations
                 table: "TargetVersions",
                 column: "TargetId",
                 principalTable: "Targets",
-                principalColumn: "ID",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 

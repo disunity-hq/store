@@ -62,7 +62,6 @@ namespace Disunity.Store.Entities.Factories {
                 mod = new Mod() {
                     Owner = owner,
                     Slug = manifest.ModID,
-                    DisplayName = manifest.DisplayName
                 };
 
                 _context.Attach(mod);
