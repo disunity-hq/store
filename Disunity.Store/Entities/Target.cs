@@ -26,9 +26,7 @@ namespace Disunity.Store.Entities
         public int? LatestId { get; set; }
 
         public TargetVersion Latest { get; set; }
-
-        public string DisplayName => Latest?.DisplayName;
-
+        
         [Required] [MaxLength(128)] public string Slug { get; set; }
 
         [InverseProperty("Target")] public List<TargetVersion> Versions { get; set; }

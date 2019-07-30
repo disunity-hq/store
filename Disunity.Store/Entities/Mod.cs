@@ -21,8 +21,6 @@ namespace Disunity.Store.Entities {
         public int? OwnerId { get; set; }
         public Org Owner { get; set; }
 
-        public string DisplayName => Latest?.DisplayName;
-
         [Required] [MaxLength(128)] public string Slug { get; set; }
 
         public bool? IsActive { get; set; }

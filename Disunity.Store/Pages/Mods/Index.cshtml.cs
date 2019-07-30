@@ -45,7 +45,7 @@ namespace Disunity.Store.Pages.Mods {
             new Dictionary<string, Expression<Func<Mod, IComparable>>>() {
                 {"Latest", m => m.Latest.CreatedAt},
                 {"Downloads", m => m.Versions.Sum(v => v.Downloads)},
-                {"Name", m => m.DisplayName},
+                {"Name", m => m.Latest.DisplayName},
             };
 
         public async Task OnGetAsync() {
