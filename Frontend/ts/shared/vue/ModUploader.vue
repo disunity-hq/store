@@ -8,7 +8,7 @@
       :asyncSettings="asyncSettings"
       :success="uploadSuccess"
       :failure="uploadFailure"></ejs-uploader>
-    <ErrorReport :errors="this.errors" />
+    <ErrorReport :errors="errors" />
   </div>
 </template>
 
