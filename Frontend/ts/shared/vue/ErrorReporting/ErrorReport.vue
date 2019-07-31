@@ -1,8 +1,8 @@
 <template v-if="errors.length > 0">
   <div class="error-report">
     <div v-for="(group, name) in GroupedErrors" :key="name">
-        <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaException'" />
-        <ErrorGroup :errors="group" v-else />
+      <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaException'" />
+      <ErrorGroup :errors="group" v-else />
     </div>
   </div>
 </template>
@@ -14,12 +14,14 @@ import { Component, Prop } from "vue-property-decorator";
 import ErrorGroup from "shared/vue/ErrorReporting/ErrorGroup.vue";
 import SchemaExceptionGroup from "shared/vue/ErrorReporting/SchemaExceptionGroup.vue";
 
-
 @Component({ components: { ErrorGroup, SchemaExceptionGroup } })
 export default class ErrorReport extends Vue {
   @Prop({ type: Array, required: false, default: () => [] }) errors: any[];
 
-  groupBy<T extends any, K extends keyof T>(array: T[], key: K): Record<T[K], T[]> {
+  groupBy<T extends any, K extends keyof T>(
+    array: T[],
+    key: K
+  ): Record<T[K], T[]> {
     return array.reduce(
       (objectsByKeyValue, obj) => {
         const value = obj[key];
@@ -32,6 +34,23 @@ export default class ErrorReport extends Vue {
 
   get GroupedErrors() {
     return this.groupBy<any, string>(this.errors, "name");
+  }
+
+  public static ReportErrors(
+    target: any,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor
+  ) {
+    var originalMethod = descriptor.value;
+    descriptor.value = function() {
+      var context = this;
+      var args = arguments;
+      var promise: Promise<void> = originalMethod.apply(context, args);
+      promise.catch(e => {
+        context.errors = e.response.data.errors;
+      });
+    };
+    return descriptor;
   }
 }
 </script>
