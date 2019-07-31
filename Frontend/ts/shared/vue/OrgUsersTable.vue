@@ -9,12 +9,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="membership in members" v-bind:key="membership.username">
+        <tr v-for="(membership, index) in members" v-bind:key="index">
           <td>{{ membership.userName }}</td>
           <td>
             <ejs-inplaceeditor
+              :ref="membership.userName"
               v-if="canManageRoles && membership.role !== 'Owner'"
-              v-bind:id="membership.userName + 'RoleEditor'"
               type="DropDownList"
               mode="Inline"
               :value="membership.role"
@@ -48,7 +48,7 @@
           <td>
             <div class="form-group">
               <select class="form-control" v-model="role">
-                <option v-for="role in roles" v-bind:key="role">{{role}}</option>
+                <option v-for="role in rolesModel.dataSource" v-bind:key="role">{{role}}</option>
               </select>
             </div>
           </td>
@@ -74,20 +74,20 @@
         </tr>
       </tbody>
     </table>
-    <ErrorReport :errors="this.errors" />
+    <ErrorReport :errors="errors" />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import ErrorReport from "shared/vue/ErrorReporting/ErrorReport.vue";
-import { Component, Prop } from "vue-property-decorator";
-import axios from "axios";
-import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
-import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import "./syncfusion";
-import Error from "../ErrorReporter";
+import { ActionEventArgs } from "@syncfusion/ej2-vue-inplace-editor";
+import { Component, Prop } from "vue-property-decorator";
+import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import { FilteringEventArgs } from "@syncfusion/ej2-dropdowns";
+import axios from "axios";
+import Error from "../ErrorReporter";
+import ErrorReport from "shared/vue/ErrorReporting/ErrorReport.vue";
+import Vue from "vue";
 
 enum MemberRole {
   Member,
@@ -106,6 +106,7 @@ interface IMembership {
   }
 })
 export default class OrgMembersTable extends Vue {
+  @Prop({ type: Array, required: false }) errors: any[];
   @Prop({ type: Boolean, default: false }) readonly canManageRoles: boolean;
   @Prop({ type: Boolean, default: false }) readonly canManageMembers: boolean;
   @Prop({ type: String, required: true }) readonly orgSlug: string;
@@ -114,84 +115,58 @@ export default class OrgMembersTable extends Vue {
   addingMember = false;
 
   userName: string = "";
-  role: string = "Member";
+  role: string = MemberRole[MemberRole.Member];
 
-  readonly roles = Object.keys(MemberRole).filter(k => isNaN(Number(k)));
   readonly rolesModel = {
-    dataSource: this.roles
+    dataSource: Object.keys(MemberRole).filter(k => isNaN(Number(k)))
   };
 
   readonly baseUrl = `/api/v1/orgs/${this.orgSlug}/members`;
 
   public async mounted() {
-    (DataManager as any).foo = "bar";
-
     try {
-      const members = (await axios.get<IMembership[]>(this.baseUrl)).data;
-      if (Array.isArray(members)) {
-        this.members = members;
-      }
+      this.members = (await axios.get<IMembership[]>(this.baseUrl)).data;
     } catch (e) {
-      console.error(e);
+      this.errors = e.response.data.errors;
     }
   }
 
+  @ErrorReport.ReportErrors
   public async addMember() {
     const membership: IMembership = {
       userName: this.userName,
       role: this.role
     };
-
-    try {
-      const response = await axios.post(this.baseUrl, membership);
-      if (response.status === 204) {
-        this.members.push(membership);
-        this.addingMember = false;
-        this.userName = "";
-        this.role = "Member";
-      } else {
-        // TODO use ErrorReport
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    const response = await axios.post(this.baseUrl, membership);
+    this.members.push(membership);
+    this.addingMember = false;
+    this.userName = "";
+    this.role = "Member";
   }
 
+  @ErrorReport.ReportErrors
   public async removeMember(username: string) {
-    try {
-      const response = await axios.delete(`${this.baseUrl}/${username}`);
-
-      if (response.status === 204) {
-        this.members = this.members.filter(m => m.userName != username);
-      } else {
-        // TODO use ErrorReport
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    const response = await axios.delete(`${this.baseUrl}/${username}`);
+    this.members = this.members.filter(m => m.userName != username);
   }
 
   public async changeRole($event: ActionEventArgs, userName: string) {
-    const membership: IMembership = {
-      userName,
-      role: $event.value
-    };
+    const existingMember = this.members.find(m => m.userName === userName);
+    const existingRole = existingMember.role;
     try {
-      const response = await axios.put(this.baseUrl, membership);
-
-      if (response.status === 204) {
-        this.members.find(m => m.userName === userName).role = membership.role;
-      } else {
-        // TODO use ErrorReport
-      }
+      existingMember.role = $event.value;
+      await axios.put(this.baseUrl, {
+        userName,
+        role: $event.value
+      });
     } catch (e) {
-      console.error(e);
+      existingMember.role = existingRole;
+      this.errors = e.response.data.errors;
     }
   }
 
   public async getUsernames($event: FilteringEventArgs) {
     $event.preventDefaultAction = true;
-    // this.userName = $event.text;
 
     if ($event.text.length < 3) {
       $event.cancel = true;
