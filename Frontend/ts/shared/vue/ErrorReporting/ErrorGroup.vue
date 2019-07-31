@@ -64,7 +64,7 @@ export default class ErrorGroup extends Vue {
   }
 
   public Tooltip() {
-    return "A generic error without any semantics.";
+    return "Generic errors that don't relate to each other.";
   }
 }
 </script>
@@ -74,7 +74,6 @@ export default class ErrorGroup extends Vue {
 @import "css/variables.scss";
 
 .error-group {
-  margin-top: 2em;
   header {
     display: flex;
     color: $white;
