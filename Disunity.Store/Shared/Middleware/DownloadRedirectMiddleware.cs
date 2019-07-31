@@ -107,7 +107,7 @@ namespace Disunity.Store.Middleware {
 
             var modVersion = await dbContext.ModVersions
                                             .Where(v => v.Mod.Slug == modSlug && v.Mod.Owner.Slug == ownerSlug)
-                                            .FindExactVersion(new VersionNumber(versionString))
+                                            .FindExactVersion(VersionNumber.Create(versionString))
                                             .FirstOrDefaultAsync();
 
             return modVersion;

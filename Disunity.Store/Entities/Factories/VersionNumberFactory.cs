@@ -38,7 +38,7 @@ namespace Disunity.Store.Entities.Factories {
         }
 
         public Task<VersionNumber> FindOrCreateVersionNumber(string versionString) {
-            return FindOrCreateVersionNumber(new VersionNumber(versionString));
+            return FindOrCreateVersionNumber(VersionNumber.Create(versionString));
         }
 
         public async Task<VersionNumber> FindOrCreateVersionNumber(VersionNumber versionNumber) {

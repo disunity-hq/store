@@ -21,8 +21,12 @@ namespace Disunity.Store.Entities {
             Minor = minor;
             Patch = patch;
         }
+        
+        public static VersionNumber Create(string versionNumber) {
+            if (versionNumber == null) {
+                return null;
+            }
 
-        public VersionNumber(string versionNumber) {
             var segments = versionNumber.Split('.');
 
             if (segments.Length != 3) {
@@ -30,17 +34,20 @@ namespace Disunity.Store.Entities {
                     $"versionNumber must be of format MAJOR.MINOR.PATCH instead {versionNumber} was provided");
             }
 
-            Major = int.Parse(segments[0]);
-            Minor = int.Parse(segments[1]);
-            Patch = int.Parse(segments[2]);
+            return new VersionNumber {
+
+                Major = int.Parse(segments[0]),
+                Minor = int.Parse(segments[1]),
+                Patch = int.Parse(segments[2])
+            };
         }
 
         public static implicit operator string(VersionNumber v) {
-            return v.ToString();
+            return v?.ToString();
         }
 
         public static explicit operator VersionNumber(string s) {
-            return new VersionNumber(s);
+            return Create(s);
         }
 
         public override string ToString() {
@@ -48,7 +55,7 @@ namespace Disunity.Store.Entities {
         }
 
         public override bool Equals(object obj) {
-            return CompareTo(obj as VersionNumber)==0;
+            return CompareTo(obj as VersionNumber) == 0;
         }
 
         protected bool Equals(VersionNumber other) {
