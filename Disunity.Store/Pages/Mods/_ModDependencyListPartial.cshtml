@@ -11,7 +11,7 @@
         var routeParams = Helpers.RouteParamsFromMod(mod);
 
         <li>
-            <a asp-page="/Mods/Details" asp-all-route-data="@routeParams">@mod.DisplayName</a>
+            <a asp-page="/Mods/Details" asp-all-route-data="@routeParams">@mod.Latest.DisplayName</a>
         </li>
     }
 </ul>
