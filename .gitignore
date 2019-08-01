@@ -2,6 +2,7 @@
 .env
 packages/
 paket-files/
+**/*.DotSettings.user
 
 *.zip
 
