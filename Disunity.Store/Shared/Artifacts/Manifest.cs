@@ -55,7 +55,7 @@ namespace Disunity.Store.Artifacts {
 
     public partial class Manifest {
 
-        public ILogger<Manifest> logger;
+        private ILogger<Manifest> _logger;
 
         public Manifest() {
             Tags = new List<string>();
@@ -86,7 +86,7 @@ namespace Disunity.Store.Artifacts {
                 var logger = sp.GetRequiredService<ILogger<Manifest>>();
                 ValidateJson(logger, json);
                 var manifest = JsonConvert.DeserializeObject<Manifest>(json);
-                manifest.logger = logger;
+                manifest._logger = logger;
                 return manifest;
             };
         }

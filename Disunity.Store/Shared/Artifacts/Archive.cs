@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Exceptions;
+using Disunity.Store.Errors;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -54,7 +54,7 @@ namespace Disunity.Store.Artifacts {
             var entry = GetEntry(filename);
 
             if (entry == null) {
-                throw new ArchiveLoadException($"No manifest found at {filename}");
+                throw new ArchiveLoadError($"No manifest found at {filename}").ToExec();
             }
 
             using (var file = entry.Open()) {
@@ -82,7 +82,7 @@ namespace Disunity.Store.Artifacts {
 
                 if (readme.Length == 0) {
                     var message = $"Readme file, {filename} is empty.";
-                    throw new ArchiveLoadException(message);
+                    throw new ArchiveLoadError(message).ToExec();
                 }
 
                 return readme;

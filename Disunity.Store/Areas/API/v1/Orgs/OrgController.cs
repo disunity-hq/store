@@ -95,7 +95,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 //                    Errors = schemaExc.Errors.Select(FormatSchemaError).ToArray();
 //                } else if (e is InvalidArchiveError formFileError) {
 //                    Errors = new[] {formFileError.Message};
-//                } else if (e is ArchiveLoadException archiveExc) {
+//                } else if (e is ArchiveLoadError archiveExc) {
 //                    Errors = new[] {archiveExc.Message};
 //                } else {
 //                    _logger.LogError(e, "");
