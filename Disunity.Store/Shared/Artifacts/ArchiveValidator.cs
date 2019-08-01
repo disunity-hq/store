@@ -25,13 +25,6 @@ namespace Disunity.Store.Artifacts {
             };
         }
 
-        private static void ValidateFormFile(IFormFile formFile) {
-            var fileName = GetFileName(formFile);
-            CheckMimeType(formFile, fileName, "application/zip", "application/x-zip", "application/x-zip-compressed");
-            CheckEmpty(formFile, fileName);
-            CheckSize(formFile, fileName);
-        }
-
         private static string GetFileName(IFormFile formFile) {
             return WebUtility.HtmlEncode(Path.GetFileName(formFile.FileName));
         }
@@ -60,6 +53,13 @@ namespace Disunity.Store.Artifacts {
                 var msg = $"The file {fileName} exceeds 1 MB.";
                 throw new InvalidArchiveError(msg).ToExec();
             }
+        }
+
+        private static void ValidateFormFile(IFormFile formFile) {
+            var fileName = GetFileName(formFile);
+            CheckMimeType(formFile, fileName, "application/zip", "application/x-zip", "application/x-zip-compressed");
+            CheckEmpty(formFile, fileName);
+            CheckSize(formFile, fileName);
         }
 
     }
