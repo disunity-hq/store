@@ -62,17 +62,6 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
         [FromBody] public OrgInput SubmitModel { get; set; }
 
-        [HttpGet]
-        public IActionResult Get(string orgSlug) {
-            var org = _context.Orgs.SingleOrDefault(o => o.Slug == orgSlug);
-
-            if (org == null) {
-                return new NotFoundResult();
-            }
-
-            return new JsonResult($"Hello from {orgSlug}!");
-        }
-
         [HttpPost]
         [OrgOperation(Operation.Update,"orgSlug")]
         public async Task<ActionResult<OrgDto>> PostAsync(string orgSlug) {
