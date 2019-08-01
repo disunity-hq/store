@@ -21,8 +21,6 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json.Schema;
 
-using AggregateException = Disunity.Store.Exceptions.AggregateException;
-
 
 namespace Disunity.Store.Areas.API.v1.Mods {
 
@@ -98,14 +96,8 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
                 return new JsonResult(new {archive.Manifest.DisplayName});
             }
-            catch (Exception e) {
-                Exception[] errors = { e };
-
-                if (e is AggregateException schemaExc) {
-                    errors = schemaExc.ToArray();
-                }
-
-                return BadRequest(new {errors});
+            catch (ApiException e) {
+                return e.Error;
             }
         }
 

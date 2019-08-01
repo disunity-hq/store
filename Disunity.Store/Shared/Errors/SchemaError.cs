@@ -1,13 +1,11 @@
-using System;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Schema;
 
 
-namespace Disunity.Store.Exceptions {
+namespace Disunity.Store.Errors {
 
-    public class SchemaException : BaseApiException {
+    public class SchemaError : ApiError {
 
         [JsonProperty] public int LineNumber { get; }
         [JsonProperty] public int LinePosition { get; }
@@ -18,7 +16,7 @@ namespace Disunity.Store.Exceptions {
         [JsonConverter(typeof(StringEnumConverter))]
         public ErrorType ErrorType { get; }
 
-        public SchemaException(string message, int lineNumber, int linePosition,
+        public SchemaError(string message, int lineNumber, int linePosition,
                                string path, object value, ErrorType errorType,
                                string name = null, string context = null)
             : base(message, name, context) {
@@ -29,8 +27,8 @@ namespace Disunity.Store.Exceptions {
             ErrorType = errorType;
         }
 
-        public static SchemaException FromValidationError(ValidationError validationError) {
-            return new SchemaException(validationError.Message,
+        public static SchemaError FromValidationError(ValidationError validationError) {
+            return new SchemaError(validationError.Message,
                                        validationError.LineNumber,
                                        validationError.LinePosition,
                                        validationError.Path,

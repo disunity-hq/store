@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 
 using BindingAttributes;
 
-using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +11,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-
-using AggregateException = Disunity.Store.Exceptions.AggregateException;
 
 
 namespace Disunity.Store.Artifacts {
@@ -80,7 +75,7 @@ namespace Disunity.Store.Artifacts {
             }
             
             if (errors.Count > 0) {
-                throw errors.AsAggregate();
+                throw errors.AsAggregate().ToExec();
             }
         }
 

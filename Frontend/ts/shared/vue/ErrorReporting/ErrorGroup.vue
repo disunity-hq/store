@@ -2,7 +2,7 @@
   <div class="error-group">
     <header>
       <h1>
-        <extension-point name="label">Generic errors</extension-point>
+        <extension-point name="label">{{ title }}</extension-point>
       </h1>
       <ejs-tooltip position="BottomLeft" :content="Tooltip()" :target="'#' + id">
         <i :id="id" class="fas fa-question" />
@@ -38,6 +38,10 @@ export default class ErrorGroup extends Vue {
 
   @Prop({ required: true })
   errors: any[];
+
+
+  @Prop({ default: "Generic Errors" })
+  title: string;
 
   constructor() {
     super();

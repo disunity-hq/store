@@ -8,6 +8,7 @@ using AutoMapper.QueryableExtensions;
 
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
+using Disunity.Store.Errors;
 using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
 using Disunity.Store.Policies;
@@ -22,7 +23,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
     [ApiController]
     [Route("api/v{version:apiVersion}/orgs/{orgSlug:slug}/members")]
-    public class OrgMemberController : ApiControllerBase {
+    public class OrgMemberController : ControllerBase {
 
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<OrgMemberController> _logger;
@@ -69,27 +70,26 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         [HttpPost]
         [OrgOperation(Operation.ManageMembers, "orgSlug")]
         public async Task<IActionResult> AddOrgMember([FromBody] OrgMemberDto membershipDto) {
-            if (membershipDto.Role == OrgMemberRole.Owner) {
-                var error = new DuplicateOrgOwnerException("Cannot add extra owner's to an organization",
-                                                           context: "AddOrgMember");
-                return BadRequest(error);
-            }
-
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == membershipDto.UserName);
 
             if (user == null) {
-                var error = new NoSuchUserException($"No user exists with username {membershipDto.UserName}", context: "AddOrgMember");
+                var error = new NoSuchUserError($"No user exists with username {membershipDto.UserName}",
+                                                context: "AddOrgMember");
+
                 return NotFound(error);
             }
 
             var org = await _dbContext.Orgs.SingleAsync(o => o.Slug == OrgSlug);
 
+            if (membershipDto.Role == OrgMemberRole.Owner) {
+                return new DuplicateOrgOwnerError(user, org);
+            }
+
             var existingMembership = await _dbContext.OrgMembers.SingleOrDefaultAsync(
                 m => m.User == user && m.Org == org);
 
             if (existingMembership != null) {
-                var error = new DuplicateOrgMemberException($"User is already a member of Org: {user.UserName}", context: "AddOrgMember");
-                return BadRequest(error);
+                return new DuplicateOrgMemberError(user, org);
             }
 
             var membership = new OrgMember() {
@@ -101,8 +101,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             _dbContext.Add(membership);
             await _dbContext.SaveChangesAsync();
 
-
-            return GetResultFromModelState();
+            return NoContent();
         }
 
         /// <summary>
@@ -136,7 +135,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
         [OrgOperation(Operation.ManageMemberRoles, "orgSlug")]
         public async Task<IActionResult> UpdateMemberRole([FromBody] OrgMemberDto membershipDto) {
             var membership =
-                await _dbContext.OrgMembers.SingleOrDefaultAsync(
+                await _dbContext.OrgMembers.Include(om => om.User).SingleOrDefaultAsync(
                     m => m.Org.Slug == OrgSlug && m.User.UserName == membershipDto.UserName);
 
             if (membership == null) {
@@ -144,15 +143,14 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             }
 
             if (membershipDto.Role == OrgMemberRole.Owner) {
-                var owner = await _dbContext.OrgMembers.Include(o => o.User).SingleOrDefaultAsync(
+                var owner = await _dbContext.OrgMembers
+                                            .Include(o => o.User)
+                                            .Include(o => o.Org)
+                                            .SingleOrDefaultAsync(
                     m => m.Org.Slug == OrgSlug && m.Role == OrgMemberRole.Owner);
 
                 if (owner != null && owner.Org.Slug == owner.User.UserName) {
-                    var error = new CantChangeOrgOwnerException(
-                        "Cannot change the owner of a user's organization.",
-                        context: "UpdateMemberRole");
-
-                    return BadRequest(error);
+                    return new CantChangeOrgOwnerError(owner.User, membership.User);
                 }
 
             }
@@ -160,14 +158,6 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             membership.Role = membershipDto.Role;
 
             await _dbContext.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private IActionResult GetResultFromModelState() {
-            if (ModelState.ErrorCount > 0) {
-                return BadRequest(ModelState);
-            }
 
             return NoContent();
         }

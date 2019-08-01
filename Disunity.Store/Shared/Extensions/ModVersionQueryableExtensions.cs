@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Errors;
 using Disunity.Store.Exceptions;
 
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace Disunity.Store.Extensions {
                              .SingleAsync(v => v.VersionNumber == versionString);
             }
             catch (InvalidOperationException e) {
-                throw new ModNotFoundException($"Unable to find version matching {depString}@{versionString}");
+                throw new ModNotFoundError($"Unable to find version matching {depString}@{versionString}").ToExec();
             }
 
         }
