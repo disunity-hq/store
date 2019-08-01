@@ -7,37 +7,32 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Store.Exceptions;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
 namespace Disunity.Store.Artifacts {
 
-    public class ArchiveLoadException : Exception {
-
-        public ArchiveLoadException(string message) : base(message) { }
-
-    }
-
     public class Archive {
 
-        private ZipArchive archive;
-
-        private ILogger<Archive> log;
-        private Func<string, Manifest> manifestFactory;
+        private readonly ZipArchive _archive;
+        private readonly Func<string, Manifest> _manifestFactory;
         private readonly Stream _stream;
+
+        private ILogger<Archive> _log;
 
         public Archive(ILogger<Archive> log,
                        Func<string, Manifest> manifestFactory,
                        Stream stream) {
-            this.log = log;
-            this.manifestFactory = manifestFactory;
+            _log = log;
+            _manifestFactory = manifestFactory;
             _stream = stream;
-            archive = new ZipArchive(stream, ZipArchiveMode.Read);
+            _archive = new ZipArchive(stream, ZipArchiveMode.Read);
             Manifest = GetManifest();
             Readme = GetReadme();
         }
-
 
         public Manifest Manifest { get; }
         public string Readme { get; }
@@ -49,14 +44,12 @@ namespace Disunity.Store.Artifacts {
             return stream => new Archive(logger, manifestFactory, stream);
         }
 
-
         public ZipArchiveEntry GetEntry(string filename) {
-            var entry = archive.GetEntry(filename);
+            var entry = _archive.GetEntry(filename);
             return entry;
         }
 
         public Manifest GetManifest(string filename = "manifest.json") {
-
 
             var entry = GetEntry(filename);
 
@@ -67,7 +60,7 @@ namespace Disunity.Store.Artifacts {
             using (var file = entry.Open()) {
                 var reader = new StreamReader(file);
                 var json = reader.ReadToEnd();
-                return manifestFactory(json);
+                return _manifestFactory(json);
             }
         }
 

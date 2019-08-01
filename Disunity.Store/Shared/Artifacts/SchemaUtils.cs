@@ -18,12 +18,15 @@ namespace Disunity.Store.Artifacts {
             if (min != null) {
                 eo.minimum = min;
             }
+
             if (max != null) {
                 eo.maximum = max;
             }
+
             if (exclusiveMin != null) {
                 eo.exclusiveMinimum = exclusiveMin;
             }
+
             if (exclusiveMax != null) {
                 eo.exclusiveMax = exclusiveMax;
             }

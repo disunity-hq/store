@@ -17,37 +17,38 @@ namespace Disunity.Store.Artifacts {
 
     public partial class Manifest {
 
-        public string OrgID;
-        public string ModID;
-        public string Version;
+        public List<string> Artifacts;
+        public int ContentTypes;
+        public Dictionary<string, VersionRange> Dependencies;
+        public string Description;
 
         public string DisplayName;
-        public string URL;
-        public string Description;
-        public List<string> Tags;
-        public int ContentTypes;
 
-        public VersionRange UnityVersions;
-        public Dictionary<string, VersionRange> Targets;
-        public Dictionary<string, VersionRange> Dependencies;
-        public Dictionary<string, VersionRange> OptionalDependencies;
-        public Dictionary<string, VersionRange> Incompatibilities;
+        public object ExtraData;
 
         public string Icon;
-        public string Readme;
-        public List<string> Artifacts;
+        public Dictionary<string, VersionRange> Incompatibilities;
+        public string ModID;
+        public Dictionary<string, VersionRange> OptionalDependencies;
+
+        public string OrgID;
         public List<string> PrefabBundles;
-        public List<string> SceneBundles;
 
         public List<string> PreloadAssemblies;
         public string PreloadAssembly;
         public string PreloadClass;
+        public string Readme;
 
         public List<string> RuntimeAssemblies;
         public string RuntimeAssembly;
         public string RuntimeClass;
+        public List<string> SceneBundles;
+        public List<string> Tags;
+        public Dictionary<string, VersionRange> Targets;
 
-        public object ExtraData;
+        public VersionRange UnityVersions;
+        public string URL;
+        public string Version;
 
     }
 
@@ -73,7 +74,7 @@ namespace Disunity.Store.Artifacts {
             foreach (var error in errors) {
                 logger.LogError($"Schema error: {error.Message}");
             }
-            
+
             if (errors.Count > 0) {
                 throw errors.AsAggregate().ToExec();
             }

@@ -6,7 +6,6 @@ using System.Net;
 using BindingAttributes;
 
 using Disunity.Store.Errors;
-using Disunity.Store.Exceptions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +39,11 @@ namespace Disunity.Store.Artifacts {
         private static void CheckMimeType(IFormFile formFile, string fileName, params string[] mimeTypes) {
 
             var fileMimeType = formFile.ContentType.ToLower();
+
             if (!mimeTypes.Contains(fileMimeType)) {
-                var msg = $"The file {fileName} must be of type {string.Join(", or ", mimeTypes.Select(s => $"`{s}`"))}. Type `{fileMimeType}` was provided";
+                var msg =
+                    $"The file {fileName} must be of type {string.Join(", or ", mimeTypes.Select(s => $"`{s}`"))}. Type `{fileMimeType}` was provided";
+
                 throw new InvalidArchiveError(msg).ToExec();
             }
         }

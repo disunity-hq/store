@@ -32,7 +32,7 @@ namespace Disunity.Store.Artifacts {
                 URL = String(format: "url"),
                 Description = String(),
                 Tags = Array(String(TAG_PATTERN)),
-                ContentTypes = Integer(min: 0, max: 62),
+                ContentTypes = Integer(0, 62),
 
                 // relations
                 UnityVersions = Object(new {
