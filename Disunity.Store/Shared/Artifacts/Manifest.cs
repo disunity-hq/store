@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using BindingAttributes;
 
+using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -66,6 +67,12 @@ namespace Disunity.Store.Artifacts {
             Incompatibilities = new Dictionary<string, VersionRange>();
         }
 
+        /// <summary>
+        /// Validate some JSON against the manifest JSONSchema.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="json"></param>
+        /// <exception cref="ApiException"></exception>
         public static void ValidateJson(ILogger<Manifest> logger, string json) {
             var schema = Schema.LoadSchema();
             var obj = JObject.Parse(json);

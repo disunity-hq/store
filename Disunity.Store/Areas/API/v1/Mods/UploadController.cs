@@ -8,7 +8,9 @@ using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;
 using Disunity.Store.Artifacts;
 using Disunity.Store.Data;
+using Disunity.Store.Errors;
 using Disunity.Store.Exceptions;
+using Disunity.Store.Extensions;
 using Disunity.Store.Storage;
 using Disunity.Store.Storage.Backblaze;
 
@@ -93,6 +95,11 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             }
             catch (ApiException e) {
                 return e.Error;
+            }
+            catch (AggregateException e) {
+                return e.InnerExceptions
+                 .OfType<ApiException>()
+                 .Select(exc => exc.Error).AsAggregate();
             }
         }
 
