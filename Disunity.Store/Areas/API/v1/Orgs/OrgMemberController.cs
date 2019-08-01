@@ -73,10 +73,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == membershipDto.UserName);
 
             if (user == null) {
-                var error = new NoSuchUserError($"No user exists with username {membershipDto.UserName}",
-                                                context: "AddOrgMember");
-
-                return NotFound(error);
+                return new NoSuchUserError($"No user exists with username {membershipDto.UserName}");
             }
 
             var org = await _dbContext.Orgs.SingleAsync(o => o.Slug == OrgSlug);
