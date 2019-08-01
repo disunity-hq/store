@@ -64,11 +64,6 @@ namespace Disunity.Store.Areas.API.v1.Mods {
             };
         }
 
-        [HttpGet]
-        public IActionResult Get() {
-            return new JsonResult("Hello World!");
-        }
-
         [HttpPost]
         public async Task<IActionResult> PostAsync() {
             if (!ModelState.IsValid) {
