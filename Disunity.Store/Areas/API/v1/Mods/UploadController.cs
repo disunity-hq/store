@@ -21,10 +21,9 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
     [Authorize]
     [ApiController]
-    [Route("api/v{version:apiVersion}/mods/upload")]
     public class UploadController : ControllerBase {
 
-        [HttpPost]
+        [HttpPost("api/v{version:apiVersion}/mods/upload")]
         public async Task<IActionResult> PostAsync([FromServices] ILogger<Upload> logger,
                                                    [FromServices] UserManager<UserIdentity> userManager,
                                                    [FromServices] ApplicationDbContext context,
