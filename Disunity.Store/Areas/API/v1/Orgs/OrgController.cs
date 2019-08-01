@@ -11,6 +11,7 @@ using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;
 using Disunity.Store.Artifacts;
 using Disunity.Store.Data;
+using Disunity.Store.Exceptions;
 using Disunity.Store.Policies;
 using Disunity.Store.Storage;
 using Disunity.Store.Storage.Backblaze;
@@ -103,7 +104,7 @@ namespace Disunity.Store.Areas.API.v1.Orgs {
 
 //                if (e is ManifestSchemaException schemaExc) {
 //                    Errors = schemaExc.Errors.Select(FormatSchemaError).ToArray();
-//                } else if (e is ArchiveFormFileValidationException formFileError) {
+//                } else if (e is InvalidArchiveError formFileError) {
 //                    Errors = new[] {formFileError.Message};
 //                } else if (e is ArchiveLoadException archiveExc) {
 //                    Errors = new[] {archiveExc.Message};

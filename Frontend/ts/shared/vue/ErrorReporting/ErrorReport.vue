@@ -2,7 +2,7 @@
   <div class="error-report">
     <div v-for="(group, name) in GroupedErrors" :key="name">
       <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaException'" />
-      <ErrorGroup :errors="group" v-else />
+      <ErrorGroup :errors="group" :title="name" v-else />
     </div>
   </div>
 </template>

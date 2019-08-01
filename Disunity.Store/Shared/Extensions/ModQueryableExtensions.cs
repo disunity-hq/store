@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Disunity.Store.Entities;
+using Disunity.Store.Errors;
 using Disunity.Store.Exceptions;
 
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace Disunity.Store.Extensions {
 
             if (mod != null) return mod;
             
-            throw new ModNotFoundException($"Could not find mod matching dependency string {depString}");
+            throw new ModNotFoundError($"Could not find mod matching dependency string {depString}").ToExec();
         }
 
     }
