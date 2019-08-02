@@ -32,7 +32,22 @@ namespace Disunity.Store.Errors {
         }
 
         public override ObjectResult ToObjectResult() {
-            return new ObjectResult(new { errors = _innerErrors}) {
+            var groups = new Dictionary<string, object>();
+
+            foreach (var error in this) {
+                dynamic group;
+
+                if (groups.ContainsKey(error.Name)) {
+                    group = groups[error.Name];
+                    group.Items.Add(error);
+                } else {
+                    group = new {Info = error.Info, Items = new[] {error}};
+                }
+
+                groups[error.Name] = group;
+            }
+
+            return new ObjectResult(new { errors = groups }) {
                 StatusCode = (int) StatusCode
             };
         }

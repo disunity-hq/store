@@ -18,7 +18,7 @@ import { Component, Prop } from "vue-property-decorator";
 import ErrorGroup from "./ErrorGroup.vue";
 
 @Component
-export default class SchemaExceptionGroup extends ErrorGroup {
+export default class MissingArtifactGroup extends ErrorGroup {
 
   constructor() {
     super();

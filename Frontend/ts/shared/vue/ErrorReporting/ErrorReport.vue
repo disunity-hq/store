@@ -1,9 +1,7 @@
 <template v-if="errors.length > 0">
   <div class="error-report">
-    <div v-for="(group, name) in GroupedErrors" :key="name">
-      <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaError'" />
-      <MissingArtifactGroup :errors="group" v-if="name == 'MissingArtifactError'" />
-      <ErrorGroup :errors="group" :title="name" v-else />
+    <div v-for="(group, name) in errors" :key="name">
+      <ErrorGroup :errors="group.items" :title="name" :info="group.info" />
     </div>
   </div>
 </template>
@@ -18,25 +16,7 @@ import MissingArtifactGroup from "shared/vue/ErrorReporting/MissingArtifactGroup
 
 @Component({ components: { ErrorGroup, SchemaExceptionGroup, MissingArtifactGroup } })
 export default class ErrorReport extends Vue {
-  @Prop({ type: Array, required: false, default: () => [] }) errors: any[];
-
-  groupBy<T extends any, K extends keyof T>(
-    array: T[],
-    key: K
-  ): Record<T[K], T[]> {
-    return array.reduce(
-      (objectsByKeyValue, obj) => {
-        const value = obj[key];
-        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
-        return objectsByKeyValue;
-      },
-      {} as Record<T[K], T[]>
-    );
-  }
-
-  get GroupedErrors() {
-    return this.groupBy<any, string>(this.errors, "name");
-  }
+  @Prop({ type: Array, required: false, default: () => [] }) errors: any;
 
   public static ReportErrors(
     target: any,

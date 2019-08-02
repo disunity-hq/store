@@ -4,24 +4,22 @@
       <h1>
         <extension-point name="label">{{ title }}</extension-point>
       </h1>
-      <ejs-tooltip position="BottomLeft" :content="Tooltip()" :target="'#' + id">
+      <ejs-tooltip position="BottomLeft" :content="info" :target="'#' + id">
         <i :id="id" class="fas fa-question" />
       </ejs-tooltip>
     </header>
 
     <div class="group-headers">
-      <extension-point name="header">
-        <div class="error-message">Message</div>
-      </extension-point>
+        <div class="error-message" v-for="field in Fields()" :key="field">{{field}}</div>
+        <div class="error-message" >Message</div>
     </div>
 
     <div v-for="(error, index) in errors" :key="index" class="error-components">
       <button class="error-copy btn-primary" v-on:click="CopyError(error)">
         <i class="fas fa-copy" />
       </button>
-      <extension-point name="item">
-        <div class="error-component error-message">{{ error.message }}</div>
-      </extension-point>
+      <div class="error-component" v-for="field in Fields()" :key="field">{{error[field]}}</div>
+      <div class="error-component error-message">{{ error.message }}</div>
     </div>
   </div>
 </template>
@@ -37,11 +35,13 @@ export default class ErrorGroup extends Vue {
   readonly id: string;
 
   @Prop({ required: true })
-  errors: any[];
-
+  errors: any;
 
   @Prop({ default: "Generic Errors" })
   title: string;
+
+  @Prop({ default: "Various uncategorized errors" })
+  info: string;
 
   constructor() {
     super();
@@ -65,6 +65,12 @@ export default class ErrorGroup extends Vue {
 
   public Message(error): string {
     return error.message;
+  }
+
+  public Fields(): string[] {
+    return Object.getOwnPropertyNames(this.errors[0]).filter(o => [
+      "name", "context", "message", "__ob__"
+    ].indexOf(o) == -1);
   }
 
   public Tooltip() {

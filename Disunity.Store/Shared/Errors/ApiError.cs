@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -23,6 +24,8 @@ namespace Disunity.Store.Errors {
         [JsonProperty] public string Context { get; }
         [JsonProperty] public string Message { get; }
 
+        public virtual string Info => "A non-specific error.";
+
         public HttpStatusCode StatusCode { get; protected set; } = HttpStatusCode.BadRequest;
 
         protected ApiError(string message, string name = null, string context = null) {
@@ -44,7 +47,12 @@ namespace Disunity.Store.Errors {
 
         public virtual ObjectResult ToObjectResult() {
             var result = new {
-                errors = new[] {this}
+                errors = new Dictionary<string, object> {
+                    [Name] = new {
+                        Info = Info,
+                        Items = new[] {this}
+                    }
+                }
             };
 
             return new ObjectResult(result) {
