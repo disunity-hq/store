@@ -1,7 +1,8 @@
 <template v-if="errors.length > 0">
   <div class="error-report">
     <div v-for="(group, name) in GroupedErrors" :key="name">
-      <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaException'" />
+      <SchemaExceptionGroup :errors="group" v-if="name == 'SchemaError'" />
+      <MissingArtifactGroup :errors="group" v-if="name == 'MissingArtifactError'" />
       <ErrorGroup :errors="group" :title="name" v-else />
     </div>
   </div>
@@ -13,8 +14,9 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import ErrorGroup from "shared/vue/ErrorReporting/ErrorGroup.vue";
 import SchemaExceptionGroup from "shared/vue/ErrorReporting/SchemaExceptionGroup.vue";
+import MissingArtifactGroup from "shared/vue/ErrorReporting/MissingArtifactGroup.vue";
 
-@Component({ components: { ErrorGroup, SchemaExceptionGroup } })
+@Component({ components: { ErrorGroup, SchemaExceptionGroup, MissingArtifactGroup } })
 export default class ErrorReport extends Vue {
   @Prop({ type: Array, required: false, default: () => [] }) errors: any[];
 

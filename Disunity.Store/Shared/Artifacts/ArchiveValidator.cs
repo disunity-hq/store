@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Net;
 using BindingAttributes;
 
 using Disunity.Store.Errors;
+using Disunity.Store.Extensions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +23,9 @@ namespace Disunity.Store.Artifacts {
 
             return formFile => {
                 ValidateFormFile(formFile);
-                return archiveFactory(formFile.OpenReadStream());
+                var archive = archiveFactory(formFile.OpenReadStream());
+                ValidateArtifacts(archive);
+                return archive;
             };
         }
 
@@ -60,6 +64,20 @@ namespace Disunity.Store.Artifacts {
             CheckMimeType(formFile, fileName, "application/zip", "application/x-zip", "application/x-zip-compressed");
             CheckEmpty(formFile, fileName);
             CheckSize(formFile, fileName);
+        }
+
+        private static void ValidateArtifacts(Archive archive) {
+            var errors = (from path in archive.Manifest.Artifacts
+                          let fullPath = Path.Combine("artifacts", path)
+                          let entry = archive.GetEntry(fullPath)
+                          where entry == null
+                          select new MissingArtifactError(path))
+                         .Cast<ApiError>()
+                         .ToList();
+
+            if (errors.Count > 0) {
+                throw errors.AsAggregate().ToExec();
+            }
         }
 
     }
