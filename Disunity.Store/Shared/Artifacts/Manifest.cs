@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using BindingAttributes;
 
+using Disunity.Store.Errors;
 using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
 
@@ -59,6 +60,7 @@ namespace Disunity.Store.Artifacts {
         private ILogger<Manifest> _logger;
 
         public Manifest() {
+            Artifacts = new List<string>();
             Tags = new List<string>();
             UnityVersions = new VersionRange();
             Targets = new Dictionary<string, VersionRange>();
@@ -74,17 +76,23 @@ namespace Disunity.Store.Artifacts {
         /// <param name="json"></param>
         /// <exception cref="ApiException"></exception>
         public static void ValidateJson(ILogger<Manifest> logger, string json) {
-            var schema = Schema.LoadSchema();
-            var obj = JObject.Parse(json);
-            obj.IsValid(schema, out IList<ValidationError> errors);
+            try {
+                var schema = Schema.LoadSchema();
+                var obj = JObject.Parse(json);
+                obj.IsValid(schema, out IList<ValidationError> errors);
 
-            foreach (var error in errors) {
-                logger.LogError($"Schema error: {error.Message}");
-            }
+                foreach (var error in errors) {
+                    logger.LogError($"Schema error: {error.Message}");
+                }
 
-            if (errors.Count > 0) {
-                throw errors.AsAggregate().ToExec();
+                if (errors.Count > 0) {
+                    throw errors.AsAggregate().ToExec();
+                }
             }
+            catch (JsonReaderException e) {
+                throw new ManifestParseError(e).ToExec();
+            }
+            
         }
 
         [Factory]
