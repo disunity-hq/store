@@ -19,6 +19,13 @@ namespace Disunity.Store.Artifacts {
 
     public partial class Manifest {
 
+        public string ModID;
+
+        public string OrgID;
+        public string URL;
+        public string Version;
+
+        public Dictionary<string, VersionRange> OptionalDependencies;
         public List<string> Artifacts;
         public int ContentTypes;
         public Dictionary<string, VersionRange> Dependencies;
@@ -30,10 +37,6 @@ namespace Disunity.Store.Artifacts {
 
         public string Icon;
         public Dictionary<string, VersionRange> Incompatibilities;
-        public string ModID;
-        public Dictionary<string, VersionRange> OptionalDependencies;
-
-        public string OrgID;
         public List<string> PrefabBundles;
 
         public List<string> PreloadAssemblies;
@@ -49,11 +52,8 @@ namespace Disunity.Store.Artifacts {
         public Dictionary<string, VersionRange> Targets;
 
         public VersionRange UnityVersions;
-        public string URL;
-        public string Version;
 
     }
-
 
     public partial class Manifest {
 
