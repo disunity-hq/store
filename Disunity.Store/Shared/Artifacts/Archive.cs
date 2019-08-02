@@ -45,8 +45,7 @@ namespace Disunity.Store.Artifacts {
         }
 
         public ZipArchiveEntry GetEntry(string filename) {
-            var entry = _archive.GetEntry(filename);
-            return entry;
+            return _archive.GetEntry(filename);
         }
 
         public Manifest GetManifest(string filename = "manifest.json") {
