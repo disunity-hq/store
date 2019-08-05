@@ -1,4 +1,5 @@
 # env files
+.idea/
 .env
 packages/
 paket-files/
