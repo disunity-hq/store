@@ -27,13 +27,14 @@ namespace Disunity.Store.Areas.API.v1.Mods {
         public async Task<IActionResult> PostAsync([FromServices] ILogger<Upload> logger,
                                                    [FromServices] UserManager<UserIdentity> userManager,
                                                    [FromServices] ApplicationDbContext context,
-                                                   [FromServices] Func<IFormFile, Archive> archiveFactory,
-                                                   [FromServices] Func<Archive, Task<ModVersion>> modVersionFactory,
+                                                   [FromServices] Func<IFormFile, ZipArchive> archiveFactory,
+                                                   [FromServices] Func<ZipArchive, Task<ModVersion>> modVersionFactory,
                                                    [FromServices] IStorageProvider storage,
                                                    IFormFile ArchiveUpload) {
 
             try {
                 var archive = archiveFactory(ArchiveUpload);
+                var manifest = archive.GetManifest();
 
                 var user = await userManager.GetUserAsync(HttpContext.User);
 
@@ -48,7 +49,7 @@ namespace Disunity.Store.Areas.API.v1.Mods {
 
                 await context.SaveChangesAsync();
 
-                return new JsonResult(new {archive.Manifest.DisplayName});
+                return new JsonResult(new {manifest.DisplayName});
             }
             catch (ApiException e) {
                 return e.Error;

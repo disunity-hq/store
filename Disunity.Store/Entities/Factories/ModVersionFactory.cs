@@ -28,7 +28,7 @@ namespace Disunity.Store.Entities.Factories {
         }
 
         [ScopedFactory]
-        public static Func<Archive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
+        public static Func<ZipArchive, Task<ModVersion>> FromArchiveAsync(IServiceProvider services) {
             var context = services.GetRequiredService<ApplicationDbContext>();
             var versionFactory = services.GetRequiredService<IVersionNumberFactory>();
 
@@ -37,7 +37,7 @@ namespace Disunity.Store.Entities.Factories {
             return (archive) => factory.FromArchiveAsync(archive);
         }
 
-        public async Task<ModVersion> FromArchiveAsync(Archive archive) {
+        public async Task<ModVersion> FromArchiveAsync(ZipArchive archive) {
             var manifest = archive.Manifest;
 
             var existingVersion = await _context.ModVersions

@@ -18,8 +18,8 @@ namespace Disunity.Store.Artifacts {
     public static class ArchiveValidator {
 
         [Factory]
-        public static Func<IFormFile, Archive> ArchiveFactory(IServiceProvider services) {
-            var archiveFactory = services.GetRequiredService<Func<Stream, Archive>>();
+        public static Func<IFormFile, ZipArchive> ArchiveFactory(IServiceProvider services) {
+            var archiveFactory = services.GetRequiredService<Func<Stream, ZipArchive>>();
 
             return formFile => {
                 ValidateFormFile(formFile);
@@ -66,7 +66,7 @@ namespace Disunity.Store.Artifacts {
             CheckSize(formFile, fileName);
         }
 
-        private static void ValidateArtifacts(Archive archive) {
+        private static void ValidateArtifacts(ZipArchive archive) {
             var errors = (from path in archive.Manifest.Artifacts
                           let fullPath = Path.Combine("artifacts", path)
                           let entry = archive.GetEntry(fullPath)
