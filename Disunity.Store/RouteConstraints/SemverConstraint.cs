@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-using Disunity.Store.Artifacts;
+using Disunity.Core.Archives;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-using Disunity.Store.Artifacts;
+using Disunity.Core.Archives;
 
 
 namespace Disunity.Store.Entities.Factories {

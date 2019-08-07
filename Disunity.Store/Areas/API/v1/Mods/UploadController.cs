@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Disunity.Store.Artifacts;
+using Disunity.Core.Archives;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Exceptions;

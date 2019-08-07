@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
-using Disunity.Store.Artifacts;
+using Disunity.Core.Archives;
 using Disunity.Store.Data;
-using Disunity.Store.Exceptions;
 using Disunity.Store.Extensions;
-using Disunity.Store.Storage;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
