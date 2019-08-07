@@ -14,11 +14,6 @@
     <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
-  <Reference Include="Disunity.Core">
-    <HintPath>../../core/Disunity.Core/bin/Debug/netstandard2.0/Disunity.Core.dll</HintPath>
-  </Reference>
-</ItemGroup>
-  <ItemGroup>
     <Content Update="appsettings.Local.template.json">
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
@@ -90,4 +85,3 @@
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
-

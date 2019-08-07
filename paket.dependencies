@@ -43,3 +43,7 @@ nuget TopoSort
 git https://github.com/dustinlacewell/Tracery.git master build: "build.sh", OS: mono, Packages: /Tracery/nupkg
 git https://github.com/dustinlacewell/Tracery.git master build: "build.bat", OS: windows, Packages: /Tracery/nupkg
 nuget Tracery
+
+git https://github.com/disunity-hq/core.git core-restructure build: "build.sh", OS: mono, Packages: /Disunity.Core/nupkg
+git https://github.com/disunity-hq/core.git core-restructure build: "build.bat", OS: windows, Packages: /Disunity.Core/nupkg
+nuget Disunity.Core
