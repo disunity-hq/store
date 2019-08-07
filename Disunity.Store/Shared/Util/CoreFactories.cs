@@ -5,6 +5,7 @@ using BindingAttributes;
 
 using Disunity.Core.Archives;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -23,11 +24,23 @@ namespace Disunity.Store.Util {
                 return manifest;
             };
         }
-        
+
         [Factory]
         public static Func<Stream, ZipArchive> StreamArchiveFactory(IServiceProvider services) {
             var manifestFactory = services.GetRequiredService<Func<string, Manifest>>();
             return stream => new ZipArchive(manifestFactory, stream);
+        }
+
+        [Factory]
+        public static Func<IFormFile, ZipArchive> ArchiveFactory(IServiceProvider services) {
+            var archiveFactory = services.GetRequiredService<Func<Stream, ZipArchive>>();
+
+            return formFile => {
+                ArchiveFileValidator.Validate(formFile);
+                var archive = archiveFactory(formFile.OpenReadStream());
+                ArchiveValidator.ValidateArtifacts(archive);
+                return archive;
+            };
         }
 
     }
