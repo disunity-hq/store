@@ -7,11 +7,17 @@
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Update="Shared\Data\Grammars\*.json" CopyToOutputDirectory="Always" />
     <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
+  <ItemGroup>
+  <Reference Include="Disunity.Core">
+    <HintPath>../../core/Disunity.Core/bin/Debug/netstandard2.0/Disunity.Core.dll</HintPath>
+  </Reference>
+</ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Local.template.json">
       <DependentUpon>appsettings.json</DependentUpon>

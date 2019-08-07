@@ -5,6 +5,7 @@ nuget AspNet.Security.OAuth.GitHub >= 2.1.0
 nuget AutoBogus >= 2.5.0
 nuget AutoMapper
 nuget AutoMapper.Extensions.Microsoft.DependencyInjection
+nuget B2Net
 nuget Bogus >= 28.0.2
 nuget Microsoft.AspNetCore.App == 2.2.4
 nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
@@ -23,6 +24,7 @@ nuget Slugify.Core 2.3.0
 nuget SmartBreadcrumbs >= 2.1.0
 nuget Swashbuckle.AspNetCore
 nuget Syncfusion.EJ2.AspNet.Core >= 17.1.0.53pak
+nuget Westwind.AspNetCore.Markdown 3.2.5
 nuget xunit >= 2.4.0
 nuget xunit.runner.visualstudio >= 2.4.0
 
@@ -41,5 +43,3 @@ nuget TopoSort
 git https://github.com/dustinlacewell/Tracery.git master build: "build.sh", OS: mono, Packages: /Tracery/nupkg
 git https://github.com/dustinlacewell/Tracery.git master build: "build.bat", OS: windows, Packages: /Tracery/nupkg
 nuget Tracery
-nuget B2Net
-nuget Westwind.AspNetCore.Markdown 3.2.5
