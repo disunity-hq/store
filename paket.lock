@@ -1849,11 +1849,11 @@ GIT
       path: /Tracery/nupkg
       os: windows
   remote: https://github.com/disunity-hq/core.git
-     (045d872eb6a3b649177b7005c1a351f809443c25)
+     (c3b7a742c06c7601bf5e37c3c37773bdd5780bd5)
       build: build.sh
       path: /Disunity.Core/nupkg
       os: mono
-     (045d872eb6a3b649177b7005c1a351f809443c25)
+     (c3b7a742c06c7601bf5e37c3c37773bdd5780bd5)
       build: build.bat
       path: /Disunity.Core/nupkg
       os: windows
