@@ -41,7 +41,7 @@ namespace Disunity.Store.Errors {
                     group = groups[error.Name];
                     group.Items.Add(error);
                 } else {
-                    group = new {Info = error.Info, Items = new[] {error}};
+                    group = new {Info = error.Info, Items = new List<ApiError>() {error}};
                 }
 
                 groups[error.Name] = group;
