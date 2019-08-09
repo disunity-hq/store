@@ -33,12 +33,14 @@ namespace Disunity.Store.Util {
 
         [Factory]
         public static Func<IFormFile, ZipArchive> ArchiveFactory(IServiceProvider services) {
+            var log = services.GetRequiredService<ILogger<CoreFactories>>();
             var archiveFactory = services.GetRequiredService<Func<Stream, ZipArchive>>();
+            var apiArchiveValidator = services.GetRequiredService<ApiArchiveValidator>();
 
             return formFile => {
                 ArchiveFileValidator.Validate(formFile);
                 var archive = archiveFactory(formFile.OpenReadStream());
-                ArchiveValidator.ValidateArtifacts(archive);
+                apiArchiveValidator.Validate(archive);
                 return archive;
             };
         }
